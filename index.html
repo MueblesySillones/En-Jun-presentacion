@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mueblesysillones · Resumen del semestre · Enero–Junio 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+:root{
+  --bg:#F0EDE8; --bg2:#E8E4DF; --surface:#FFFFFF;
+  --ink:#111111; --ink2:#444444; --ink3:#8A8A8A;
+  --border:rgba(0,0,0,0.10); --border2:rgba(0,0,0,0.06);
+  --c-success:#1A6A3A; --c-danger:#B4231F;
+}
+html,body{ width:100%; height:100%; overflow:hidden; font-family:'Montserrat',sans-serif; background:#222; }
+.deck{ width:100vw; height:100vh; position:relative; overflow:hidden; background:var(--bg); }
+.slide{ position:absolute; inset:0; display:flex; flex-direction:column; opacity:0; pointer-events:none; transform:translateX(46px); transition:opacity .4s ease, transform .4s ease; }
+.slide.active{ opacity:1; pointer-events:all; transform:translateX(0); }
+.slide.exit{ opacity:0; transform:translateX(-46px); pointer-events:none; }
+#progress-bar{ position:fixed; top:0; left:0; height:3px; background:var(--ink); transition:width .35s ease; z-index:200; }
+#nav{ position:fixed; bottom:26px; right:36px; display:flex; gap:10px; z-index:200; }
+.nav-btn{ padding:9px 22px; border-radius:6px; border:1.5px solid var(--ink); background:transparent; color:var(--ink); font-size:12px; font-family:inherit; font-weight:500; cursor:pointer; letter-spacing:.5px; transition:all .2s; }
+.nav-btn:hover{ background:var(--ink); color:var(--bg); } .nav-btn:disabled{ opacity:.2; cursor:default; }
+.nav-btn.primary{ background:var(--ink); color:var(--bg); }
+#slide-counter{ position:fixed; bottom:32px; left:36px; font-size:11px; color:var(--ink3); z-index:200; letter-spacing:1.5px; }
+#dot-row{ position:fixed; bottom:34px; left:50%; transform:translateX(-50%); display:flex; gap:7px; z-index:200; flex-wrap:wrap; max-width:60vw; justify-content:center; }
+.dot{ width:6px; height:6px; border-radius:50%; background:rgba(0,0,0,0.18); cursor:pointer; transition:.2s; }
+.dot.active{ background:var(--ink); transform:scale(1.4); }
+#fs-hint{ position:fixed; top:18px; right:24px; font-size:11px; color:var(--ink3); z-index:300; background:var(--surface); padding:6px 14px; border-radius:6px; border:1px solid var(--border); cursor:pointer; letter-spacing:.5px; transition:opacity .4s; }
+.slide-inner{ flex:1; display:flex; flex-direction:column; justify-content:safe center; overflow-y:auto; padding:54px 72px 88px; }
+.slide-inner > *{ flex-shrink:0; }
+.eyebrow{ font-size:12px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--ink3); margin-bottom:14px; }
+.s-title{ font-size:clamp(30px,3.6vw,48px); font-weight:800; color:var(--ink); line-height:1.05; letter-spacing:-1px; margin-bottom:6px; }
+.s-sub{ font-size:15px; color:var(--ink3); font-weight:400; margin-bottom:32px; }
+.ico svg{ width:100%; height:100%; display:block; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.icirc{ border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--surface); border:1px solid var(--border); color:var(--ink); flex:0 0 auto; }
+.s1{ display:flex; flex-direction:row; height:100%; }
+.s1-left{ flex:1; display:flex; flex-direction:column; justify-content:space-between; padding:64px 72px; }
+.s1-logo{ width:170px; filter:brightness(0); opacity:.9; }
+.s1-heading{ font-size:clamp(42px,5.4vw,70px); font-weight:800; color:var(--ink); line-height:1.02; letter-spacing:-2px; }
+.s1-heading em{ font-style:normal; color:var(--ink3); font-weight:300; }
+.s1-meta{ display:flex; gap:46px; flex-wrap:wrap; }
+.s1-meta .v{ font-size:34px; font-weight:800; color:var(--ink); letter-spacing:-1px; }
+.s1-meta .l{ font-size:11px; color:var(--ink3); text-transform:uppercase; letter-spacing:2px; margin-top:2px; font-weight:600; }
+.s1-right{ width:300px; display:flex; flex-direction:column; justify-content:center; }
+.s1-br .n{ font-size:17px; font-weight:700; }
+.s1-br .c{ font-size:12px; margin-top:3px; }
+.obj-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+.obj-card{ background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:40px 32px; display:flex; flex-direction:column; gap:22px; }
+.obj-card .icirc{ width:88px; height:88px; color:#fff; }
+.obj-card .icirc .ico{ width:40px; height:40px; }
+.obj-card .h{ font-size:22px; font-weight:800; color:var(--ink); letter-spacing:-.5px; }
+.obj-card .p{ font-size:14px; color:var(--ink3); line-height:1.5; }
+.month-row{ display:flex; gap:22px; flex-wrap:wrap; }
+.month-card{ flex:1; min-width:118px; background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:30px 18px; text-align:center; position:relative; }
+.month-card .ml{ font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--ink3); margin-bottom:8px; }
+.month-card .mn{ font-size:clamp(34px,5vw,60px); font-weight:800; letter-spacing:-2px; line-height:.95; color:var(--ink); }
+.month-foot{ margin-top:26px; display:flex; align-items:center; gap:10px; font-size:14px; color:var(--ink3); font-weight:500; }
+.month-foot b{ color:var(--ink); font-weight:700; }
+.bars{ display:flex; flex-direction:column; gap:16px; }
+.bar2{ display:flex; align-items:center; gap:20px; }
+.bar2 .bl{ width:120px; font-size:17px; font-weight:700; color:var(--ink); text-align:right; flex:0 0 auto; }
+.bar2 .bt{ flex:1; height:50px; background:var(--surface); border-radius:12px; overflow:hidden; border:1px solid var(--border); position:relative; }
+.bar2 .bf{ height:100%; border-radius:12px; display:flex; align-items:center; padding:0 20px; min-width:44px; }
+.bar2 .bf .bn{ font-size:20px; font-weight:800; color:#fff; letter-spacing:-.5px; }
+.bar2 .br{ width:130px; flex:0 0 auto; font-size:13px; color:var(--ink3); font-weight:600; }
+.chip{ display:inline-flex; align-items:center; gap:5px; padding:5px 13px; border-radius:30px; font-size:11px; font-weight:700; letter-spacing:.3px; }
+.tbl{ width:100%; border-radius:12px; overflow:hidden; border:1px solid var(--border); margin-top:6px; }
+table{ width:100%; border-collapse:collapse; }
+thead th{ padding:13px 18px; text-align:left; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:1.2px; }
+thead th.num{ text-align:right; }
+tbody td{ padding:12px 18px; color:var(--ink); border-bottom:1px solid var(--border2); font-size:15px; font-weight:500; }
+tbody td.num{ text-align:right; font-weight:700; }
+.conv-row{ display:flex; gap:18px; flex-wrap:wrap; }
+.conv-card{ flex:1; min-width:180px; border-radius:18px; padding:30px 26px; color:#fff; }
+.conv-card .cs{ font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; opacity:.8; }
+.conv-card .cbig{ font-size:clamp(40px,5.6vw,66px); font-weight:800; letter-spacing:-2px; margin:6px 0 2px; }
+.conv-card .csub{ font-size:13px; opacity:.85; font-weight:500; }
+.ba{ display:flex; gap:22px; align-items:stretch; flex-wrap:wrap; }
+.ba-col{ flex:1; min-width:260px; border-radius:18px; padding:30px; display:flex; flex-direction:column; gap:18px; }
+.ba-col .bah{ display:flex; align-items:center; gap:12px; font-size:14px; font-weight:800; letter-spacing:1px; text-transform:uppercase; }
+.dark{ background:var(--ink); }
+.dark .eyebrow{ color:rgba(255,255,255,.4); } .dark .s-title{ color:#fff; } .dark .s-sub{ color:rgba(255,255,255,.45); }
+.s12-logo{ width:150px; opacity:.92; margin-bottom:26px; }
+.ask-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.ask{ background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:16px; padding:26px 22px; display:flex; flex-direction:column; gap:16px; }
+.ask .icirc{ width:64px; height:64px; background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.16); color:#fff; }
+.ask .icirc .ico{ width:30px; height:30px; }
+.ask .ah{ font-size:16px; font-weight:800; color:#fff; line-height:1.2; letter-spacing:-.3px; }
+.ask .ap{ font-size:12.5px; color:rgba(255,255,255,.6); line-height:1.5; font-weight:400; }
+.note{ font-size:11px; color:var(--ink3); margin-top:14px; font-weight:500; }
+.pend{ display:inline-flex; align-items:center; gap:6px; padding:5px 13px; border-radius:30px; font-size:11px; font-weight:700; background:#EDE8E0; color:var(--ink3); letter-spacing:.3px; }
+.pend .ico{ width:13px; height:13px; }
+.ph{ color:var(--ink3) !important; }
+.ph-box{ border:2px dashed #D2CCC2; border-radius:18px; padding:30px; color:var(--ink3); font-size:14px; font-weight:600; display:flex; align-items:center; gap:12px; background:rgba(255,255,255,.4); }
+.ph-box .ico{ width:24px; height:24px; flex:0 0 auto; }
+/* ===== MENU ===== */
+#menu-btn{ position:fixed; top:16px; left:18px; z-index:320; width:46px; height:46px; border-radius:10px;
+  background:var(--surface); border:1px solid var(--border); display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:5px; cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,.10); transition:background .2s; }
+#menu-btn:hover{ background:var(--ink); }
+#menu-btn span{ display:block; width:20px; height:2px; background:var(--ink); border-radius:2px; transition:transform .28s, opacity .2s, background .2s; }
+#menu-btn:hover span{ background:#fff; }
+body.menu-open #menu-btn span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+body.menu-open #menu-btn span:nth-child(2){ opacity:0; }
+body.menu-open #menu-btn span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+#menu-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:opacity .3s; z-index:310; }
+body.menu-open #menu-overlay{ opacity:1; pointer-events:auto; }
+#menu-panel{ position:fixed; top:0; left:0; height:100%; width:312px; max-width:85vw; background:var(--surface); z-index:315;
+  transform:translateX(-100%); transition:transform .32s cubic-bezier(.4,0,.2,1); box-shadow:0 0 50px rgba(0,0,0,.22);
+  display:flex; flex-direction:column; overflow-y:auto; }
+body.menu-open #menu-panel{ transform:translateX(0); }
+.menu-head{ background:var(--ink); padding:24px 22px 20px; display:flex; flex-direction:column; gap:10px; }
+.menu-logo{ width:122px; }
+.menu-title{ color:rgba(255,255,255,.5); font-size:11px; letter-spacing:2px; text-transform:uppercase; font-weight:700; }
+.menu-item{ display:flex; align-items:center; gap:12px; padding:11px 22px; font-size:14px; font-weight:600; color:var(--ink2);
+  cursor:pointer; border-left:3px solid transparent; transition:background .15s, color .15s; }
+.menu-item:hover{ background:var(--bg2); color:var(--ink); }
+.menu-item.active{ border-left-color:var(--ink); color:var(--ink); background:var(--bg); font-weight:800; }
+.menu-item .mnum{ font-size:11px; color:var(--ink3); font-weight:700; min-width:16px; text-align:right; }
+.menu-foot{ margin-top:auto; padding:16px 22px 22px; font-size:10.5px; color:var(--ink3); border-top:1px solid var(--border2); }
+.menu-cat{ border-bottom:1px solid var(--border2); }
+.menu-parent{ display:flex; align-items:center; gap:10px; padding:14px 22px; cursor:pointer; user-select:none;
+  font-size:12px; font-weight:800; letter-spacing:1.1px; text-transform:uppercase; color:var(--ink2); transition:background .15s, color .15s; }
+.menu-parent:hover{ background:var(--bg2); color:var(--ink); }
+.menu-parent .mp-txt{ flex:1; }
+.menu-parent .mp-count{ font-size:10px; font-weight:700; color:var(--ink3); background:var(--bg2); border-radius:20px; padding:2px 8px; }
+.menu-parent:hover .mp-count{ background:var(--surface); }
+.menu-cat.open .menu-parent{ color:var(--ink); }
+.menu-chev{ width:14px; height:14px; flex:0 0 auto; color:var(--ink3); transition:transform .3s; }
+.menu-cat.open .menu-chev{ transform:rotate(180deg); }
+.menu-sub{ max-height:0; overflow:hidden; transition:max-height .32s ease; background:var(--bg); }
+.menu-cat.open .menu-sub{ max-height:560px; }
+.menu-sub .menu-item{ padding:10px 22px 10px 28px; font-size:13.5px; }
+
+/* ============================================================
+   DISEÑO "EDITORIAL LINO + LECTURA CLARA" (monocromo; verde/rojo
+   solo en comparaciones y diagnóstico)
+   ============================================================ */
+.mn, .cv, .num, .s1-meta .v, .bar2 .bn, .cmp .delta,
+.s1-bignum, .div-num, .div-meta .dm-v, .fn-node .fn-v, .fn-pct{
+  font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1, "lnum" 1;
+}
+.cmp .delta, .chip.g, .chip.r, .month-card.lead, thead, .conv-card, .fn-node.lead{
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+.slide-inner{ padding:64px 88px 92px; gap:0; }
+.eyebrow{ display:flex; align-items:center; gap:14px; font-size:11px; font-weight:700; letter-spacing:3.5px; text-transform:uppercase; color:var(--ink3); margin-bottom:18px; }
+.eyebrow::before{ content:""; width:36px; height:1px; background:var(--ink); flex:0 0 auto; }
+.dark .eyebrow::before{ background:rgba(255,255,255,.6); }
+.s-title{ font-size:clamp(32px,4vw,52px); font-weight:800; color:var(--ink); line-height:1.02; letter-spacing:-1.5px; margin-bottom:8px; max-width:22ch; }
+.s-title em{ font-style:normal; font-weight:300; color:var(--ink3); }
+.s-sub{ font-size:15px; color:var(--ink3); font-weight:400; line-height:1.5; max-width:64ch; padding-bottom:24px; margin-bottom:34px; border-bottom:1px solid var(--border); }
+/* EVOLUCIÓN MENSUAL */
+.month-row{ display:flex; gap:14px; flex-wrap:wrap; align-items:stretch; counter-reset:mc; }
+.month-card{ flex:1 1 0; min-width:108px; background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:22px 14px; text-align:left; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; gap:22px; counter-increment:mc; }
+.month-card:not(.lead)::before{ content:counter(mc,decimal-leading-zero); position:absolute; top:14px; right:16px; font-size:10px; font-weight:700; letter-spacing:1px; color:var(--ink3); font-variant-numeric:tabular-nums; }
+.month-card .ml{ font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--ink3); margin:0; }
+.month-card .mn{ font-size:clamp(22px,3vw,40px); font-weight:400; letter-spacing:-1px; line-height:.9; color:var(--ink); white-space:nowrap; }
+.month-card .mn.ph{ color:var(--ink3); }
+.month-card.lead{ background:var(--ink); border-color:var(--ink); flex:1.4 1 0; }
+.month-card.lead .ml{ color:rgba(255,255,255,.55); }
+.month-card.lead .mn{ color:#fff; font-weight:800; }
+.month-foot{ margin-top:30px; padding-top:18px; border-top:1px solid var(--border); display:flex; align-items:center; gap:10px; font-size:15px; color:var(--ink2); font-weight:500; }
+.month-foot b{ color:var(--ink); font-weight:700; }
+/* EMBUDO */
+.funnel{ display:flex; align-items:stretch; gap:0; flex-wrap:wrap; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); }
+.fn-node{ flex:1 1 0; min-width:150px; padding:32px 26px; display:flex; flex-direction:column; gap:10px; }
+.fn-node .fn-cap{ font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--ink3); }
+.fn-node .fn-v{ font-size:clamp(40px,5.5vw,72px); font-weight:800; letter-spacing:-2px; line-height:.9; color:var(--ink); }
+.fn-node .fn-v.ph{ color:var(--ink3); }
+.fn-node.lead{ background:var(--ink); }
+.fn-node.lead .fn-cap{ color:rgba(255,255,255,.55); }
+.fn-node.lead .fn-v{ color:#fff; }
+.fn-conn{ flex:0 0 auto; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 20px; gap:4px; border-left:1px solid var(--border); border-right:1px solid var(--border); background:var(--bg2); }
+.fn-conn .fn-pct{ font-size:20px; font-weight:800; color:var(--ink); }
+.fn-conn .fn-cap2{ font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--ink3); }
+.fn-exp{ margin-top:24px; font-size:16px; color:var(--ink2); font-weight:500; line-height:1.55; max-width:80ch; }
+.fn-exp b{ color:var(--ink); font-weight:700; }
+/* RANKING */
+.bars{ display:flex; flex-direction:column; gap:0; counter-reset:rank; border-top:1px solid var(--ink); }
+.bar2{ display:flex; align-items:center; gap:20px; padding:14px 0; border-bottom:1px solid var(--border); counter-increment:rank; }
+.bar2::before{ content:counter(rank,decimal-leading-zero); width:26px; flex:0 0 auto; text-align:left; font-size:12px; font-weight:700; color:var(--ink3); font-variant-numeric:tabular-nums; }
+.bar2 .bl{ width:180px; flex:0 0 auto; text-align:left; font-size:15px; font-weight:700; color:var(--ink); letter-spacing:-.2px; line-height:1.2; }
+.bar2 .bt{ flex:1; height:38px; background:var(--bg2); border:none; border-radius:2px; overflow:hidden; position:relative; }
+.bar2 .bf{ height:100%; background:var(--ink) !important; border-radius:2px; display:flex; align-items:center; justify-content:flex-end; padding:0 16px; min-width:46px; }
+.bar2 .bf .bn{ font-size:18px; font-weight:700; color:#fff; letter-spacing:-.3px; }
+.bar2 .br{ width:120px; flex:0 0 auto; text-align:right; font-size:16px; color:var(--ink); font-weight:700; }
+.bar2 .br.ph{ color:var(--ink3); font-weight:400; }
+.bars .bar2:nth-child(1) .bf{ background:var(--ink) !important; }
+.bars .bar2:nth-child(2) .bf{ background:#3C3C3C !important; }
+.bars .bar2:nth-child(3) .bf{ background:#6E6E6E !important; }
+.bars .bar2:nth-child(4) .bf{ background:#9A9A9A !important; }
+.bars .bar2:nth-child(5) .bf{ background:#BDBDBD !important; }
+.bars .bar2:nth-child(n+6) .bf{ background:#CFCFCF !important; }
+/* BARRA COMPARAR */
+.cmp-bar{ display:inline-flex; align-items:center; gap:12px; background:transparent; color:var(--ink); border:1px solid var(--ink); padding:8px 16px; border-radius:2px; font-size:12px; font-weight:700; letter-spacing:.3px; margin-bottom:30px; align-self:flex-start; flex-wrap:wrap; }
+.cmp-bar .cb-lbl{ letter-spacing:2px; text-transform:uppercase; opacity:.7; display:inline-flex; align-items:center; gap:7px; }
+.cmp-bar .cb-lbl .ico{ width:14px; height:14px; }
+.cmp-bar .vs{ opacity:.4; font-weight:700; }
+/* la barra "Comparar" viaja junto a la tarjeta comparativa (abajo), no arriba */
+.cmp-bar[data-cmpbar]{ order:2; margin-top:6px; margin-bottom:16px; }
+.cmp-wrap{ order:3; }
+/* desplegable a medida */
+.cmp-dd{ position:relative; display:inline-block; }
+.dd-btn{ font-family:inherit; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--ink); background:transparent; border:none; border-bottom:1.5px solid var(--ink); padding:4px 2px; cursor:pointer; display:inline-flex; align-items:center; gap:9px; }
+.dd-btn .dd-car{ font-size:8px; opacity:.55; transition:transform .2s; }
+.cmp-dd.open .dd-btn .dd-car{ transform:rotate(180deg); }
+.dd-menu{ position:absolute; top:calc(100% + 9px); left:0; min-width:200px; background:var(--surface); border:1px solid var(--ink); border-radius:4px; box-shadow:0 14px 34px rgba(0,0,0,.18); padding:6px; z-index:400; display:none; max-height:300px; overflow-y:auto; }
+.cmp-dd.open .dd-menu{ display:block; }
+.dd-opt{ display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:var(--ink2); cursor:pointer; border-radius:3px; letter-spacing:.2px; text-transform:none; white-space:nowrap; }
+.dd-opt:hover{ background:var(--bg2); color:var(--ink); }
+.dd-opt.sel{ color:var(--ink); font-weight:800; }
+.dd-opt .dd-check{ width:13px; flex:0 0 auto; color:var(--ink); opacity:0; font-weight:800; }
+.dd-opt.sel .dd-check{ opacity:1; }
+.dd-group{ font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink3); padding:11px 12px 5px; border-top:1px solid var(--border); margin:5px 0 0; }
+/* TARJETA DE COMPARACIÓN */
+.cmp-wrap{ margin-top:10px; }
+.cmp-h{ font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--ink3); text-align:left; margin:26px 0 10px; }
+.cmp{ display:flex; align-items:center; justify-content:flex-start; gap:36px; background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:32px 40px; flex-wrap:wrap; }
+.cmp .side{ text-align:left; }
+.cmp .side .cl{ font-size:11px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:var(--ink3); }
+.cmp .side .cv{ font-size:clamp(34px,4.6vw,58px); font-weight:300; letter-spacing:-2px; color:var(--ink); line-height:1; margin-top:8px; }
+.cmp .side .cv.ph{ color:var(--ink3); }
+.cmp .arr{ font-size:30px; color:var(--ink); font-weight:300; opacity:.85; }
+.cmp .delta{ margin-left:auto; font-size:17px; font-weight:800; letter-spacing:-.2px; padding:9px 16px; border-radius:3px; white-space:nowrap; color:#fff; }
+.cmp .delta.up{ background:var(--c-success); }
+.cmp .delta.down{ background:var(--c-danger); }
+.cmp .delta.flat{ background:var(--ink3); }
+.cmp-exp{ margin-top:18px; font-size:15px; color:var(--ink2); font-weight:500; line-height:1.55; text-align:left; max-width:82ch; padding-left:2px; }
+.cmp-exp b{ color:var(--ink); font-weight:700; }
+/* TABLAS */
+.tbl{ width:100%; border-radius:0; overflow:hidden; border:none; border-top:2px solid var(--ink); margin-top:8px; }
+table{ width:100%; border-collapse:collapse; }
+thead{ background:transparent; }
+thead th{ padding:14px 16px; color:var(--ink); text-align:left; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:1.4px; border-bottom:1px solid var(--ink); }
+thead th.num{ text-align:right; }
+tbody tr, tbody tr:nth-child(even), tbody tr:nth-child(odd){ background:transparent; }
+tbody td{ padding:14px 16px; color:var(--ink2); border-bottom:1px solid var(--border); font-size:15px; font-weight:500; }
+tbody td.num{ text-align:right; font-weight:700; color:var(--ink); }
+tbody td.ph, tbody td.num.ph{ color:var(--ink3); font-weight:400; }
+tbody tr:last-child td{ border-bottom:none; }
+/* EQUIPO (tabla ranking + progresión + comparar) */
+.eq-tbl td, .eq-tbl th{ padding:9px 12px; font-size:13px; }
+.eq-tbl .eq-rank{ color:var(--ink3); font-weight:700; font-variant-numeric:tabular-nums; }
+.cbar{ display:inline-block; width:58px; height:7px; background:var(--bg2); border-radius:4px; overflow:hidden; vertical-align:middle; margin-right:8px; }
+.cbar i{ display:block; height:100%; background:var(--ink); border-radius:4px; }
+.spark{ display:inline-flex; align-items:flex-end; gap:2px; height:24px; }
+.spark i{ width:6px; background:var(--ink); border-radius:1px 1px 0 0; opacity:.82; min-height:2px; }
+.eq-delta{ font-weight:800; padding:3px 9px; border-radius:3px; color:#fff; font-size:12px; font-variant-numeric:tabular-nums; }
+.eq-delta.up{ background:var(--c-success); } .eq-delta.down{ background:var(--c-danger); } .eq-delta.flat{ background:var(--ink3); }
+.eq-tbl th.eq-sortable{ cursor:pointer; user-select:none; white-space:nowrap; transition:color .15s; }
+.eq-tbl th.eq-sortable:hover{ color:var(--ink3); }
+.eq-tbl th.eq-active{ text-decoration:underline; text-underline-offset:3px; }
+.eq-controls{ display:flex; flex-direction:column; gap:12px; margin-bottom:8px; }
+.eq-toolbar{ display:flex; align-items:center; gap:9px; flex-wrap:wrap; }
+.eq-search{ font-family:inherit; font-size:13px; font-weight:600; color:var(--ink); background:var(--surface); border:1px solid var(--border); border-radius:3px; padding:8px 12px; min-width:210px; }
+.eq-search::placeholder{ color:var(--ink3); font-weight:500; }
+.eq-search:focus{ outline:none; border-color:var(--ink); }
+.eq-ord-lbl{ font-size:11px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink3); margin-left:8px; }
+.eq-sortbtn{ font-family:inherit; font-size:12px; font-weight:700; color:var(--ink); background:transparent; border:1px solid var(--border); border-radius:3px; padding:7px 13px; cursor:pointer; transition:all .15s; }
+.eq-sortbtn:hover{ border-color:var(--ink); }
+.eq-sortbtn.on{ background:var(--ink); color:#fff; border-color:var(--ink); }
+/* PORTADA */
+.s1{ display:flex; flex-direction:row; height:100%; }
+.s1-left{ flex:1; display:flex; flex-direction:column; justify-content:space-between; padding:60px 72px 56px; }
+.s1-logo{ width:158px; filter:brightness(0); opacity:.9; }
+.s1-bignum{ font-size:clamp(64px,10vw,140px); font-weight:300; letter-spacing:-5px; line-height:.82; color:var(--ink); }
+.s1-bignum small{ font-size:.22em; font-weight:700; letter-spacing:2px; color:var(--ink3); vertical-align:top; }
+.s1-heading{ font-size:clamp(46px,6vw,82px); font-weight:800; color:var(--ink); line-height:.98; letter-spacing:-3px; }
+.s1-heading em{ font-style:normal; color:var(--ink3); font-weight:300; }
+.s1-meta{ display:flex; gap:0; flex-wrap:wrap; border-top:1px solid var(--ink); padding-top:22px; }
+.s1-meta > div{ padding-right:46px; margin-right:46px; border-right:1px solid var(--border); }
+.s1-meta > div:last-child{ border-right:none; margin-right:0; padding-right:0; }
+.s1-meta .v{ font-size:36px; font-weight:800; color:var(--ink); letter-spacing:-1.5px; }
+.s1-meta .l{ font-size:10px; color:var(--ink3); text-transform:uppercase; letter-spacing:2px; margin-top:4px; font-weight:700; }
+.s1-right{ width:300px; background:var(--bg); display:flex; flex-direction:column; justify-content:flex-start; gap:0; border-left:1px solid var(--ink); padding:60px 0; counter-reset:sec; }
+.s1-rhead{ padding:0 40px 18px; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--ink3); }
+.s1-br{ flex:0 0 auto; display:flex; flex-direction:column; justify-content:center; padding:18px 40px; border-top:1px solid var(--border); position:relative; counter-increment:sec; }
+.s1-br:last-child{ border-bottom:1px solid var(--border); }
+.s1-br::before{ content:counter(sec,decimal-leading-zero); font-size:10px; font-weight:700; letter-spacing:1px; color:var(--ink3); margin-bottom:5px; font-variant-numeric:tabular-nums; }
+.s1-br .n{ font-size:15px; font-weight:700; color:var(--ink); letter-spacing:-.2px; }
+.s1-br .c{ font-size:11px; color:var(--ink3); margin-top:4px; letter-spacing:.5px; text-transform:uppercase; font-weight:600; }
+/* SEPARADOR */
+.divider{ flex:1; display:flex; flex-direction:column; justify-content:center; }
+.div-top{ display:flex; align-items:flex-end; gap:24px; border-bottom:1px solid var(--ink); padding-bottom:22px; }
+.div-kicker{ font-size:11px; font-weight:700; letter-spacing:3.5px; text-transform:uppercase; color:var(--ink3); margin-bottom:6px; }
+.div-num{ font-size:clamp(120px,22vw,300px); font-weight:300; letter-spacing:-10px; line-height:.78; color:var(--ink); }
+.div-meta{ margin-left:auto; text-align:right; }
+.div-meta .dm-l{ font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--ink3); }
+.div-meta .dm-v{ font-size:30px; font-weight:800; color:var(--ink); letter-spacing:-1px; margin-top:4px; }
+.div-title{ font-size:clamp(34px,5vw,64px); font-weight:800; color:var(--ink); letter-spacing:-2px; line-height:1.02; margin-top:30px; max-width:22ch; }
+.div-title em{ font-style:normal; font-weight:300; color:var(--ink3); }
+.div-sub{ font-size:16px; color:var(--ink3); font-weight:400; line-height:1.55; max-width:62ch; margin-top:18px; }
+.div-foot{ display:flex; gap:0; border-top:1px solid var(--border); margin-top:38px; }
+.div-foot .df-item{ flex:1; padding:16px 0; margin-right:28px; display:flex; align-items:baseline; gap:10px; font-size:13px; font-weight:700; color:var(--ink); }
+.div-foot .df-item:last-child{ margin-right:0; }
+.div-foot .df-item b{ font-weight:800; color:var(--ink3); font-variant-numeric:tabular-nums; }
+.div-foot .df-item.ph{ color:var(--ink3); }
+.div-foot .df-item.ph b{ color:var(--border); }
+/* CHIPS diagnóstico */
+.chip{ display:inline-flex; align-items:center; gap:5px; padding:5px 12px; border-radius:2px; font-size:11px; font-weight:700; letter-spacing:.3px; border:1px solid currentColor; background:transparent; }
+.chip.g{ color:var(--c-success); }
+.chip.r{ color:var(--c-danger); }
+.chip.y, .chip.gr, .chip.b{ color:var(--ink3); }
+/* DISCIPLINA CROMÁTICA */
+.icirc, .obj-card .icirc, .ask .icirc{ background:var(--ink) !important; border-color:var(--ink) !important; color:#fff !important; }
+.obj-card{ background:var(--surface); border:1px solid var(--border); }
+.conv-card{ background:var(--ink) !important; border-radius:4px; }
+.conv-card .cs, .conv-card .csub{ opacity:.7; }
+.ba{ display:flex; gap:20px; align-items:stretch; flex-wrap:wrap; }
+.ba-col{ flex:1; min-width:260px; border-radius:4px; padding:28px; display:flex; flex-direction:column; gap:14px; background:var(--surface); }
+.ba-col.ahora{ border:1px solid var(--c-success); }
+.ba-col.antes{ border:1px solid var(--c-danger); }
+.ba-col .bah{ display:flex; align-items:center; gap:10px; font-size:13px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; }
+.ba-col.ahora .bah{ color:var(--c-success); }
+.ba-col.antes .bah{ color:var(--c-danger); }
+.dark .ask .icirc{ background:rgba(255,255,255,.08) !important; border-color:rgba(255,255,255,.18) !important; }
+/* RESPONSIVE */
+@media (max-width:860px){
+  .slide-inner{ padding:74px 22px 80px; }
+  .s-title{ letter-spacing:-.5px; }
+  .s1{ flex-direction:column; }
+  .s1-left{ padding:72px 20px 24px; gap:26px; }
+  .s1-right{ width:100%; border-left:none; border-top:1px solid var(--ink); padding:8px 0 20px; }
+  .s1-bignum{ letter-spacing:-3px; }
+  .s1-meta > div{ padding-right:24px; margin-right:24px; }
+  .obj-grid{ grid-template-columns:1fr; gap:14px; }
+  .obj-card{ padding:22px; gap:14px; }
+  .obj-card .icirc{ width:60px; height:60px; }
+  .obj-card .icirc .ico{ width:28px; height:28px; }
+  .obj-card .h{ font-size:18px; }
+  .month-card{ flex:1 1 42%; min-width:0; }
+  .month-card.lead{ flex:1 1 100%; }
+  .funnel{ flex-direction:column; }
+  .fn-conn{ flex-direction:row; gap:10px; border:none; border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:12px 26px; }
+  .bar2{ gap:12px; flex-wrap:wrap; }
+  .bar2::before{ width:22px; }
+  .bar2 .bl{ width:110px; font-size:14px; }
+  .bar2 .bt{ flex:1 1 120px; height:34px; }
+  .bar2 .br{ width:auto; }
+  .cmp{ gap:20px; padding:24px 22px; }
+  .cmp .delta{ margin-left:0; }
+  .cmp .side .cv{ font-size:clamp(28px,11vw,44px); }
+  .div-num{ letter-spacing:-5px; }
+  .div-top{ flex-wrap:wrap; align-items:flex-start; }
+  .div-meta{ margin-left:0; text-align:left; }
+  .div-foot{ flex-direction:column; }
+  .div-foot .df-item{ margin-right:0; padding:12px 0; border-bottom:1px solid var(--border); }
+  .div-foot .df-item:last-child{ border-bottom:none; }
+  .tbl{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  table{ min-width:520px; }
+  .conv-row{ gap:12px; }
+  .conv-card{ flex:1 1 45%; padding:20px 18px; }
+  .ba{ flex-direction:column; }
+  .ask-grid{ grid-template-columns:1fr 1fr; gap:12px; }
+  .ask{ padding:20px 16px; }
+  .s12-logo{ width:120px; margin-bottom:18px; }
+  #dot-row{ display:none; }
+  #fs-hint{ display:none; }
+  #nav{ bottom:14px; right:14px; gap:8px; }
+  .nav-btn{ padding:10px 16px; font-size:12px; }
+  #slide-counter{ bottom:20px; left:14px; right:auto; }
+  #menu-btn{ top:12px; left:12px; }
+}
+@media (max-width:480px){
+  .slide-inner{ padding:66px 14px 74px; }
+  .s1-left{ padding:66px 14px 20px; }
+  .month-card{ flex:1 1 46%; }
+  .s1-meta > div{ border-right:none; margin-right:0; padding-right:0; }
+  .cmp .side .cv{ font-size:40px; }
+  table{ min-width:480px; }
+  .ask-grid{ grid-template-columns:1fr; }
+  .conv-card{ flex:1 1 100%; }
+  .bar2 .bl{ width:96px; }
+}
+/* IMPRESIÓN / PDF */
+@media print{
+  @page { size: 13.333in 7.5in; margin: 0; }
+  * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+  html, body { width:1280px; height:auto; overflow:visible; background:#fff; }
+  .deck { width:1280px; height:auto; position:static; overflow:visible; background:transparent; }
+  .slide { position:relative; inset:auto; opacity:1 !important; transform:none !important; pointer-events:auto;
+    width:1280px; height:720px; overflow:hidden; background:var(--bg);
+    page-break-after:always; break-after:page; page-break-inside:avoid; }
+  .slide.dark { background:var(--ink); }
+  .slide:last-of-type { page-break-after:auto; break-after:auto; }
+  .slide-inner{ padding:54px 64px 64px; }
+  #progress-bar, #nav, #slide-counter, #dot-row, #fs-hint,
+  #menu-btn, #menu-overlay, #menu-panel, .cmp-bar { display:none !important; }
+  .cmp .delta.up{ background:var(--c-success) !important; }
+  .cmp .delta.down{ background:var(--c-danger) !important; }
+  .bar2 .bf, .fn-node.lead{ background:var(--ink) !important; }
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<div id="fs-hint" onclick="toggleFullscreen()">⛶ Pantalla completa · F</div>
+<div id="slide-counter">1 / 1</div>
+<div id="dot-row"></div>
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>← Anterior</button>
+  <button class="nav-btn primary" id="nextBtn" onclick="changeSlide(1)">Siguiente →</button>
+</div>
+
+<!-- MENU -->
+<button id="menu-btn" aria-label="Abrir menú" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+<div id="menu-overlay" onclick="closeMenu()"></div>
+<nav id="menu-panel" aria-label="Secciones de la presentación">
+  <div class="menu-head">
+    <img class="menu-logo" src="logo.png" alt="Mueblesysillones">
+    <div class="menu-title">Resumen del semestre · Ene–Jun 2026</div>
+  </div>
+  <div class="menu-cat">
+    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Introducción</span><span class="mp-count">3</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="menu-sub">
+      <div class="menu-item" data-target="s-portada" onclick="goToId('s-portada')"><span class="mnum">1</span> Portada</div>
+      <div class="menu-item" data-target="s-intro" onclick="goToId('s-intro')"><span class="mnum">2</span> Qué van a ver hoy</div>
+      <div class="menu-item" data-target="s-resumen" onclick="goToId('s-resumen')"><span class="mnum">3</span> Resumen del semestre</div>
+    </div>
+  </div>
+  <div class="menu-cat">
+    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Consultas y ventas</span><span class="mp-count">8</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="menu-sub">
+      <div class="menu-item" data-target="s-div1" onclick="goToId('s-div1')"><span class="mnum">4</span> Apertura</div>
+      <div class="menu-item" data-target="s-consultas-mes" onclick="goToId('s-consultas-mes')"><span class="mnum">5</span> Consultas por mes</div>
+      <div class="menu-item" data-target="s-embudo" onclick="goToId('s-embudo')"><span class="mnum">6</span> El recorrido (embudo)</div>
+      <div class="menu-item" data-target="s-productos" onclick="goToId('s-productos')"><span class="mnum">7</span> Productos más consultados</div>
+      <div class="menu-item" data-target="s-deriv-mes" onclick="goToId('s-deriv-mes')"><span class="mnum">8</span> Derivaciones por mes</div>
+      <div class="menu-item" data-target="s-ventas" onclick="goToId('s-ventas')"><span class="mnum">9</span> Ventas y conversión</div>
+      <div class="menu-item" data-target="s-sucursal" onclick="goToId('s-sucursal')"><span class="mnum">10</span> Por sucursal</div>
+      <div class="menu-item" data-target="s-equipo" onclick="goToId('s-equipo')"><span class="mnum">11</span> Equipo de ventas</div>
+    </div>
+  </div>
+  <div class="menu-cat">
+    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Redes sociales · Instagram</span><span class="mp-count">4</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="menu-sub">
+      <div class="menu-item" data-target="s-div2" onclick="goToId('s-div2')"><span class="mnum">12</span> Apertura</div>
+      <div class="menu-item" data-target="s-ig-seg" onclick="goToId('s-ig-seg')"><span class="mnum">13</span> Seguidores por mes</div>
+      <div class="menu-item" data-target="s-ig-alc" onclick="goToId('s-ig-alc')"><span class="mnum">14</span> Alcance e interacción</div>
+      <div class="menu-item" data-target="s-ig-pub" onclick="goToId('s-ig-pub')"><span class="mnum">15</span> Mejores publicaciones</div>
+    </div>
+  </div>
+  <div class="menu-cat">
+    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Página web</span><span class="mp-count">4</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="menu-sub">
+      <div class="menu-item" data-target="s-div3" onclick="goToId('s-div3')"><span class="mnum">16</span> Apertura</div>
+      <div class="menu-item" data-target="s-web-mes" onclick="goToId('s-web-mes')"><span class="mnum">17</span> Visitas por mes</div>
+      <div class="menu-item" data-target="s-web-origen" onclick="goToId('s-web-origen')"><span class="mnum">18</span> De dónde viene la gente</div>
+      <div class="menu-item" data-target="s-web-pag" onclick="goToId('s-web-pag')"><span class="mnum">19</span> Páginas más vistas</div>
+    </div>
+  </div>
+  <div class="menu-cat">
+    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Cierre</span><span class="mp-count">2</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="menu-sub">
+      <div class="menu-item" data-target="s-diag" onclick="goToId('s-diag')"><span class="mnum">20</span> Diagnóstico general</div>
+      <div class="menu-item" data-target="s-cierre" onclick="goToId('s-cierre')"><span class="mnum">21</span> Conclusiones y próximos pasos</div>
+    </div>
+  </div>
+  <div class="menu-foot">Mueblesysillones · Enero–Junio 2026 · borrador (cargando datos)</div>
+</nav>
+
+<div class="deck" id="deck">
+
+<!-- PORTADA -->
+<div class="slide active" id="s-portada">
+  <div class="s1">
+    <div class="s1-left">
+      <img class="s1-logo" src="logo.png" alt="Muebles y Sillones">
+      <div>
+        <div class="eyebrow">Reporte de resultados</div>
+        <div class="s1-bignum">01—06 <small>2026</small></div>
+      </div>
+      <div class="s1-heading">Resumen<br><em>del semestre</em></div>
+      <div class="s1-meta">
+        <div><div class="v" data-metric="consultas" data-agg="sem">—</div><div class="l">Consultas</div></div>
+        <div><div class="v" data-metric="deriv" data-agg="sem">—</div><div class="l">Derivaciones</div></div>
+        <div><div class="v" data-metric="ventas" data-agg="sem">—</div><div class="l">Ventas</div></div>
+      </div>
+    </div>
+    <div class="s1-right">
+      <div class="s1-rhead">Contenido</div>
+      <div class="s1-br"><div class="n">Consultas y ventas</div><div class="c">Del contacto a la venta</div></div>
+      <div class="s1-br"><div class="n">Instagram</div><div class="c">Cómo crecemos</div></div>
+      <div class="s1-br"><div class="n">Página web</div><div class="c">Quién nos visita</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUE VAN A VER -->
+<div class="slide" id="s-intro">
+  <div class="slide-inner">
+    <div class="eyebrow">La idea de hoy</div>
+    <div class="s-title">Qué van a ver <em>hoy</em></div>
+    <div class="s-sub">Seis meses de trabajo, en tres miradas simples</div>
+    <div class="obj-grid">
+      <div class="obj-card">
+        <div class="icirc"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span></div>
+        <div class="h">1 · Consultas y ventas</div>
+        <div class="p">Cuántas consultas llegaron, cuántas derivamos, cuántas terminaron en venta y quién cerró mejor.</div>
+      </div>
+      <div class="obj-card">
+        <div class="icirc"><span class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></span></div>
+        <div class="h">2 · Instagram</div>
+        <div class="p">Cómo creció la comunidad: seguidores, alcance e interacción mes a mes.</div>
+      </div>
+      <div class="obj-card">
+        <div class="icirc"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span></div>
+        <div class="h">3 · Página web</div>
+        <div class="p">Cuánta gente visitó la web, de dónde llegó y qué fue a mirar.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESUMEN -->
+<div class="slide" id="s-resumen">
+  <div class="slide-inner">
+    <div class="eyebrow">De un vistazo</div>
+    <div class="s-title">Resumen <em>del semestre</em></div>
+    <div class="s-sub">Lo que mejoró y lo que tenemos para mejorar · enero a junio</div>
+    <div class="ba">
+      <div class="ba-col ahora">
+        <div class="bah"><span class="ico" style="width:22px;height:22px;"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span> Lo que mejoró</div>
+        <div class="ph-box"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> Se completa cuando estén cargados los 3 bloques.</div>
+      </div>
+      <div class="ba-col antes">
+        <div class="bah"><span class="ico" style="width:22px;height:22px;"><svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg></span> A trabajar</div>
+        <div class="ph-box"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> Se completa cuando estén cargados los 3 bloques.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEPARADOR 01 -->
+<div class="slide" id="s-div1">
+  <div class="slide-inner">
+    <div class="divider">
+      <div class="div-top">
+        <div><div class="div-kicker">Sección</div><div class="div-num">01</div></div>
+        <div class="div-meta"><div class="dm-l">En este bloque</div><div class="dm-v">7 láminas</div></div>
+      </div>
+      <div class="div-title">Consultas, derivaciones <em>y ventas</em></div>
+      <div class="div-sub">El recorrido completo: cuántas consultas llegaron, cuántas derivamos a cada sucursal y cuántas terminaron en venta, mes a mes.</div>
+      <div class="div-foot">
+        <span class="df-item"><b>01</b> Consultas y ventas</span>
+        <span class="df-item ph"><b>02</b> Instagram</span>
+        <span class="df-item ph"><b>03</b> Página web</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONSULTAS POR MES -->
+<div class="slide" id="s-consultas-mes">
+  <div class="slide-inner">
+    <div class="eyebrow">Consultas · evolución</div>
+    <div class="s-title">Consultas <em>por mes</em></div>
+    <div class="s-sub">Cuántas consultas llegaron en total cada mes. La última tarjeta, en negro, es el total del semestre. Usá "Comparar" para ver la diferencia entre dos períodos.</div>
+    <div class="cmp-bar" data-cmpbar>
+      <span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.8L7 14"/></svg></span> Comparar</span>
+      <span class="cmp-dd" data-sel="A"><button class="dd-btn" type="button"><span class="dd-val">Enero</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+      <span class="vs">vs</span>
+      <span class="cmp-dd" data-sel="B"><button class="dd-btn" type="button"><span class="dd-val">Junio</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+    </div>
+    <div class="month-row">
+      <div class="month-card"><div class="ml">Ene</div><div class="mn" data-metric="consultas" data-month="ene">—</div></div>
+      <div class="month-card"><div class="ml">Feb</div><div class="mn" data-metric="consultas" data-month="feb">—</div></div>
+      <div class="month-card"><div class="ml">Mar</div><div class="mn" data-metric="consultas" data-month="mar">—</div></div>
+      <div class="month-card"><div class="ml">Abr</div><div class="mn" data-metric="consultas" data-month="abr">—</div></div>
+      <div class="month-card"><div class="ml">May</div><div class="mn" data-metric="consultas" data-month="may">—</div></div>
+      <div class="month-card"><div class="ml">Jun</div><div class="mn" data-metric="consultas" data-month="jun">—</div></div>
+      <div class="month-card lead"><div class="ml">Semestre</div><div class="mn" data-metric="consultas" data-agg="sem">—</div></div>
+    </div>
+    <div class="month-foot" data-foot="consultas"></div>
+    <div class="cmp-wrap"><div class="cmp-slot" data-metric="consultas"></div></div>
+  </div>
+</div>
+
+<!-- EMBUDO -->
+<div class="slide" id="s-embudo">
+  <div class="slide-inner">
+    <div class="eyebrow">El recorrido</div>
+    <div class="s-title">De la consulta <em>a la venta</em></div>
+    <div class="s-sub">Cómo se va reduciendo el número en cada paso · acumulado enero–junio</div>
+    <div class="funnel">
+      <div class="fn-node"><span class="fn-cap">Consultas</span><span class="fn-v" data-fn="consultas">—</span></div>
+      <div class="fn-conn"><span class="fn-pct" data-fnr="d_c">—</span><span class="fn-cap2">se derivaron</span></div>
+      <div class="fn-node"><span class="fn-cap">Derivaciones</span><span class="fn-v" data-fn="deriv">—</span></div>
+      <div class="fn-conn"><span class="fn-pct" data-fnr="v_d">—</span><span class="fn-cap2">cerraron venta</span></div>
+      <div class="fn-node lead"><span class="fn-cap">Ventas</span><span class="fn-v" data-fn="ventas">—</span></div>
+    </div>
+    <div class="fn-exp" id="fnExp"></div>
+  </div>
+</div>
+
+<!-- PRODUCTOS MAS CONSULTADOS -->
+<div class="slide" id="s-productos">
+  <div class="slide-inner">
+    <div class="eyebrow">Consultas · productos</div>
+    <div class="s-title">Productos <em>más consultados</em></div>
+    <div class="s-sub">Los muebles que más preguntó la gente. Elegí el período con "Ver".</div>
+    <div class="cmp-bar">
+      <span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span> Ver</span>
+      <span class="cmp-dd rank-dd" data-rank="prod"><button class="dd-btn" type="button"><span class="dd-val">—</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+    </div>
+    <div class="bars" id="prodBars"></div>
+    <p class="note">No incluye "sin información" (consultas sin producto identificado en el sistema).</p>
+  </div>
+</div>
+
+<!-- DERIVACIONES POR MES -->
+<div class="slide" id="s-deriv-mes">
+  <div class="slide-inner">
+    <div class="eyebrow">Derivaciones · evolución</div>
+    <div class="s-title">Derivaciones <em>por mes</em></div>
+    <div class="s-sub">De las consultas que llegaron, cuántas derivamos a las sucursales cada mes.</div>
+    <div class="cmp-bar" data-cmpbar>
+      <span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.8L7 14"/></svg></span> Comparar</span>
+      <span class="cmp-dd" data-sel="A"><button class="dd-btn" type="button"><span class="dd-val">Enero</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+      <span class="vs">vs</span>
+      <span class="cmp-dd" data-sel="B"><button class="dd-btn" type="button"><span class="dd-val">Junio</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+    </div>
+    <div class="month-row">
+      <div class="month-card"><div class="ml">Ene</div><div class="mn" data-metric="deriv" data-month="ene">—</div></div>
+      <div class="month-card"><div class="ml">Feb</div><div class="mn" data-metric="deriv" data-month="feb">—</div></div>
+      <div class="month-card"><div class="ml">Mar</div><div class="mn" data-metric="deriv" data-month="mar">—</div></div>
+      <div class="month-card"><div class="ml">Abr</div><div class="mn" data-metric="deriv" data-month="abr">—</div></div>
+      <div class="month-card"><div class="ml">May</div><div class="mn" data-metric="deriv" data-month="may">—</div></div>
+      <div class="month-card"><div class="ml">Jun</div><div class="mn" data-metric="deriv" data-month="jun">—</div></div>
+      <div class="month-card lead"><div class="ml">Semestre</div><div class="mn" data-metric="deriv" data-agg="sem">—</div></div>
+    </div>
+    <div class="month-foot" data-foot="deriv"></div>
+    <div class="cmp-wrap"><div class="cmp-slot" data-metric="deriv"></div></div>
+  </div>
+</div>
+
+<!-- VENTAS Y CONVERSION -->
+<div class="slide" id="s-ventas">
+  <div class="slide-inner">
+    <div class="eyebrow">Derivaciones y ventas</div>
+    <div class="s-title">Ventas <em>y conversión</em></div>
+    <div class="s-sub">De todas las derivaciones, cuántas terminaron en venta</div>
+    <div class="cmp-bar" data-cmpbar>
+      <span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.8L7 14"/></svg></span> Comparar</span>
+      <span class="cmp-dd" data-sel="A"><button class="dd-btn" type="button"><span class="dd-val">Enero</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+      <span class="vs">vs</span>
+      <span class="cmp-dd" data-sel="B"><button class="dd-btn" type="button"><span class="dd-val">Junio</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Mes</th><th class="num">Derivac.</th><th class="num">Ventas</th><th class="num">Conversión</th></tr></thead>
+        <tbody>
+          <tr><td>Enero</td><td class="num" data-metric="deriv" data-month="ene">—</td><td class="num" data-metric="ventas" data-month="ene">—</td><td class="num" data-conv data-month="ene">—</td></tr>
+          <tr><td>Febrero</td><td class="num" data-metric="deriv" data-month="feb">—</td><td class="num" data-metric="ventas" data-month="feb">—</td><td class="num" data-conv data-month="feb">—</td></tr>
+          <tr><td>Marzo</td><td class="num" data-metric="deriv" data-month="mar">—</td><td class="num" data-metric="ventas" data-month="mar">—</td><td class="num" data-conv data-month="mar">—</td></tr>
+          <tr><td>Abril</td><td class="num" data-metric="deriv" data-month="abr">—</td><td class="num" data-metric="ventas" data-month="abr">—</td><td class="num" data-conv data-month="abr">—</td></tr>
+          <tr><td>Mayo</td><td class="num" data-metric="deriv" data-month="may">—</td><td class="num" data-metric="ventas" data-month="may">—</td><td class="num" data-conv data-month="may">—</td></tr>
+          <tr><td>Junio</td><td class="num" data-metric="deriv" data-month="jun">—</td><td class="num" data-metric="ventas" data-month="jun">—</td><td class="num" data-conv data-month="jun">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cmp-wrap">
+      <div class="cmp-h">Ventas</div><div class="cmp-slot" data-metric="ventas"></div>
+      <div class="cmp-h">Conversión</div><div class="cmp-slot" data-metric="conv"></div>
+    </div>
+  </div>
+</div>
+
+<!-- POR SUCURSAL -->
+<div class="slide" id="s-sucursal">
+  <div class="slide-inner">
+    <div class="eyebrow">Derivaciones y ventas · sucursales</div>
+    <div class="s-title">¿A qué sucursal <em>derivamos más?</em></div>
+    <div class="s-sub">Derivaciones por sucursal. Elegí el período con "Ver".</div>
+    <div class="cmp-bar">
+      <span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span> Ver</span>
+      <span class="cmp-dd rank-dd" data-rank="suc"><button class="dd-btn" type="button"><span class="dd-val">—</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+    </div>
+    <div class="bars" id="sucBars"></div>
+    <p class="note">"Sin derivar" no se cuenta como sucursal (personas que no respondieron al primer mensaje).</p>
+  </div>
+</div>
+
+<!-- EQUIPO -->
+<div class="slide" id="s-equipo">
+  <div class="slide-inner">
+    <div class="eyebrow">Derivaciones y ventas · equipo</div>
+    <div class="s-title">Ranking <em>de vendedores</em></div>
+    <div class="s-sub">Derivaciones, ventas y conversión por vendedor/a. Elegí el período con "Ver", tocá una columna para ordenar y, si querés, compará con otro período.</div>
+    <div class="eq-controls">
+      <div class="cmp-bar">
+        <span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span> Ver</span>
+        <span class="cmp-dd eq-dd" data-eq="view"><button class="dd-btn" type="button"><span class="dd-val">Semestre</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+        <span class="vs">·</span>
+        <span class="cb-lbl">Sucursal</span>
+        <span class="cmp-dd eq-dd" data-eq="suc"><button class="dd-btn" type="button"><span class="dd-val">Todas</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+        <span class="vs">·</span>
+        <span class="cb-lbl">Comparar</span>
+        <span class="cmp-dd eq-dd" data-eq="cmp"><button class="dd-btn" type="button"><span class="dd-val">— sin comparar</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+      </div>
+      <div class="eq-toolbar">
+        <input class="eq-search" type="text" placeholder="Buscar vendedor/a…" aria-label="Buscar vendedor/a">
+        <span class="eq-ord-lbl">Ordenar</span>
+        <button class="eq-sortbtn" type="button" data-k="ven">Más ventas</button>
+        <button class="eq-sortbtn" type="button" data-k="conv">Mejor conversión</button>
+        <button class="eq-sortbtn" type="button" data-k="der">Más derivaciones</button>
+      </div>
+    </div>
+    <div id="eqTable"></div>
+    <p class="note">Venta = "Realizó la compra" adjudicada al vendedor/a asignado. La conversión usa las derivaciones propias de cada uno. (3 ventas del semestre fueron sin vendedor asignado y no figuran acá.)</p>
+  </div>
+</div>
+
+<!-- SEPARADOR 02 -->
+<div class="slide" id="s-div2">
+  <div class="slide-inner">
+    <div class="divider">
+      <div class="div-top">
+        <div><div class="div-kicker">Sección</div><div class="div-num">02</div></div>
+        <div class="div-meta"><div class="dm-l">En este bloque</div><div class="dm-v">3 láminas</div></div>
+      </div>
+      <div class="div-title">Redes <em>· Instagram</em></div>
+      <div class="div-sub">Cómo creció la comunidad: seguidores, alcance e interacción mes a mes.</div>
+      <div class="div-foot">
+        <span class="df-item ph"><b>01</b> Consultas y ventas</span>
+        <span class="df-item"><b>02</b> Instagram</span>
+        <span class="df-item ph"><b>03</b> Página web</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IG SEGUIDORES -->
+<div class="slide" id="s-ig-seg">
+  <div class="slide-inner">
+    <div class="eyebrow">Instagram · crecimiento</div>
+    <div class="s-title">Seguidores <em>por mes</em></div>
+    <div class="s-sub">Cómo creció la comunidad mes a mes. Compará el inicio con el final del semestre.</div>
+    <div class="cmp-bar" data-cmpbar>
+      <span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.8L7 14"/></svg></span> Comparar</span>
+      <span class="cmp-dd" data-sel="A"><button class="dd-btn" type="button"><span class="dd-val">Enero</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+      <span class="vs">vs</span>
+      <span class="cmp-dd" data-sel="B"><button class="dd-btn" type="button"><span class="dd-val">Junio</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+    </div>
+    <div class="month-row">
+      <div class="month-card"><div class="ml">Ene</div><div class="mn" data-metric="igFoll" data-month="ene">—</div></div>
+      <div class="month-card"><div class="ml">Feb</div><div class="mn" data-metric="igFoll" data-month="feb">—</div></div>
+      <div class="month-card"><div class="ml">Mar</div><div class="mn" data-metric="igFoll" data-month="mar">—</div></div>
+      <div class="month-card"><div class="ml">Abr</div><div class="mn" data-metric="igFoll" data-month="abr">—</div></div>
+      <div class="month-card"><div class="ml">May</div><div class="mn" data-metric="igFoll" data-month="may">—</div></div>
+      <div class="month-card lead"><div class="ml">Jun</div><div class="mn" data-metric="igFoll" data-month="jun">—</div></div>
+    </div>
+    <div class="month-foot" data-foot="igFoll"></div>
+    <div class="cmp-wrap"><div class="cmp-slot" data-metric="igFoll"></div></div>
+  </div>
+</div>
+
+<!-- IG ALCANCE -->
+<div class="slide" id="s-ig-alc">
+  <div class="slide-inner">
+    <div class="eyebrow">Instagram · rendimiento</div>
+    <div class="s-title">Alcance <em>e interacción</em></div>
+    <div class="s-sub">A cuánta gente llegamos y cuánto interactuó con nuestro contenido</div>
+    <div class="cmp-bar" data-cmpbar>
+      <span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.8L7 14"/></svg></span> Comparar</span>
+      <span class="cmp-dd" data-sel="A"><button class="dd-btn" type="button"><span class="dd-val">Enero</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+      <span class="vs">vs</span>
+      <span class="cmp-dd" data-sel="B"><button class="dd-btn" type="button"><span class="dd-val">Junio</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+    </div>
+    <div class="cmp-wrap">
+      <div class="cmp-h">Alcance (personas)</div><div class="cmp-slot" data-metric="igReach"></div>
+      <div class="cmp-h">Interacciones</div><div class="cmp-slot" data-metric="igInter"></div>
+    </div>
+  </div>
+</div>
+
+<!-- IG PUBLICACIONES -->
+<div class="slide" id="s-ig-pub">
+  <div class="slide-inner">
+    <div class="eyebrow">Instagram · contenido</div>
+    <div class="s-title">Las publicaciones que <em>mejor funcionaron</em></div>
+    <div class="s-sub">Qué tipo de contenido enganchó más a la comunidad</div>
+    <div class="ph-box"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> Top de publicaciones + aprendizajes — se arma cuando llegue el detalle de posteos del Looker.</div>
+  </div>
+</div>
+
+<!-- SEPARADOR 03 -->
+<div class="slide" id="s-div3">
+  <div class="slide-inner">
+    <div class="divider">
+      <div class="div-top">
+        <div><div class="div-kicker">Sección</div><div class="div-num">03</div></div>
+        <div class="div-meta"><div class="dm-l">En este bloque</div><div class="dm-v">3 láminas</div></div>
+      </div>
+      <div class="div-title">Página <em>web</em></div>
+      <div class="div-sub">Cuánta gente visitó la web, de dónde llegó y qué fue a mirar.</div>
+      <div class="div-foot">
+        <span class="df-item ph"><b>01</b> Consultas y ventas</span>
+        <span class="df-item ph"><b>02</b> Instagram</span>
+        <span class="df-item"><b>03</b> Página web</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WEB VISITAS -->
+<div class="slide" id="s-web-mes">
+  <div class="slide-inner">
+    <div class="eyebrow">Página web · evolución</div>
+    <div class="s-title">Visitas a la web <em>por mes</em></div>
+    <div class="s-sub">Cuánta gente entró a la web cada mes. Compará dos períodos para ver el cambio.</div>
+    <div class="cmp-bar" data-cmpbar>
+      <span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.8L7 14"/></svg></span> Comparar</span>
+      <span class="cmp-dd" data-sel="A"><button class="dd-btn" type="button"><span class="dd-val">Enero</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+      <span class="vs">vs</span>
+      <span class="cmp-dd" data-sel="B"><button class="dd-btn" type="button"><span class="dd-val">Junio</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+    </div>
+    <div class="month-row">
+      <div class="month-card"><div class="ml">Ene</div><div class="mn" data-metric="web" data-month="ene">—</div></div>
+      <div class="month-card"><div class="ml">Feb</div><div class="mn" data-metric="web" data-month="feb">—</div></div>
+      <div class="month-card"><div class="ml">Mar</div><div class="mn" data-metric="web" data-month="mar">—</div></div>
+      <div class="month-card"><div class="ml">Abr</div><div class="mn" data-metric="web" data-month="abr">—</div></div>
+      <div class="month-card"><div class="ml">May</div><div class="mn" data-metric="web" data-month="may">—</div></div>
+      <div class="month-card"><div class="ml">Jun</div><div class="mn" data-metric="web" data-month="jun">—</div></div>
+      <div class="month-card lead"><div class="ml">Semestre</div><div class="mn" data-metric="web" data-agg="sem">—</div></div>
+    </div>
+    <div class="month-foot" data-foot="web"></div>
+    <div class="cmp-wrap"><div class="cmp-slot" data-metric="web"></div></div>
+  </div>
+</div>
+
+<!-- WEB ORIGEN -->
+<div class="slide" id="s-web-origen">
+  <div class="slide-inner">
+    <div class="eyebrow">Página web · origen</div>
+    <div class="s-title">¿De dónde <em>viene la gente?</em></div>
+    <div class="s-sub">Por qué canal llegaron las visitas a la web</div>
+    <div class="bars">
+      <div class="bar2"><div class="bl">Búsqueda</div><div class="bt"><div class="bf" style="width:8%;"></div></div><div class="br ph">—</div></div>
+      <div class="bar2"><div class="bl">Directo</div><div class="bt"><div class="bf" style="width:8%;"></div></div><div class="br ph">—</div></div>
+      <div class="bar2"><div class="bl">Redes</div><div class="bt"><div class="bf" style="width:8%;"></div></div><div class="br ph">—</div></div>
+      <div class="bar2"><div class="bl">Pago/Ads</div><div class="bt"><div class="bf" style="width:8%;"></div></div><div class="br ph">—</div></div>
+    </div>
+    <p class="note">Pendiente de carga de datos del Looker.</p>
+  </div>
+</div>
+
+<!-- WEB PAGINAS -->
+<div class="slide" id="s-web-pag">
+  <div class="slide-inner">
+    <div class="eyebrow">Página web · contenido</div>
+    <div class="s-title">Las páginas <em>más vistas</em></div>
+    <div class="s-sub">Qué fue lo que más miró la gente en la web</div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Página</th><th class="num">Vistas</th></tr></thead>
+        <tbody>
+          <tr><td class="ph">—</td><td class="num ph">—</td></tr>
+          <tr><td class="ph">—</td><td class="num ph">—</td></tr>
+          <tr><td class="ph">—</td><td class="num ph">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Pendiente de carga de datos del Looker.</p>
+  </div>
+</div>
+
+<!-- DIAGNOSTICO -->
+<div class="slide" id="s-diag">
+  <div class="slide-inner">
+    <div class="eyebrow">Diagnóstico</div>
+    <div class="s-title">Qué funcionó <em>y qué no</em></div>
+    <div class="s-sub">Las conclusiones del semestre, en simple</div>
+    <div class="ba">
+      <div class="ba-col ahora">
+        <div class="bah"><span class="ico" style="width:22px;height:22px;"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Funcionó</div>
+        <div class="ph-box"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> Se redacta con los datos cargados.</div>
+      </div>
+      <div class="ba-col antes">
+        <div class="bah"><span class="ico" style="width:22px;height:22px;"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> A mejorar</div>
+        <div class="ph-box"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> Se redacta con los datos cargados.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CIERRE -->
+<div class="slide dark" id="s-cierre">
+  <div class="slide-inner">
+    <img class="s12-logo" src="logo.png" alt="Mueblesysillones">
+    <div class="eyebrow">Hacia adelante</div>
+    <div class="s-title">Conclusiones <em>y próximos pasos</em></div>
+    <div class="s-sub" style="margin-bottom:30px;">Lo que nos llevamos del semestre y hacia dónde vamos</div>
+    <div class="ask-grid">
+      <div class="ask">
+        <div class="icirc"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span></div>
+        <div class="ah">Sostener lo que crece</div>
+        <div class="ap">Se completa con los datos cargados.</div>
+      </div>
+      <div class="ask">
+        <div class="icirc"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span></div>
+        <div class="ah">Corregir lo que frena</div>
+        <div class="ap">Se completa con los datos cargados.</div>
+      </div>
+      <div class="ask">
+        <div class="icirc"><span class="ico"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span></div>
+        <div class="ah">Próximo objetivo</div>
+        <div class="ap">Se completa con los datos cargados.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<script>
+/* =========================================================
+   DATOS — editá solo los números. null = sin dato ("—").
+   ========================================================= */
+const DATA = {
+  consultas:{ type:'flow',  vals:{ ene:801, feb:1151, mar:595,  abr:628,  may:652,  jun:576  } },
+  deriv:    { type:'flow',  vals:{ ene:594, feb:638,  mar:402,  abr:362,  may:326,  jun:304  } },
+  ventas:   { type:'flow',  vals:{ ene:20,  feb:11,   mar:16,   abr:7,    may:16,   jun:8    } },
+  web:      { type:'flow',  vals:{ ene:null, feb:null, mar:null, abr:null, may:null, jun:null } },
+  igFoll:   { type:'stock', vals:{ ene:null, feb:null, mar:null, abr:null, may:null, jun:null } },
+  igReach:  { type:'flow',  vals:{ ene:null, feb:null, mar:null, abr:null, may:null, jun:null } },
+  igInter:  { type:'flow',  vals:{ ene:null, feb:null, mar:null, abr:null, may:null, jun:null } }
+};
+const UNIT = { consultas:'consultas', deriv:'derivaciones', ventas:'ventas', web:'visitas', igFoll:'seguidores', igReach:'personas alcanzadas', igInter:'interacciones' };
+/* Rankings por mes (se muestran con selector Ver: mes / acumulado). Editá acá al sumar meses. */
+const PRODUCTS = {
+  ene:[{n:'Sillón Dune',v:55},{n:'Esquinero Philadelphia',v:52},{n:'Esquinero Arizona Cloudy',v:35},{n:'Mesa Michigan',v:33}],
+  feb:[{n:'Sillas',v:203},{n:'Sillones',v:74},{n:'Sillón Cama',v:49},{n:'Sillón Dune',v:47}],
+  mar:[{n:'Sillones',v:83},{n:'Mesas',v:71},{n:'Cómoda Class 8 cajones',v:33},{n:'Mesa Michigan',v:19}],
+  abr:[{n:'Sillón Cama',v:153},{n:'Sillones',v:95},{n:'Sillón Mallorca',v:60},{n:'Mesas',v:38}],
+  may:[{n:'Sillones',v:207},{n:'Sillón Dune',v:29},{n:'Sillón Cama',v:26},{n:'Sillón Mallorca',v:17}],
+  jun:[{n:'Sillones',v:136},{n:'Sillón Cama',v:47},{n:'Sillón Dune',v:27},{n:'Mesas',v:19}]
+};
+const SUCDERIV = {
+  ene:[{n:'CABA',v:199},{n:'Hudson',v:154},{n:'Norcenter',v:59},{n:'Canning',v:45}],
+  feb:[{n:'Hudson',v:186},{n:'CABA',v:175},{n:'Norcenter',v:75},{n:'Canning',v:44}],
+  mar:[{n:'CABA',v:123},{n:'Hudson',v:112},{n:'Norcenter',v:36},{n:'Canning',v:26}],
+  abr:[{n:'CABA',v:122},{n:'Hudson',v:96},{n:'Norcenter',v:47},{n:'Canning',v:31}],
+  may:[{n:'Hudson',v:139},{n:'CABA',v:121},{n:'Norcenter',v:35},{n:'Canning',v:24}],
+  jun:[{n:'Hudson',v:126},{n:'CABA',v:112},{n:'Canning',v:34},{n:'Norcenter',v:30}]
+};
+const RANKINGS = { prod:{ data:PRODUCTS, barsId:'prodBars', top:6 }, suc:{ data:SUCDERIV, barsId:'sucBars', top:6 } };
+const rankState = { prod:null, suc:null };
+/* Equipo: derivaciones y ventas por vendedor/a y por mes (del Excel; venta = "Realizó la compra"). */
+const VEND = [
+  {n:"Agustina",   suc:"Hudson",    der:{ene:62,feb:66,mar:71,abr:54,may:52,jun:37}, ven:{ene:2,feb:0,mar:5,abr:1,may:2,jun:2}},
+  {n:"Viviana",    suc:"CABA",      der:{ene:86,feb:39,mar:41,abr:58,may:52,jun:33}, ven:{ene:3,feb:3,mar:1,abr:2,may:2,jun:1}},
+  {n:"Gonzalo",    suc:"Hudson",    der:{ene:17,feb:58,mar:22,abr:23,may:32,jun:19}, ven:{ene:2,feb:1,mar:4,abr:1,may:0,jun:0}},
+  {n:"Matías",     suc:"CABA",      der:{ene:48,feb:33,mar:21,abr:16,may:34,jun:19}, ven:{ene:4,feb:0,mar:0,abr:1,may:3,jun:0}},
+  {n:"Rosana",     suc:"Hudson",    der:{ene:31,feb:18,mar:17,abr:15,may:24,jun:16}, ven:{ene:3,feb:0,mar:1,abr:0,may:4,jun:0}},
+  {n:"Adriana",    suc:"Hudson",    der:{ene:16,feb:27,mar:10,abr:4,may:9,jun:2},   ven:{ene:1,feb:1,mar:1,abr:0,may:2,jun:0}},
+  {n:"Malena",     suc:"Canning",   der:{ene:11,feb:16,mar:13,abr:10,may:7,jun:10}, ven:{ene:1,feb:1,mar:0,abr:0,may:1,jun:1}},
+  {n:"Dora",       suc:"Hudson",    der:{ene:15,feb:9,mar:14,abr:7,may:8,jun:14},   ven:{ene:0,feb:0,mar:1,abr:0,may:0,jun:3}},
+  {n:"María Marta",suc:"Canning",   der:{ene:6,feb:22,mar:11,abr:12,may:14,jun:2},  ven:{ene:1,feb:0,mar:0,abr:1,may:1,jun:0}},
+  {n:"Walter",     suc:"Hudson",    der:{ene:16,feb:8,mar:9,abr:1,may:6,jun:10},    ven:{ene:2,feb:1,mar:0,abr:0,may:0,jun:0}},
+  {n:"Alexa",      suc:"CABA",      der:{ene:15,feb:36,mar:31,abr:24,may:8,jun:22}, ven:{ene:0,feb:1,mar:1,abr:0,may:0,jun:0}},
+  {n:"Joan",       suc:"Hudson",    der:{ene:0,feb:0,mar:18,abr:8,may:8,jun:11},    ven:{ene:0,feb:0,mar:1,abr:0,may:0,jun:1}},
+  {n:"Mario",      suc:"Norcenter", der:{ene:47,feb:61,mar:17,abr:15,may:19,jun:10},ven:{ene:0,feb:0,mar:1,abr:0,may:1,jun:0}},
+  {n:"Tomás",      suc:"Canning",   der:{ene:13,feb:13,mar:5,abr:13,may:2,jun:10},  ven:{ene:1,feb:0,mar:0,abr:0,may:0,jun:0}},
+  {n:"Andrea",     suc:"Canning",   der:{ene:9,feb:11,mar:11,abr:3,may:3,jun:8},    ven:{ene:0,feb:0,mar:0,abr:1,may:0,jun:0}},
+  {n:"Marcelo",    suc:"CABA",      der:{ene:23,feb:55,mar:30,abr:17,may:15,jun:16},ven:{ene:0,feb:0,mar:0,abr:0,may:0,jun:0}},
+  {n:"Lourdes",    suc:"Norcenter", der:{ene:4,feb:23,mar:10,abr:0,may:0,jun:0},    ven:{ene:0,feb:0,mar:0,abr:0,may:0,jun:0}},
+  {n:"Flor",       suc:"Norcenter", der:{ene:0,feb:0,mar:9,abr:33,may:17,jun:19},   ven:{ene:0,feb:0,mar:0,abr:0,may:0,jun:0}},
+  {n:"Mauricio",   suc:"CABA",      der:{ene:1,feb:0,mar:0,abr:1,may:0,jun:0},      ven:{ene:0,feb:0,mar:0,abr:0,may:0,jun:0}}
+];
+let equipoView='sem', equipoCmp='', equipoSort='ven', equipoDir='desc', equipoSuc='', equipoSearch='';
+const MONTHS = ['ene','feb','mar','abr','may','jun'];
+const PERIODS = [
+  {k:'ene',l:'Enero'},{k:'feb',l:'Febrero'},{k:'mar',l:'Marzo'},
+  {k:'abr',l:'Abril'},{k:'may',l:'Mayo'},{k:'jun',l:'Junio'},
+  {k:'q1',l:'1er trim. (Ene–Mar)'},{k:'q2',l:'2º trim. (Abr–Jun)'},
+  {k:'sem',l:'Todo el semestre'}
+];
+let curA='ene', curB='jun';
+
+function periodMonths(k){ if(k==='q1')return ['ene','feb','mar']; if(k==='q2')return ['abr','may','jun']; if(k==='sem')return MONTHS.slice(); return [k]; }
+function periodLabel(k){ const p=PERIODS.find(p=>p.k===k); return p?p.l:k; }
+function aggregate(metric, period){
+  if(metric==='conv'){
+    const v=aggregate('ventas',period), d=aggregate('deriv',period);
+    if(v==null||d==null||d===0) return null; return v/d*100;
+  }
+  const m=DATA[metric]; if(!m) return null;
+  const ms=periodMonths(period);
+  if(m.type==='stock'){ for(let i=ms.length-1;i>=0;i--){ const v=m.vals[ms[i]]; if(v!=null) return v; } return null; }
+  const vals=ms.map(k=>m.vals[k]).filter(v=>v!=null && !isNaN(v));
+  return vals.length? vals.reduce((a,b)=>a+b,0) : null;
+}
+function fmt(n){ return (n==null||isNaN(n))?'—':Number(n).toLocaleString('es-AR'); }
+function fmt1(n){ return (n==null||isNaN(n))?'—':Number(n).toLocaleString('es-AR',{minimumFractionDigits:1,maximumFractionDigits:1}); }
+function fmtPct(n){ return (n==null||isNaN(n))?'—':fmt1(n)+'%'; }
+function na(s){ return (s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function renderStatic(){
+  document.querySelectorAll('[data-metric][data-month]').forEach(el=>{
+    const v=DATA[el.dataset.metric] ? DATA[el.dataset.metric].vals[el.dataset.month] : null;
+    el.textContent=fmt(v); el.classList.toggle('ph', v==null);
+  });
+  document.querySelectorAll('[data-metric][data-agg]').forEach(el=>{
+    const v=aggregate(el.dataset.metric, el.dataset.agg);
+    el.textContent=(el.dataset.metric==='conv')?fmtPct(v):fmt(v); el.classList.toggle('ph', v==null);
+  });
+  document.querySelectorAll('[data-conv][data-month]').forEach(el=>{
+    const mo=el.dataset.month, v=DATA.ventas.vals[mo], d=DATA.deriv.vals[mo];
+    const c=(v!=null&&d!=null&&d!==0)? v/d*100 : null;
+    el.textContent=fmtPct(c); el.classList.toggle('ph', c==null);
+  });
+}
+function renderFeet(){
+  document.querySelectorAll('[data-foot]').forEach(el=>{
+    const m=el.dataset.foot, meta=DATA[m];
+    if(!meta){ el.innerHTML=''; return; }
+    if(meta.type==='stock'){
+      const a=meta.vals.ene, b=aggregate(m,'sem');
+      if(a==null||b==null){ el.innerHTML='<span class="ph">Pendiente de carga de datos.</span>'; return; }
+      const diff=b-a;
+      el.innerHTML = diff>=0
+        ? `De enero a junio sumamos <b>+${fmt(diff)} ${UNIT[m]}</b> (de ${fmt(a)} a ${fmt(b)}).`
+        : `De enero a junio perdimos <b>${fmt(Math.abs(diff))} ${UNIT[m]}</b> (de ${fmt(a)} a ${fmt(b)}).`;
+    } else {
+      const tot=aggregate(m,'sem');
+      if(tot==null){ el.innerHTML='<span class="ph">Pendiente de carga de datos.</span>'; return; }
+      const cnt=MONTHS.map(k=>meta.vals[k]).filter(v=>v!=null).length || 1;
+      el.innerHTML=`Total enero–junio: <b>${fmt(tot)} ${UNIT[m]}</b> · promedio <b>${fmt(Math.round(tot/cnt))} por mes</b>.`;
+    }
+  });
+}
+function renderFunnel(){
+  document.querySelectorAll('.fn-v[data-fn]').forEach(el=>{
+    const val=aggregate(el.dataset.fn,'sem'); el.textContent=fmt(val); el.classList.toggle('ph', val==null);
+  });
+  const c=aggregate('consultas','sem'), d=aggregate('deriv','sem'), v=aggregate('ventas','sem');
+  const p1=(c&&d!=null)? d/c*100 : null, p2=(d&&v!=null)? v/d*100 : null;
+  const dc=document.querySelector('[data-fnr="d_c"]'), vd=document.querySelector('[data-fnr="v_d"]');
+  if(dc) dc.textContent=(p1==null)?'—':fmt1(p1)+'%';
+  if(vd) vd.textContent=(p2==null)?'—':fmt1(p2)+'%';
+  const exp=document.getElementById('fnExp');
+  if(exp){
+    if(c==null||d==null||v==null){ exp.innerHTML='<span class="ph">Se completa a medida que cargamos los meses.</span>'; }
+    else{ const pc=c? v/c*100:null;
+      exp.innerHTML=`De <b>${fmt(c)} consultas</b> derivamos <b>${fmt(d)}</b> (${fmt1(p1)}%) y cerramos <b>${fmt(v)} ventas</b> (${fmt1(p2)}% de las derivaciones · ${fmt1(pc)}% de las consultas).`;
+    }
+  }
+}
+function cmpHTML(metric){
+  const a=aggregate(metric,curA), b=aggregate(metric,curB);
+  const La=periodLabel(curA), Lb=periodLabel(curB);
+  const isConv = metric==='conv';
+  const va = isConv?fmtPct(a):fmt(a), vb = isConv?fmtPct(b):fmt(b);
+  let cls='flat', arrow='▬', deltaTxt='—', exp='Pendiente de carga de datos.';
+  if(a!=null && b!=null){
+    if(isConv){
+      const pts=b-a; cls= pts>0.05?'up':(pts<-0.05?'down':'flat'); arrow= pts>0.05?'▲':(pts<-0.05?'▼':'▬');
+      deltaTxt=(pts>=0?'+':'')+fmt1(pts)+' pts';
+      exp = pts>0.05? `En <b>${Lb}</b> la conversión fue <b>${vb}</b>, ${fmt1(pts)} puntos mejor que en ${La} (${va}).`
+          : pts<-0.05? `En <b>${Lb}</b> la conversión fue <b>${vb}</b>, ${fmt1(Math.abs(pts))} puntos por debajo de ${La} (${va}).`
+          : `La conversión se mantuvo estable: <b>${vb}</b> en ${Lb}, igual que en ${La}.`;
+    } else {
+      const diff=b-a, pct = a===0? null : diff/Math.abs(a)*100;
+      cls= diff>0?'up':(diff<0?'down':'flat'); arrow= diff>0?'▲':(diff<0?'▼':'▬');
+      deltaTxt = pct==null? (diff>=0?'+':'')+fmt(diff) : (pct>0?'+':'')+fmt1(pct)+'%';
+      const unit=UNIT[metric]||'';
+      if(DATA[metric] && DATA[metric].type==='stock'){
+        exp = diff>0? `En <b>${Lb}</b> llegamos a <b>${vb}</b> ${unit}: <b>+${fmt(diff)}</b> respecto de ${La} (${va}).`
+            : diff<0? `En <b>${Lb}</b> bajamos a <b>${vb}</b> ${unit}: ${fmt(diff)} respecto de ${La} (${va}).`
+            : `Los ${unit} se mantuvieron en <b>${vb}</b>, igual que en ${La}.`;
+      } else {
+        exp = diff>0? `En <b>${Lb}</b> tuvimos <b>${vb}</b> ${unit}, un ${fmt1(Math.abs(pct))}% más que en ${La} (${va}).`
+            : diff<0? `En <b>${Lb}</b> tuvimos <b>${vb}</b> ${unit}, un ${fmt1(Math.abs(pct))}% menos que en ${La} (${va}).`
+            : `Mismos ${unit} en ${Lb} y ${La}: <b>${vb}</b>.`;
+      }
+    }
+  }
+  return `<div class="cmp">
+      <div class="side"><div class="cl">${La}</div><div class="cv ${a==null?'ph':''}">${va}</div></div>
+      <div class="arr">→</div>
+      <div class="side"><div class="cl">${Lb}</div><div class="cv ${b==null?'ph':''}">${vb}</div></div>
+      <div class="delta ${cls}">${arrow} ${deltaTxt}</div>
+    </div>
+    <div class="cmp-exp">${exp}</div>`;
+}
+function renderCmps(){ document.querySelectorAll('.cmp-slot').forEach(slot=>{ slot.innerHTML=cmpHTML(slot.dataset.metric); }); }
+function shortLabel(k){ if(k==='q1')return 'Ene–Mar'; if(k==='q2')return 'Abr–Jun'; if(k==='sem')return 'Semestre'; return periodLabel(k); }
+function closeAllDD(){ document.querySelectorAll('.cmp-dd.open').forEach(d=>d.classList.remove('open')); }
+function syncDropdowns(){
+  document.querySelectorAll('.cmp-dd').forEach(dd=>{
+    const cur = dd.dataset.sel==='A'?curA:curB;
+    const val = dd.querySelector('.dd-val'); if(val) val.textContent=shortLabel(cur);
+    dd.querySelectorAll('.dd-opt').forEach(o=>o.classList.toggle('sel', o.dataset.k===cur));
+  });
+}
+function buildDropdowns(){
+  let html='';
+  PERIODS.forEach(p=>{
+    if(p.k==='q1') html+='<div class="dd-group">Trimestres y total</div>';
+    html+=`<div class="dd-opt" data-k="${p.k}"><span class="dd-check">✓</span>${p.l}</div>`;
+  });
+  document.querySelectorAll('.cmp-dd').forEach(dd=>{
+    const which=dd.dataset.sel;
+    if(which!=='A' && which!=='B') return;
+    dd.querySelector('.dd-menu').innerHTML=html;
+    dd.querySelector('.dd-btn').addEventListener('click',e=>{
+      e.stopPropagation();
+      const wasOpen=dd.classList.contains('open'); closeAllDD();
+      if(!wasOpen) dd.classList.add('open');
+    });
+    dd.querySelectorAll('.dd-opt').forEach(opt=>{
+      opt.addEventListener('click',e=>{
+        e.stopPropagation();
+        if(which==='A') curA=opt.dataset.k; else curB=opt.dataset.k;
+        closeAllDD(); syncDropdowns(); renderCmps();
+      });
+    });
+  });
+  document.addEventListener('click', closeAllDD);
+  syncDropdowns();
+}
+/* ---- Rankings con selector "Ver" (mes / acumulado) ---- */
+function rankViews(data){ const o=[]; MONTHS.forEach(m=>{ if(data[m]&&data[m].length) o.push({k:m,l:periodLabel(m)}); }); if(o.length>1) o.push({k:'acc',l:'Acumulado (semestre)'}); return o; }
+function rankData(data,view){
+  if(view==='acc'){ const map={}; Object.keys(data).forEach(m=>data[m].forEach(p=>{ map[p.n]=(map[p.n]||0)+p.v; })); return Object.entries(map).map(([n,v])=>({n,v})).sort((a,b)=>b.v-a.v); }
+  return (data[view]||[]).slice().sort((a,b)=>b.v-a.v);
+}
+function renderRank(key){
+  const cfg=RANKINGS[key], view=rankState[key];
+  const dd=document.querySelector('.rank-dd[data-rank="'+key+'"]');
+  if(dd){ const dv=dd.querySelector('.dd-val'); if(dv) dv.textContent = view? (view==='acc'?'Acumulado':shortLabel(view)) : '—'; dd.querySelectorAll('.dd-opt').forEach(o=>o.classList.toggle('sel', o.dataset.k===view)); }
+  const rows=rankData(cfg.data, view).slice(0, cfg.top||6);
+  const max=rows.length?rows[0].v:1;
+  const box=document.getElementById(cfg.barsId);
+  if(box) box.innerHTML = rows.length
+    ? rows.map(p=>`<div class="bar2"><div class="bl">${p.n}</div><div class="bt"><div class="bf" style="width:${Math.max(8,Math.round(p.v/max*100))}%"></div></div><div class="br">${fmt(p.v)}</div></div>`).join('')
+    : '<p class="note">Sin datos para este período.</p>';
+}
+function buildRankings(){
+  document.querySelectorAll('.rank-dd').forEach(dd=>{
+    const key=dd.dataset.rank, cfg=RANKINGS[key]; if(!cfg) return;
+    const views=rankViews(cfg.data), meses=views.filter(v=>v.k!=='acc');
+    if(!rankState[key] || !views.find(v=>v.k===rankState[key])) rankState[key]= meses.length? meses[meses.length-1].k : (views[0]?views[0].k:null);
+    dd.querySelector('.dd-menu').innerHTML = views.map(v=>`<div class="dd-opt" data-k="${v.k}"><span class="dd-check">✓</span>${v.l}</div>`).join('');
+    dd.querySelector('.dd-btn').addEventListener('click',e=>{ e.stopPropagation(); const w=dd.classList.contains('open'); closeAllDD(); if(!w) dd.classList.add('open'); });
+    dd.querySelectorAll('.dd-opt').forEach(opt=>opt.addEventListener('click',e=>{ e.stopPropagation(); rankState[key]=opt.dataset.k; closeAllDD(); renderRank(key); }));
+    renderRank(key);
+  });
+}
+/* ---- Equipo: tabla ranking + progresión + comparar ---- */
+function vSum(v,which,period){ const ms=periodMonths(period); let s=0; ms.forEach(m=>s+=(which==='d'?v.der:v.ven)[m]||0); return s; }
+function renderEquipo(){
+  const ddV=document.querySelector('.eq-dd[data-eq="view"]'), ddC=document.querySelector('.eq-dd[data-eq="cmp"]');
+  if(ddV){ ddV.querySelector('.dd-val').textContent=shortLabel(equipoView); ddV.querySelectorAll('.dd-opt').forEach(o=>o.classList.toggle('sel',o.dataset.k===equipoView)); }
+  if(ddC){ ddC.querySelector('.dd-val').textContent= equipoCmp? shortLabel(equipoCmp) : '— sin comparar'; ddC.querySelectorAll('.dd-opt').forEach(o=>o.classList.toggle('sel',o.dataset.k===equipoCmp)); }
+  const ddS=document.querySelector('.eq-dd[data-eq="suc"]');
+  if(ddS){ ddS.querySelector('.dd-val').textContent = equipoSuc||'Todas'; ddS.querySelectorAll('.dd-opt').forEach(o=>o.classList.toggle('sel',o.dataset.k===equipoSuc)); }
+  document.querySelectorAll('.eq-sortbtn').forEach(b=>b.classList.toggle('on', b.dataset.k===equipoSort));
+  const cmpOn = !!equipoCmp && equipoCmp!==equipoView;
+  const base = VEND.filter(v=> (!equipoSuc || v.suc===equipoSuc) && (!equipoSearch || na(v.n).includes(na(equipoSearch))) );
+  let rows=base.map(v=>{ const der=vSum(v,'d',equipoView), ven=vSum(v,'v',equipoView); return {v,der,ven,conv:der?ven/der*100:0, venB: cmpOn?vSum(v,'v',equipoCmp):null}; });
+  const dir = equipoDir==='asc'?1:-1;
+  rows.sort((a,b)=>{
+    if(equipoSort==='name') return dir*a.v.n.localeCompare(b.v.n,'es');
+    if(equipoSort==='suc')  return dir*a.v.suc.localeCompare(b.v.suc,'es') || (b.ven-a.ven);
+    return dir*((a[equipoSort]||0)-(b[equipoSort]||0)) || (b.ven-a.ven);
+  });
+  const eqBox=document.getElementById('eqTable');
+  if(!rows.length){ if(eqBox) eqBox.innerHTML='<div class="tbl eq-tbl" style="padding:18px 4px"><p class="note" style="margin:0">Sin vendedores para ese filtro.</p></div>'; return; }
+  const maxConv=Math.max(1,...rows.map(r=>r.conv));
+  const gmax=Math.max(1,...VEND.flatMap(v=>MONTHS.map(m=>v.ven[m]||0)));
+  const Lb=cmpOn?shortLabel(equipoCmp):'';
+  const th=(label,key,num)=>{ const a=equipoSort===key, arr=a?(equipoDir==='asc'?' ↑':' ↓'):''; return `<th class="${num?'num ':''}eq-sortable${a?' eq-active':''}" data-sort="${key}">${label}${arr}</th>`; };
+  let head='<thead><tr><th class="num">#</th>'+th('Vendedor/a','name',false)+th('Sucursal','suc',false)+th('Derivac.','der',true)+th('Ventas','ven',true)+th('Conversión','conv',false)+'<th>Progresión (ene–jun)</th>'+(cmpOn?`<th class="num">Ventas ${Lb}</th><th class="num">Δ</th>`:'')+'</tr></thead>';
+  const body=rows.map((r,i)=>{
+    const spark=MONTHS.map(m=>`<i style="height:${Math.max(6,Math.round((r.v.ven[m]||0)/gmax*100))}%" title="${periodLabel(m)}: ${r.v.ven[m]||0}"></i>`).join('');
+    let extra='';
+    if(cmpOn){ const d=r.ven-r.venB, cls=d>0?'up':(d<0?'down':'flat'); extra=`<td class="num">${fmt(r.venB)}</td><td class="num"><span class="eq-delta ${cls}">${d>0?'+':''}${fmt(d)}</span></td>`; }
+    return `<tr><td class="num eq-rank">${String(i+1).padStart(2,'0')}</td><td>${r.v.n}</td><td>${r.v.suc}</td><td class="num">${fmt(r.der)}</td><td class="num"><b>${fmt(r.ven)}</b></td><td><span class="cbar"><i style="width:${Math.round(r.conv/maxConv*100)}%"></i></span>${r.conv?fmt1(r.conv)+'%':'0%'}</td><td><span class="spark">${spark}</span></td>${extra}</tr>`;
+  }).join('');
+  const box=document.getElementById('eqTable'); if(box) box.innerHTML=`<div class="tbl eq-tbl"><table>${head}<tbody>${body}</tbody></table></div>`;
+}
+function buildEquipo(){
+  const cmpOpts=[{k:'',l:'— sin comparar'}].concat(PERIODS);
+  const sucOpts=[{k:'',l:'Todas las sucursales'}].concat([...new Set(VEND.map(v=>v.suc))].map(s=>({k:s,l:s})));
+  document.querySelectorAll('.eq-dd').forEach(dd=>{
+    const kind=dd.dataset.eq, opts= kind==='cmp'?cmpOpts:(kind==='suc'?sucOpts:PERIODS);
+    dd.querySelector('.dd-menu').innerHTML=opts.map(p=>`<div class="dd-opt" data-k="${p.k}"><span class="dd-check">✓</span>${p.l}</div>`).join('');
+    dd.querySelector('.dd-btn').addEventListener('click',e=>{ e.stopPropagation(); const w=dd.classList.contains('open'); closeAllDD(); if(!w) dd.classList.add('open'); });
+    dd.querySelectorAll('.dd-opt').forEach(opt=>opt.addEventListener('click',e=>{ e.stopPropagation(); if(kind==='view')equipoView=opt.dataset.k; else if(kind==='suc')equipoSuc=opt.dataset.k; else equipoCmp=opt.dataset.k; closeAllDD(); renderEquipo(); }));
+  });
+  const srch=document.querySelector('.eq-search');
+  if(srch && !srch.dataset.wired){ srch.dataset.wired='1'; srch.addEventListener('input',()=>{ equipoSearch=srch.value; renderEquipo(); }); }
+  document.querySelectorAll('.eq-sortbtn').forEach(b=>{ if(b.dataset.wired) return; b.dataset.wired='1'; b.addEventListener('click',()=>{ equipoSort=b.dataset.k; equipoDir='desc'; renderEquipo(); }); });
+  const box=document.getElementById('eqTable');
+  if(box && !box.dataset.wired){ box.dataset.wired='1';
+    box.addEventListener('click', e=>{ const h=e.target.closest('th[data-sort]'); if(!h) return; const k=h.dataset.sort;
+      if(equipoSort===k){ equipoDir = equipoDir==='asc'?'desc':'asc'; } else { equipoSort=k; equipoDir=(k==='name'||k==='suc')?'asc':'desc'; }
+      renderEquipo(); });
+  }
+  renderEquipo();
+}
+function renderData(){ renderStatic(); renderFeet(); renderFunnel(); buildDropdowns(); buildRankings(); buildEquipo(); renderCmps(); }
+
+/* ===== NAVEGACIÓN (por orden en el DOM; agregar slides no rompe nada) ===== */
+const slides=[...document.querySelectorAll('.deck > .slide')];
+const TOTAL=slides.length;
+let current=1, animating=false;
+const dotRow=document.getElementById('dot-row');
+for(let i=1;i<=TOTAL;i++){ const d=document.createElement('div'); d.className='dot'+(i===1?' active':''); d.onclick=()=>goTo(i); dotRow.appendChild(d); }
+function updateUI(){
+  document.getElementById('progress-bar').style.width=(current/TOTAL*100)+'%';
+  document.getElementById('slide-counter').textContent=current+' / '+TOTAL;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i+1===current));
+  document.getElementById('prevBtn').disabled=current===1;
+  document.getElementById('nextBtn').disabled=current===TOTAL;
+  const curId=slides[current-1].id;
+  document.querySelectorAll('.menu-item').forEach(el=>el.classList.toggle('active', el.dataset.target===curId));
+  const act=document.querySelector('.menu-item.active');
+  if(act){ const cat=act.closest('.menu-cat'); if(cat) cat.classList.add('open'); }
+}
+function toggleCat(el){ el.parentElement.classList.toggle('open'); }
+function goTo(n){
+  closeMenu();
+  if(n===current||animating||n<1||n>TOTAL) return;
+  animating=true;
+  const prev=slides[current-1], next=slides[n-1];
+  prev.classList.add('exit'); prev.classList.remove('active');
+  setTimeout(()=>{ prev.classList.remove('exit'); next.scrollTop=0; next.classList.add('active'); current=n; updateUI(); setTimeout(()=>{animating=false;},450); },300);
+}
+function goToId(id){ const el=document.getElementById(id); if(el){ const i=slides.indexOf(el); if(i>=0) goTo(i+1); } }
+function toggleMenu(){ document.body.classList.toggle('menu-open'); }
+function closeMenu(){ document.body.classList.remove('menu-open'); }
+function changeSlide(dir){ goTo(current+dir); }
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){ closeAllDD(); closeMenu(); return; }
+  if(document.querySelector('.cmp-dd.open')) return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){ e.preventDefault(); changeSlide(1); }
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); changeSlide(-1); }
+  if(e.key==='f'||e.key==='F'){ toggleFullscreen(); }
+});
+function toggleFullscreen(){ if(!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{}); else document.exitFullscreen(); }
+setTimeout(()=>{ const h=document.getElementById('fs-hint'); if(h) h.style.opacity='0'; },5000);
+let tX=null, tY=null;
+const deckEl=document.getElementById('deck');
+deckEl.addEventListener('touchstart', e=>{ const t=e.changedTouches[0]; tX=t.clientX; tY=t.clientY; }, {passive:true});
+deckEl.addEventListener('touchend', e=>{
+  if(tX===null||document.body.classList.contains('menu-open')) { tX=null; return; }
+  if(e.target && e.target.closest && e.target.closest('.cmp-dd')){ tX=null; return; }
+  const t=e.changedTouches[0], dx=t.clientX-tX, dy=t.clientY-tY;
+  if(Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)*1.6){ changeSlide(dx<0?1:-1); }
+  tX=null;
+}, {passive:true});
+
+renderData();
+updateUI();
+</script>
+</body>
+</html>
