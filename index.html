@@ -400,7 +400,7 @@ tbody tr:last-child td{ border-bottom:none; }
   /* rampa tokenizada: única fuente de verdad para CSS (leyenda) y JS (fills/barras) */
   --ramp-lo:#D2CCC4;
   --ramp-mid:#8F8A83;
-  --ramp-hi:#141414;
+  --ramp-hi:#3d3d3d;
   display:grid;
   grid-template-columns:minmax(0,380px) minmax(0,1fr);
   gap:28px; align-items:start; margin-top:14px;
@@ -417,7 +417,7 @@ tbody tr:last-child td{ border-bottom:none; }
 
 /* --- provincias --- */
 .geo-svg .prov{stroke:var(--surface,#fff); stroke-width:1;}
-.geo-svg .prov.off{fill:var(--bg2,#E8E4DF); stroke:#D8D2C9;}
+.geo-svg .prov.off{fill:#fff; stroke:#CFC9C0;}
 .geo-svg .prov.active{transition:fill-opacity .18s ease, stroke-width .18s ease;}
 .geo-svg .prov.active:hover{fill-opacity:.82; stroke:var(--ink,#111); stroke-width:1.4;}
 .geo-svg .prov.sel{stroke:var(--ink,#111); stroke-width:1.4;}
@@ -1754,37 +1754,9 @@ updateUI();
   }
 
   function select(prov) {
-    if (state.selected === prov) { deselect(); return; } // toggle (UX de Dir 2)
+    if (state.selected === prov) { deselect(); return; } // toggle
     state.selected = prov;
-    var per = state.period;
-
-    // valores de zona -> depto (para resaltar partidos por intensidad)
-    var zones = locsFor(per).filter(function (o) { return ZONE_PROV[o.n] === prov; });
-    var zoneVal = {}; zones.forEach(function (z) { zoneVal[z.n] = z.v; });
-    var hlMap = DEPT_HL[prov] || {};
-    var deptVal = {}, hmax = 0;
-    Object.keys(hlMap).forEach(function (dn) { var v = zoneVal[hlMap[dn]] || 0; deptVal[dn] = v; if (v > hmax) hmax = v; });
-    var dscale = makeScale(hmax || 1);
-
-    var depts = deptsFor(prov);
-    gDetail.selectAll('path').remove();
-    var dsel = gDetail.selectAll('path').data(depts).enter().append('path')
-      .attr('d', path)
-      .attr('vector-effect', 'non-scaling-stroke')
-      .attr('class', function (d) { var k = norm(d.properties.departamento); return (deptVal[k] > 0) ? 'dept hl' : 'dept'; })
-      .style('fill', function (d) { var k = norm(d.properties.departamento); return (deptVal[k] > 0) ? dscale(deptVal[k]) : null; });
-    // tooltip sobre departamentos
-    dsel.on('mousemove', function (e, d) {
-      var k = norm(d.properties.departamento), v = deptVal[k];
-      showTip('<b>' + esc(prettyProv(d.properties.departamento)) + '</b><i>' + (v > 0 ? fmt(v) + ' consultas' : 'zona') + '</i>', e);
-    }).on('mouseleave', hideTip);
-    // fade-in del detalle
-    gDetail.style('opacity', 0).transition().duration(420).style('opacity', 1);
-
-    gProv.classed('is-zoomed', true);
     gProv.selectAll('path').classed('sel', function (d) { return d.properties.provincia === prov; });
-    el.wrap.setAttribute('data-zoomed', '1');
-    zoomTo(state.provByName[prov], true);
     updateAria();
     renderInfo();
   }
@@ -1792,10 +1764,7 @@ updateUI();
     if (!state.selected) { return; }
     state.selected = null;
     hideTip();
-    if (gDetail) gDetail.selectAll('path').remove();
-    if (gProv) gProv.classed('is-zoomed', false).selectAll('path').classed('sel', false);
-    el.wrap.removeAttribute('data-zoomed');
-    if (gRoot) resetZoom(true);
+    if (gProv) gProv.selectAll('path').classed('sel', false);
     updateAria();
     renderInfo();
   }
@@ -1806,8 +1775,6 @@ updateUI();
     svg.attr('viewBox', '0 0 ' + W + ' ' + H);
     projection.fitSize([W, H], AR_FIT);
     gProv.selectAll('path').attr('d', path);
-    gDetail.selectAll('path').attr('d', path);
-    if (state.selected) zoomTo(state.provByName[state.selected], false); else resetZoom(false);
   }
 
   /* ---------- Panel info (barras teñidas con la MISMA rampa) ---------- */
@@ -1862,16 +1829,8 @@ updateUI();
   window.renderGeo = function (period) {
     state.period = resolvePeriod(period); // acepta 'abr'|'may'|'jun'|'acc' o lee rankState.loc
     if (!state.loaded) { ensureLoad(); return; } // guarda período y lo aplica al cargar
-    if (state.selected) select.__refresh ? null : null; // (no-op; el refresh real es abajo)
     recolor();
-    if (state.selected) {
-      // re-pintar detalle e info del período nuevo sin perder el zoom
-      var prov = state.selected;
-      state.selected = null;         // evita el toggle interno de select()
-      selectSilently(prov);
-    } else {
-      renderInfo();
-    }
+    renderInfo();
   };
 
   // re-selecciona sin toggle ni re-animar cámara innecesariamente (para cambios de período en zoom)
