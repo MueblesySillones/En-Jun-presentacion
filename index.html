@@ -409,17 +409,17 @@ tbody tr:last-child td{ border-bottom:none; }
 
 .geo-stage{
   position:relative; height:430px;
-  background:var(--surface,#fff);
+  background:var(--bg2,#E8E4DF);
   border:1px solid var(--border,rgba(0,0,0,.10));
   border-radius:4px; overflow:hidden;
 }
 .geo-svg{display:block; width:100%; height:100%; touch-action:manipulation;}
 
 /* --- provincias --- */
-.geo-svg .prov{stroke:var(--surface,#fff); stroke-width:1;}
-.geo-svg .prov.off{fill:#fff; stroke:#CFC9C0;}
-.geo-svg .prov.active{transition:fill-opacity .18s ease, stroke-width .18s ease;}
-.geo-svg .prov.active:hover{fill-opacity:.82; stroke:var(--ink,#111); stroke-width:1.4;}
+.geo-svg .prov{stroke:#9A938A; stroke-width:1;}
+.geo-svg .prov.off{fill:#fff;}
+.geo-svg .prov.active{transition:fill-opacity .18s ease, stroke .18s ease, stroke-width .18s ease;}
+.geo-svg .prov.active:hover{fill-opacity:.85; stroke:var(--ink,#111); stroke-width:1.7;}
 .geo-svg .prov.sel{stroke:var(--ink,#111); stroke-width:1.4;}
 .geo-svg .prov.active:focus{outline:none;}
 .geo-svg .prov.active:focus-visible{stroke:var(--ink,#111); stroke-width:1.8;}
@@ -1697,13 +1697,7 @@ updateUI();
       .attr('d', path)
       .attr('vector-effect', 'non-scaling-stroke')
       .attr('class', function (d) { return PROV[d.properties.provincia] ? 'prov active' : 'prov off'; })
-      .style('cursor', function (d) { return PROV[d.properties.provincia] ? 'pointer' : 'default'; })
-      .attr('tabindex', function (d) { return PROV[d.properties.provincia] ? 0 : null; })
-      .attr('role', function (d) { return PROV[d.properties.provincia] ? 'button' : null; })
-      .on('click', function (e, d) { if (PROV[d.properties.provincia]) select(d.properties.provincia); })
-      .on('keydown', function (e, d) {
-        if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') && PROV[d.properties.provincia]) { e.preventDefault(); select(d.properties.provincia); }
-      })
+      .style('cursor', 'default')
       .on('mousemove', function (e, d) {
         var p = d.properties.provincia;
         if (!PROV[p]) { hideTip(); return; }
