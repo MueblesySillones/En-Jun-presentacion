@@ -263,6 +263,27 @@ tbody tr:last-child td{ border-bottom:none; }
 .eq-sortbtn{ font-family:inherit; font-size:12px; font-weight:700; color:var(--ink); background:transparent; border:1px solid var(--border); border-radius:3px; padding:7px 13px; cursor:pointer; transition:all .15s; }
 .eq-sortbtn:hover{ border-color:var(--ink); }
 .eq-sortbtn.on{ background:var(--ink); color:#fff; border-color:var(--ink); }
+/* MAPA GEOGRÁFICO */
+.geo-wrap{ display:flex; gap:26px; margin-top:22px; align-items:stretch; flex-wrap:wrap; }
+.geo-map{ flex:1.3 1 320px; min-width:300px; border:1px solid var(--border); border-radius:4px; background:var(--surface); padding:12px 14px; }
+.geo-svg{ width:100%; height:auto; display:block; }
+.geo-svg text{ font-family:inherit; }
+.geo-mk circle{ fill:#fff; stroke:var(--ink); stroke-width:1.5; opacity:.92; cursor:pointer; transition:fill .15s, stroke .15s; }
+.geo-mk:hover circle{ fill:var(--bg2); }
+.geo-mk.on circle{ fill:var(--ink); stroke:var(--ink); }
+.geo-lbl{ font-size:9px; font-weight:700; fill:var(--ink2); pointer-events:none; }
+.geo-lbl.on{ fill:var(--ink); font-weight:800; }
+.geo-legend{ font-size:11px; color:var(--ink3); margin-top:6px; font-weight:500; }
+.geo-info{ flex:1 1 240px; min-width:220px; display:flex; flex-direction:column; justify-content:center; border-left:1px solid var(--border); padding-left:26px; }
+.geo-i-l{ font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink3); }
+.geo-i-n{ font-size:clamp(26px,3.4vw,40px); font-weight:800; letter-spacing:-1px; color:var(--ink); margin-top:6px; line-height:1; }
+.geo-i-v{ font-size:26px; font-weight:800; color:var(--ink); margin-top:14px; font-variant-numeric:tabular-nums; }
+.geo-i-v span{ font-size:13px; font-weight:600; color:var(--ink3); }
+.geo-i-bar{ height:8px; background:var(--bg2); border-radius:4px; overflow:hidden; margin:12px 0; }
+.geo-i-bar i{ display:block; height:100%; background:var(--ink); }
+.geo-i-meta{ font-size:14px; color:var(--ink2); font-weight:500; line-height:1.55; }
+.geo-i-meta b{ color:var(--ink); font-weight:700; }
+@media (max-width:860px){ .geo-info{ border-left:none; padding-left:0; border-top:1px solid var(--border); padding-top:18px; } }
 /* PORTADA */
 .s1{ display:flex; flex-direction:row; height:100%; }
 .s1-left{ flex:1; display:flex; flex-direction:column; justify-content:space-between; padding:60px 72px 56px; }
@@ -624,6 +645,18 @@ tbody tr:last-child td{ border-bottom:none; }
       <span class="cmp-dd rank-dd" data-rank="loc"><button class="dd-btn" type="button"><span class="dd-val">—</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
     </div>
     <div class="bars" id="locBars"></div>
+    <div class="geo-wrap">
+      <div class="geo-map">
+        <svg class="geo-svg" viewBox="0 0 440 360" role="img" aria-label="Mapa de zonas de las consultas">
+          <path d="M300,20 C345,95 360,185 382,360 L440,360 L440,0 Z" fill="#E8E4DF"/>
+          <path d="M300,20 C345,95 360,185 382,360" fill="none" stroke="rgba(0,0,0,0.14)" stroke-width="1.5"/>
+          <text x="404" y="150" transform="rotate(80 404 150)" font-size="10" letter-spacing="2" fill="rgba(0,0,0,0.28)" font-weight="700">RÍO DE LA PLATA</text>
+          <g id="geoMarkers"></g>
+        </svg>
+        <div class="geo-legend">El tamaño del punto = cantidad de consultas · tocá una zona para ver el detalle →</div>
+      </div>
+      <div class="geo-info" id="geoInfo"></div>
+    </div>
     <p class="note">No incluye "Sin informar" (buena parte de las consultas aún no tiene localidad cargada: may 323, jun 233). Abril es parcial (dato desde la 2ª quincena). Fuente: base de consultas.</p>
   </div>
 </div>
@@ -972,7 +1005,7 @@ const LOCS = {
   may:[{n:'CABA',v:76},{n:'Hudson',v:51},{n:'La Plata',v:24},{n:'Zona Oeste',v:19},{n:'Interior Bs. As.',v:19},{n:'Quilmes',v:17},{n:'Zona Norte',v:13},{n:'Córdoba',v:11}],
   jun:[{n:'CABA',v:80},{n:'Hudson',v:62},{n:'La Plata',v:26},{n:'Canning',v:18},{n:'Quilmes',v:18},{n:'Interior Bs. As.',v:18},{n:'Zona Norte',v:14},{n:'Zona Oeste',v:13}]
 };
-const RANKINGS = { prod:{ data:PRODUCTS, barsId:'prodBars', top:6 }, suc:{ data:SUCDERIV, barsId:'sucBars', top:6 }, loc:{ data:LOCS, barsId:'locBars', top:8 } };
+const RANKINGS = { prod:{ data:PRODUCTS, barsId:'prodBars', top:6 }, suc:{ data:SUCDERIV, barsId:'sucBars', top:6 }, loc:{ data:LOCS, barsId:'locBars', top:6 } };
 const rankState = { prod:null, suc:null, loc:null };
 /* Equipo: derivaciones y ventas por vendedor/a y por mes (del Excel; venta = "Realizó la compra"). */
 const VEND = [
@@ -1164,6 +1197,7 @@ function renderRank(key){
   if(box) box.innerHTML = rows.length
     ? rows.map(p=>`<div class="bar2"><div class="bl">${p.n}</div><div class="bt"><div class="bf" style="width:${Math.max(8,Math.round(p.v/max*100))}%"></div></div><div class="br">${fmt(p.v)}</div></div>`).join('')
     : '<p class="note">Sin datos para este período.</p>';
+  if(key==='loc') renderGeo(view);
 }
 function buildRankings(){
   document.querySelectorAll('.rank-dd').forEach(dd=>{
@@ -1229,7 +1263,35 @@ function buildEquipo(){
   }
   renderEquipo();
 }
-function renderData(){ renderStatic(); renderFeet(); renderFunnel(); buildDropdowns(); buildRankings(); buildEquipo(); renderCmps(); }
+/* ---- Mapa geográfico de zonas (sincronizado con el selector Ver del ranking loc) ---- */
+const GEO = {'CABA':[300,150],'Zona Norte':[278,112],'Norcenter':[266,124],'Zona Oeste':[233,162],'Canning':[258,202],'Quilmes':[302,190],'Hudson':[310,210],'Zona Sur':[286,205],'La Plata':[322,242],'Interior Bs. As.':[158,196],'Rosario':[196,112],'Santa Fe':[181,80],'Córdoba':[110,96]};
+let geoSel=null;
+function renderGeo(period){
+  const data=rankData(LOCS, period).filter(d=>GEO[d.n]);
+  const total=data.reduce((s,d)=>s+d.v,0)||1, max=data.length?data[0].v:1;
+  if(!geoSel || !data.find(d=>d.n===geoSel)) geoSel = data.length?data[0].n:null;
+  const g=document.getElementById('geoMarkers');
+  if(g) g.innerHTML = data.map((d,i)=>{
+    const p=GEO[d.n], r=6+Math.round((d.v/max)*18), sel=d.n===geoSel;
+    const lbl=(i<5||sel)?`<text x="${p[0]+r+4}" y="${p[1]+3}" class="geo-lbl${sel?' on':''}">${d.n}</text>`:'';
+    return `<g class="geo-mk${sel?' on':''}" data-zone="${d.n}"><circle cx="${p[0]}" cy="${p[1]}" r="${r}"><title>${d.n}: ${fmt(d.v)}</title></circle>${lbl}</g>`;
+  }).join('');
+  const info=document.getElementById('geoInfo');
+  if(info){
+    if(!geoSel){ info.innerHTML='<p class="note">Sin datos para este período.</p>'; return; }
+    const d=data.find(x=>x.n===geoSel), rank=data.findIndex(x=>x.n===geoSel)+1, pct=d.v/total*100;
+    info.innerHTML=`<div class="geo-i-l">Zona seleccionada</div>
+      <div class="geo-i-n">${d.n}</div>
+      <div class="geo-i-v">${fmt(d.v)} <span>consultas</span></div>
+      <div class="geo-i-bar"><i style="width:${Math.round(d.v/max*100)}%"></i></div>
+      <div class="geo-i-meta"><b>${fmt1(pct)}%</b> de las consultas con localidad · puesto <b>#${rank}</b> de ${data.length} zonas</div>`;
+  }
+}
+function buildGeo(){
+  const gm=document.getElementById('geoMarkers');
+  if(gm && !gm.dataset.wired){ gm.dataset.wired='1'; gm.addEventListener('click',e=>{ const mk=e.target.closest('.geo-mk'); if(!mk) return; geoSel=mk.dataset.zone; renderGeo(rankState.loc); }); }
+}
+function renderData(){ renderStatic(); renderFeet(); renderFunnel(); buildDropdowns(); buildRankings(); buildGeo(); buildEquipo(); renderCmps(); }
 
 /* ===== NAVEGACIÓN (por orden en el DOM; agregar slides no rompe nada) ===== */
 const slides=[...document.querySelectorAll('.deck > .slide')];
