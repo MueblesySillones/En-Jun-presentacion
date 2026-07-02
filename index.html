@@ -409,15 +409,15 @@ tbody tr:last-child td{ border-bottom:none; }
 
 .geo-stage{
   position:relative; height:430px;
-  background:var(--bg2,#E8E4DF);
+  background:var(--surface,#fff);
   border:1px solid var(--border,rgba(0,0,0,.10));
   border-radius:4px; overflow:hidden;
 }
 .geo-svg{display:block; width:100%; height:100%; touch-action:manipulation;}
 
 /* --- provincias --- */
-.geo-svg .prov{stroke:#9A938A; stroke-width:1;}
-.geo-svg .prov.off{fill:#fff;}
+.geo-svg .prov{stroke:#BDB6AC; stroke-width:1;}
+.geo-svg .prov.off{fill:#DED8CF;}
 .geo-svg .prov.active{transition:fill-opacity .18s ease, stroke .18s ease, stroke-width .18s ease;}
 .geo-svg .prov.active:hover{fill-opacity:.85; stroke:var(--ink,#111); stroke-width:1.7;}
 .geo-svg .prov.sel{stroke:var(--ink,#111); stroke-width:1.4;}
@@ -1664,6 +1664,16 @@ updateUI();
     // fusionar departamentos por provincia -> 24 polígonos de provincia
     state.provFeatures = Object.keys(by).map(function (p) {
       return { type: 'Feature', properties: { provincia: p }, geometry: topojson.merge(topo, by[p]) };
+    });
+    // recortar el sector antártico de "Tierra del Fuego..." (llega a lat -90 y es un
+    // polígono gigante que se dibuja encima y tapa el resto del país). Conservamos
+    // la isla de TdF y las Islas del Atlántico Sur (lat > -56), descartamos la Antártida.
+    state.provFeatures.forEach(function (f) {
+      if (f.properties.provincia.indexOf('TIERRA DEL FUEGO') === 0 && f.geometry && f.geometry.type === 'MultiPolygon') {
+        f.geometry.coordinates = f.geometry.coordinates.filter(function (poly) {
+          return poly[0].some(function (pt) { return pt[1] > -56; });
+        });
+      }
     });
     state.provByName = {};
     state.provFeatures.forEach(function (f) { state.provByName[f.properties.provincia] = f; });
