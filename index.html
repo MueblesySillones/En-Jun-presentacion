@@ -738,8 +738,8 @@ tbody tr:last-child td{ border-bottom:none; }
 <div class="slide" id="s-ig-seg">
   <div class="slide-inner">
     <div class="eyebrow">Instagram · crecimiento</div>
-    <div class="s-title">Seguidores <em>por mes</em></div>
-    <div class="s-sub">Cómo creció la comunidad mes a mes. Compará el inicio con el final del semestre.</div>
+    <div class="s-title">Nuevos seguidores <em>por mes</em></div>
+    <div class="s-sub">Cuántos seguidores nuevos sumamos cada mes. La última tarjeta, en negro, es el total del semestre.</div>
     <div class="cmp-bar" data-cmpbar>
       <span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.8L7 14"/></svg></span> Comparar</span>
       <span class="cmp-dd" data-sel="A"><button class="dd-btn" type="button"><span class="dd-val">Enero</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
@@ -747,15 +747,16 @@ tbody tr:last-child td{ border-bottom:none; }
       <span class="cmp-dd" data-sel="B"><button class="dd-btn" type="button"><span class="dd-val">Junio</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
     </div>
     <div class="month-row">
-      <div class="month-card"><div class="ml">Ene</div><div class="mn" data-metric="igFoll" data-month="ene">—</div></div>
-      <div class="month-card"><div class="ml">Feb</div><div class="mn" data-metric="igFoll" data-month="feb">—</div></div>
-      <div class="month-card"><div class="ml">Mar</div><div class="mn" data-metric="igFoll" data-month="mar">—</div></div>
-      <div class="month-card"><div class="ml">Abr</div><div class="mn" data-metric="igFoll" data-month="abr">—</div></div>
-      <div class="month-card"><div class="ml">May</div><div class="mn" data-metric="igFoll" data-month="may">—</div></div>
-      <div class="month-card lead"><div class="ml">Jun</div><div class="mn" data-metric="igFoll" data-month="jun">—</div></div>
+      <div class="month-card"><div class="ml">Ene</div><div class="mn" data-metric="igNew" data-month="ene">—</div></div>
+      <div class="month-card"><div class="ml">Feb</div><div class="mn" data-metric="igNew" data-month="feb">—</div></div>
+      <div class="month-card"><div class="ml">Mar</div><div class="mn" data-metric="igNew" data-month="mar">—</div></div>
+      <div class="month-card"><div class="ml">Abr</div><div class="mn" data-metric="igNew" data-month="abr">—</div></div>
+      <div class="month-card"><div class="ml">May</div><div class="mn" data-metric="igNew" data-month="may">—</div></div>
+      <div class="month-card"><div class="ml">Jun</div><div class="mn" data-metric="igNew" data-month="jun">—</div></div>
+      <div class="month-card lead"><div class="ml">Total</div><div class="mn" data-metric="igNew" data-agg="sem">—</div></div>
     </div>
-    <div class="month-foot" data-foot="igFoll"></div>
-    <div class="cmp-wrap"><div class="cmp-slot" data-metric="igFoll"></div></div>
+    <div class="month-foot" data-foot="igNew"></div>
+    <div class="cmp-wrap"><div class="cmp-slot" data-metric="igNew"></div></div>
   </div>
 </div>
 
@@ -763,8 +764,8 @@ tbody tr:last-child td{ border-bottom:none; }
 <div class="slide" id="s-ig-alc">
   <div class="slide-inner">
     <div class="eyebrow">Instagram · rendimiento</div>
-    <div class="s-title">Alcance <em>e interacción</em></div>
-    <div class="s-sub">A cuánta gente llegamos y cuánto interactuó con nuestro contenido</div>
+    <div class="s-title">Alcance <em>y actividad</em></div>
+    <div class="s-sub">A cuánta gente llegamos, cuántos entraron al perfil y cuántos tocaron el link.</div>
     <div class="cmp-bar" data-cmpbar>
       <span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.8L7 14"/></svg></span> Comparar</span>
       <span class="cmp-dd" data-sel="A"><button class="dd-btn" type="button"><span class="dd-val">Enero</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
@@ -772,8 +773,9 @@ tbody tr:last-child td{ border-bottom:none; }
       <span class="cmp-dd" data-sel="B"><button class="dd-btn" type="button"><span class="dd-val">Junio</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
     </div>
     <div class="cmp-wrap">
-      <div class="cmp-h">Alcance (personas)</div><div class="cmp-slot" data-metric="igReach"></div>
-      <div class="cmp-h">Interacciones</div><div class="cmp-slot" data-metric="igInter"></div>
+      <div class="cmp-h">Cuentas alcanzadas</div><div class="cmp-slot" data-metric="igReach"></div>
+      <div class="cmp-h">Visitas al perfil</div><div class="cmp-slot" data-metric="igVisits"></div>
+      <div class="cmp-h">Clics al link del perfil</div><div class="cmp-slot" data-metric="igClicks"></div>
     </div>
   </div>
 </div>
@@ -926,11 +928,12 @@ const DATA = {
   deriv:    { type:'flow',  vals:{ ene:594, feb:638,  mar:402,  abr:362,  may:326,  jun:304  } },
   ventas:   { type:'flow',  vals:{ ene:20,  feb:11,   mar:16,   abr:7,    may:16,   jun:8    } },
   web:      { type:'flow',  vals:{ ene:null, feb:null, mar:null, abr:null, may:null, jun:null } },
-  igFoll:   { type:'stock', vals:{ ene:null, feb:null, mar:null, abr:null, may:null, jun:null } },
-  igReach:  { type:'flow',  vals:{ ene:null, feb:null, mar:null, abr:null, may:null, jun:null } },
-  igInter:  { type:'flow',  vals:{ ene:null, feb:null, mar:null, abr:null, may:null, jun:null } }
+  igNew:    { type:'flow',  vals:{ ene:680,    feb:null, mar:null, abr:null, may:null, jun:null } },
+  igReach:  { type:'flow',  vals:{ ene:139700, feb:null, mar:null, abr:null, may:null, jun:null } },
+  igVisits: { type:'flow',  vals:{ ene:8200,   feb:null, mar:null, abr:null, may:null, jun:null } },
+  igClicks: { type:'flow',  vals:{ ene:2200,   feb:null, mar:null, abr:null, may:null, jun:null } }
 };
-const UNIT = { consultas:'consultas', deriv:'derivaciones', ventas:'ventas', web:'visitas', igFoll:'seguidores', igReach:'personas alcanzadas', igInter:'interacciones' };
+const UNIT = { consultas:'consultas', deriv:'derivaciones', ventas:'ventas', web:'visitas', igNew:'nuevos seguidores', igReach:'cuentas alcanzadas', igVisits:'visitas al perfil', igClicks:'clics al link' };
 /* Rankings por mes (se muestran con selector Ver: mes / acumulado). Editá acá al sumar meses. */
 const PRODUCTS = {
   ene:[{n:'Sillón Dune',v:55},{n:'Esquinero Philadelphia',v:52},{n:'Esquinero Arizona Cloudy',v:35},{n:'Mesa Michigan',v:33}],
