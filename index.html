@@ -263,27 +263,7 @@ tbody tr:last-child td{ border-bottom:none; }
 .eq-sortbtn{ font-family:inherit; font-size:12px; font-weight:700; color:var(--ink); background:transparent; border:1px solid var(--border); border-radius:3px; padding:7px 13px; cursor:pointer; transition:all .15s; }
 .eq-sortbtn:hover{ border-color:var(--ink); }
 .eq-sortbtn.on{ background:var(--ink); color:#fff; border-color:var(--ink); }
-/* MAPA GEOGRÁFICO */
-.geo-wrap{ display:flex; gap:26px; margin-top:22px; align-items:stretch; flex-wrap:wrap; }
-.geo-map{ flex:1.3 1 320px; min-width:300px; border:1px solid var(--border); border-radius:4px; background:var(--surface); padding:12px 14px; }
-.geo-svg{ width:100%; height:auto; display:block; }
-.geo-svg text{ font-family:inherit; }
-.geo-mk circle{ fill:#fff; stroke:var(--ink); stroke-width:1.5; opacity:.92; cursor:pointer; transition:fill .15s, stroke .15s; }
-.geo-mk:hover circle{ fill:var(--bg2); }
-.geo-mk.on circle{ fill:var(--ink); stroke:var(--ink); }
-.geo-lbl{ font-size:9px; font-weight:700; fill:var(--ink2); pointer-events:none; }
-.geo-lbl.on{ fill:var(--ink); font-weight:800; }
-.geo-legend{ font-size:11px; color:var(--ink3); margin-top:6px; font-weight:500; }
-.geo-info{ flex:1 1 240px; min-width:220px; display:flex; flex-direction:column; justify-content:center; border-left:1px solid var(--border); padding-left:26px; }
-.geo-i-l{ font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink3); }
-.geo-i-n{ font-size:clamp(26px,3.4vw,40px); font-weight:800; letter-spacing:-1px; color:var(--ink); margin-top:6px; line-height:1; }
-.geo-i-v{ font-size:26px; font-weight:800; color:var(--ink); margin-top:14px; font-variant-numeric:tabular-nums; }
-.geo-i-v span{ font-size:13px; font-weight:600; color:var(--ink3); }
-.geo-i-bar{ height:8px; background:var(--bg2); border-radius:4px; overflow:hidden; margin:12px 0; }
-.geo-i-bar i{ display:block; height:100%; background:var(--ink); }
-.geo-i-meta{ font-size:14px; color:var(--ink2); font-weight:500; line-height:1.55; }
-.geo-i-meta b{ color:var(--ink); font-weight:700; }
-@media (max-width:860px){ .geo-info{ border-left:none; padding-left:0; border-top:1px solid var(--border); padding-top:18px; } }
+
 /* PORTADA */
 .s1{ display:flex; flex-direction:row; height:100%; }
 .s1-left{ flex:1; display:flex; flex-direction:column; justify-content:space-between; padding:60px 72px 56px; }
@@ -415,7 +395,171 @@ tbody tr:last-child td{ border-bottom:none; }
   .cmp .delta.down{ background:var(--c-danger) !important; }
   .bar2 .bf, .fn-node.lead{ background:var(--ink) !important; }
 }
+/* ===== Mapa D3 · choropleth editorial (monocromo japandi) ===== */
+.geo-wrap{
+  /* rampa tokenizada: única fuente de verdad para CSS (leyenda) y JS (fills/barras) */
+  --ramp-lo:#D2CCC4;
+  --ramp-mid:#8F8A83;
+  --ramp-hi:#141414;
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:28px; align-items:stretch; margin-top:14px;
+}
+.geo-map{display:flex; flex-direction:column; gap:10px; min-width:0;}
+
+.geo-stage{
+  position:relative; flex:1 1 auto; min-height:0;
+  aspect-ratio:5 / 6;
+  background:var(--surface,#fff);
+  border:1px solid var(--border,rgba(0,0,0,.10));
+  border-radius:4px; overflow:hidden;
+}
+.geo-svg{display:block; width:100%; height:100%; touch-action:manipulation;}
+
+/* --- provincias --- */
+.geo-svg .prov{stroke:var(--surface,#fff); stroke-width:1;}
+.geo-svg .prov.off{fill:var(--bg2,#E8E4DF);}
+.geo-svg .prov.active{transition:fill-opacity .18s ease, stroke-width .18s ease;}
+.geo-svg .prov.active:hover{fill-opacity:.82; stroke:var(--ink,#111); stroke-width:1.4;}
+.geo-svg .prov.sel{stroke:var(--ink,#111); stroke-width:1.4;}
+.geo-svg .prov.active:focus{outline:none;}
+.geo-svg .prov.active:focus-visible{stroke:var(--ink,#111); stroke-width:1.8;}
+/* al hacer zoom, atenúa la capa país para que resalte el detalle */
+.geo-provinces.is-zoomed path{opacity:.12;}
+.geo-provinces.is-zoomed path.sel{opacity:1;}
+
+/* --- departamentos (detalle en zoom) --- */
+.geo-svg .dept{fill:var(--surface,#fff); stroke:var(--ink3,#8A8A8A); stroke-width:.7;}
+.geo-svg .dept.hl{stroke:var(--ink,#111); stroke-width:1;} /* fill = rampa por intensidad (inline desde JS) */
+
+/* --- tooltip plano (japandi, sin sombras pesadas) --- */
+.geo-tip{
+  position:absolute; z-index:5; pointer-events:none;
+  transform:translate(-50%,-130%);
+  background:var(--surface,#fff); color:var(--ink,#111);
+  border:1px solid var(--border,rgba(0,0,0,.14)); border-radius:4px;
+  padding:6px 9px; font:600 11px/1.3 'Montserrat',sans-serif;
+  white-space:nowrap; text-align:center; box-shadow:0 1px 0 rgba(0,0,0,.03);
+}
+.geo-tip[hidden]{display:none;}
+.geo-tip b{display:block; font-weight:700;}
+.geo-tip i{font-style:normal; font-weight:500; color:var(--ink3,#8A8A8A); font-size:10px;}
+
+/* --- botón volver (sobre el mapa) --- */
+.geo-back{
+  position:absolute; top:10px; left:10px; z-index:3;
+  display:none; align-items:center; gap:6px;
+  font:600 11px/1 'Montserrat',sans-serif; letter-spacing:.02em;
+  color:var(--ink,#111); background:var(--surface,#fff);
+  border:1px solid var(--border,rgba(0,0,0,.14));
+  border-radius:999px; padding:7px 12px; cursor:pointer;
+  box-shadow:0 1px 0 rgba(0,0,0,.03); transition:background .15s ease;
+}
+.geo-back:hover{background:var(--bg,#F0EDE8);}
+.geo-wrap[data-zoomed] .geo-back{display:inline-flex;}
+
+/* --- leyenda rampa (pantalla) --- */
+.geo-legend{
+  display:flex; align-items:center; gap:10px; margin:0;
+  font:500 10.5px/1 'Montserrat',sans-serif; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--ink3,#8A8A8A);
+}
+.geo-lg-ramp{
+  flex:1 1 auto; height:6px; border-radius:3px;
+  border:1px solid var(--border,rgba(0,0,0,.10));
+  background:linear-gradient(90deg,var(--ramp-lo) 0%,var(--ramp-mid) 45%,var(--ramp-hi) 100%);
+}
+/* leyenda textual solo para print (conserva la clave de intensidad en PDF) */
+.geo-legend-print{display:none;}
+
+/* --- overlay: loading / error --- */
+.geo-overlay{
+  position:absolute; inset:0; z-index:4;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--surface,#fff);
+  transition:opacity .3s ease; opacity:1;
+}
+.geo-overlay[data-state="ready"]{opacity:0; pointer-events:none;}
+.geo-ov-inner{text-align:center; display:flex; flex-direction:column; align-items:center; gap:12px; padding:20px;}
+.geo-ov-msg{margin:0; font:500 12.5px/1.4 'Montserrat',sans-serif; color:var(--ink2,#444); max-width:220px;}
+.geo-spark{
+  width:22px; height:22px; border-radius:50%;
+  border:2px solid var(--border,rgba(0,0,0,.14));
+  border-top-color:var(--ink,#111);
+  animation:geoSpin .8s linear infinite;
+}
+@keyframes geoSpin{to{transform:rotate(360deg);}}
+.geo-retry{
+  display:none; font:600 11px/1 'Montserrat',sans-serif; letter-spacing:.02em;
+  color:var(--ink,#111); background:transparent;
+  border:1px solid var(--ink,#111); border-radius:999px;
+  padding:8px 16px; cursor:pointer;
+}
+.geo-overlay[data-state="error"] .geo-spark{display:none;}
+.geo-overlay[data-state="error"] .geo-retry{display:inline-block;}
+
+/* ===== Panel info ===== */
+.geo-info{
+  display:flex; flex-direction:column; min-width:0;
+  padding:20px 22px;
+  background:var(--surface,#fff);
+  border:1px solid var(--border,rgba(0,0,0,.10));
+  border-radius:4px;
+}
+.gi-eye{
+  font:600 10.5px/1 'Montserrat',sans-serif; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink3,#8A8A8A);
+}
+.gi-head{margin-bottom:12px;}
+.gi-title{
+  margin:2px 0 10px; font:600 20px/1.15 'Montserrat',sans-serif;
+  letter-spacing:-.01em; color:var(--ink,#111);
+}
+.gi-big{display:flex; align-items:baseline; gap:10px; margin-bottom:16px;
+  padding-bottom:14px; border-bottom:1px solid var(--border,rgba(0,0,0,.10));}
+.gi-num{font:700 40px/.9 'Montserrat',sans-serif; letter-spacing:-.02em; color:var(--ink,#111); font-variant-numeric:tabular-nums;}
+.gi-lab{font:500 12px/1.35 'Montserrat',sans-serif; color:var(--ink2,#444);}
+.gi-sub{margin:0 0 8px; font:600 10.5px/1 'Montserrat',sans-serif;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--ink3,#8A8A8A);}
+
+.gi-bars{list-style:none; margin:0 0 14px; padding:0; display:flex; flex-direction:column; gap:9px;}
+.gi-bars li{display:grid; grid-template-columns:minmax(74px,34%) 1fr auto; align-items:center; gap:10px;}
+.gi-n{font:500 12px/1.2 'Montserrat',sans-serif; color:var(--ink,#111); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.gi-track{height:8px; background:var(--bg2,#E8E4DF); border-radius:2px; overflow:hidden;}
+.gi-fill{display:block; height:100%; background:var(--ink,#111); border-radius:2px;}
+.gi-v{font:600 12px/1 'Montserrat',sans-serif; color:var(--ink,#111); text-align:right; min-width:34px; font-variant-numeric:tabular-nums;}
+
+.gi-hint{margin:auto 0 0; padding-top:12px; font:500 11.5px/1.45 'Montserrat',sans-serif; color:var(--ink3,#8A8A8A);}
+.gi-empty{display:flex; flex-direction:column; gap:8px;}
+
+.gi-back{
+  margin-top:auto; align-self:flex-start;
+  font:600 11px/1 'Montserrat',sans-serif; letter-spacing:.02em;
+  color:var(--ink,#111); background:transparent;
+  border:1px solid var(--ink,#111); border-radius:999px;
+  padding:9px 16px; cursor:pointer; transition:background .15s ease, color .15s ease;
+}
+.gi-back:hover{background:var(--ink,#111); color:var(--surface,#fff);}
+
+/* ===== Responsive ===== */
+@media (max-width:860px){
+  .geo-wrap{grid-template-columns:1fr; gap:18px;}
+  .geo-stage{aspect-ratio:4 / 5;}
+  .gi-num{font-size:34px;}
+}
+
+/* ===== Print / PDF ===== */
+@media print{
+  .geo-back,.geo-retry,.geo-legend,.geo-tip{display:none !important;}
+  .geo-overlay[data-state="ready"]{display:none !important;}
+  /* si no cargó, dejar mensaje visible como fallback en vez de un cuadro en blanco */
+  .geo-overlay .geo-spark{display:none !important;}
+  .geo-legend-print{display:block; margin-top:8px; font:500 10px/1.4 'Montserrat',sans-serif; color:var(--ink2,#444);}
+  .geo-wrap{gap:18px;}
+}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
 </head>
 <body>
 <div id="progress-bar"></div>
@@ -645,18 +789,30 @@ tbody tr:last-child td{ border-bottom:none; }
       <span class="cmp-dd rank-dd" data-rank="loc"><button class="dd-btn" type="button"><span class="dd-val">—</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
     </div>
     <div class="bars" id="locBars"></div>
-    <div class="geo-wrap">
-      <div class="geo-map">
-        <svg class="geo-svg" viewBox="0 0 440 360" role="img" aria-label="Mapa de zonas de las consultas">
-          <path d="M300,20 C345,95 360,185 382,360 L440,360 L440,0 Z" fill="#E8E4DF"/>
-          <path d="M300,20 C345,95 360,185 382,360" fill="none" stroke="rgba(0,0,0,0.14)" stroke-width="1.5"/>
-          <text x="404" y="150" transform="rotate(80 404 150)" font-size="10" letter-spacing="2" fill="rgba(0,0,0,0.28)" font-weight="700">RÍO DE LA PLATA</text>
-          <g id="geoMarkers"></g>
-        </svg>
-        <div class="geo-legend">El tamaño del punto = cantidad de consultas · tocá una zona para ver el detalle →</div>
+    <!-- ===== Reemplaza el bloque .geo-wrap dentro de la lámina #s-localidades ===== -->
+<div class="geo-wrap" id="geoWrap">
+  <div class="geo-map">
+    <div class="geo-stage" id="geoStage">
+      <svg class="geo-svg" id="geoSvg" role="img" aria-label="Mapa de Argentina: consultas por provincia"></svg>
+      <div class="geo-tip" id="geoTip" hidden></div>
+      <button class="geo-back" id="geoBack" type="button" aria-label="Ver todo el país">&larr; Ver todo el país</button>
+      <div class="geo-overlay" id="geoOverlay" data-state="loading">
+        <div class="geo-ov-inner">
+          <span class="geo-spark" aria-hidden="true"></span>
+          <p class="geo-ov-msg">Cargando mapa…</p>
+          <button class="geo-retry" id="geoRetry" type="button">Reintentar</button>
+        </div>
       </div>
-      <div class="geo-info" id="geoInfo"></div>
     </div>
+    <p class="geo-legend" aria-hidden="true">
+      <span>Menos</span>
+      <span class="geo-lg-ramp"></span>
+      <span>Más consultas</span>
+    </p>
+    <p class="geo-legend-print">Intensidad de gris = volumen de consultas (más oscuro = más consultas).</p>
+  </div>
+  <aside class="geo-info" id="geoInfo"><!-- render dinámico --></aside>
+</div>
     <p class="note">No incluye "Sin informar" (buena parte de las consultas aún no tiene localidad cargada: may 323, jun 233). Abril es parcial (dato desde la 2ª quincena). Fuente: base de consultas.</p>
   </div>
 </div>
@@ -1006,7 +1162,7 @@ const LOCS = {
   jun:[{n:'CABA',v:80},{n:'Hudson',v:62},{n:'La Plata',v:26},{n:'Canning',v:18},{n:'Quilmes',v:18},{n:'Interior Bs. As.',v:18},{n:'Zona Norte',v:14},{n:'Zona Oeste',v:13}]
 };
 const RANKINGS = { prod:{ data:PRODUCTS, barsId:'prodBars', top:6 }, suc:{ data:SUCDERIV, barsId:'sucBars', top:6 }, loc:{ data:LOCS, barsId:'locBars', top:6 } };
-const rankState = { prod:null, suc:null, loc:null };
+const rankState = { prod:null, suc:null, loc:null }; window.rankState = rankState;
 /* Equipo: derivaciones y ventas por vendedor/a y por mes (del Excel; venta = "Realizó la compra"). */
 const VEND = [
   {n:"Agustina",   suc:"Hudson",    der:{ene:62,feb:66,mar:71,abr:54,may:52,jun:37}, ven:{ene:2,feb:0,mar:5,abr:1,may:2,jun:2}},
@@ -1197,7 +1353,7 @@ function renderRank(key){
   if(box) box.innerHTML = rows.length
     ? rows.map(p=>`<div class="bar2"><div class="bl">${p.n}</div><div class="bt"><div class="bf" style="width:${Math.max(8,Math.round(p.v/max*100))}%"></div></div><div class="br">${fmt(p.v)}</div></div>`).join('')
     : '<p class="note">Sin datos para este período.</p>';
-  if(key==='loc') renderGeo(view);
+  if(key==='loc' && window.renderGeo) window.renderGeo(view);
 }
 function buildRankings(){
   document.querySelectorAll('.rank-dd').forEach(dd=>{
@@ -1263,35 +1419,7 @@ function buildEquipo(){
   }
   renderEquipo();
 }
-/* ---- Mapa geográfico de zonas (sincronizado con el selector Ver del ranking loc) ---- */
-const GEO = {'CABA':[300,150],'Zona Norte':[278,112],'Norcenter':[266,124],'Zona Oeste':[233,162],'Canning':[258,202],'Quilmes':[302,190],'Hudson':[310,210],'Zona Sur':[286,205],'La Plata':[322,242],'Interior Bs. As.':[158,196],'Rosario':[196,112],'Santa Fe':[181,80],'Córdoba':[110,96]};
-let geoSel=null;
-function renderGeo(period){
-  const data=rankData(LOCS, period).filter(d=>GEO[d.n]);
-  const total=data.reduce((s,d)=>s+d.v,0)||1, max=data.length?data[0].v:1;
-  if(!geoSel || !data.find(d=>d.n===geoSel)) geoSel = data.length?data[0].n:null;
-  const g=document.getElementById('geoMarkers');
-  if(g) g.innerHTML = data.map((d,i)=>{
-    const p=GEO[d.n], r=6+Math.round((d.v/max)*18), sel=d.n===geoSel;
-    const lbl=(i<5||sel)?`<text x="${p[0]+r+4}" y="${p[1]+3}" class="geo-lbl${sel?' on':''}">${d.n}</text>`:'';
-    return `<g class="geo-mk${sel?' on':''}" data-zone="${d.n}"><circle cx="${p[0]}" cy="${p[1]}" r="${r}"><title>${d.n}: ${fmt(d.v)}</title></circle>${lbl}</g>`;
-  }).join('');
-  const info=document.getElementById('geoInfo');
-  if(info){
-    if(!geoSel){ info.innerHTML='<p class="note">Sin datos para este período.</p>'; return; }
-    const d=data.find(x=>x.n===geoSel), rank=data.findIndex(x=>x.n===geoSel)+1, pct=d.v/total*100;
-    info.innerHTML=`<div class="geo-i-l">Zona seleccionada</div>
-      <div class="geo-i-n">${d.n}</div>
-      <div class="geo-i-v">${fmt(d.v)} <span>consultas</span></div>
-      <div class="geo-i-bar"><i style="width:${Math.round(d.v/max*100)}%"></i></div>
-      <div class="geo-i-meta"><b>${fmt1(pct)}%</b> de las consultas con localidad · puesto <b>#${rank}</b> de ${data.length} zonas</div>`;
-  }
-}
-function buildGeo(){
-  const gm=document.getElementById('geoMarkers');
-  if(gm && !gm.dataset.wired){ gm.dataset.wired='1'; gm.addEventListener('click',e=>{ const mk=e.target.closest('.geo-mk'); if(!mk) return; geoSel=mk.dataset.zone; renderGeo(rankState.loc); }); }
-}
-function renderData(){ renderStatic(); renderFeet(); renderFunnel(); buildDropdowns(); buildRankings(); buildGeo(); buildEquipo(); renderCmps(); }
+function renderData(){ renderStatic(); renderFeet(); renderFunnel(); buildDropdowns(); buildRankings(); buildEquipo(); renderCmps(); }
 
 /* ===== NAVEGACIÓN (por orden en el DOM; agregar slides no rompe nada) ===== */
 const slides=[...document.querySelectorAll('.deck > .slide')];
@@ -1346,6 +1474,434 @@ deckEl.addEventListener('touchend', e=>{
 
 renderData();
 updateUI();
+</script>
+<script>
+/* ==== Mapa Argentina · choropleth editorial D3 (japandi monocromo) — MyS deck ==== */
+(function () {
+  'use strict';
+
+  /* ---------- Datos reales (no inventar) ---------- */
+  var TOPO_URL = 'https://cdn.jsdelivr.net/gh/mgaitan/departamentos_argentina/departamentos-argentina.topojson';
+  var OBJ = 'departamentos-argentina';
+
+  var PROV = {
+    'BUENOS AIRES': { abr: 52, may: 215, jun: 230 },
+    'CIUDAD AUTONOMA DE BUENOS AIRES': { abr: 23, may: 76, jun: 80 },
+    'CORDOBA': { abr: 7, may: 11, jun: 8 },
+    'SANTA FE': { abr: 15, may: 11, jun: 9 },
+    'ENTRE RIOS': { abr: 1, may: 5, jun: 2 },
+    'TUCUMAN': { abr: 1, may: 4, jun: 1 },
+    'NEUQUEN': { abr: 0, may: 4, jun: 6 },
+    'CHACO': { abr: 0, may: 1, jun: 1 },
+    'CORRIENTES': { abr: 0, may: 1, jun: 1 },
+    'MENDOZA': { abr: 2, may: 1, jun: 1 },
+    'SALTA': { abr: 1, may: 0, jun: 4 }
+  };
+
+  var LOCS = {
+    abr: [{ n: 'CABA', v: 23 }, { n: 'Rosario', v: 12 }, { n: 'Hudson', v: 11 }, { n: 'Interior Bs. As.', v: 10 }, { n: 'Córdoba', v: 7 }, { n: 'Canning', v: 5 }, { n: 'La Plata', v: 4 }, { n: 'Norcenter', v: 3 }],
+    may: [{ n: 'CABA', v: 76 }, { n: 'Hudson', v: 51 }, { n: 'La Plata', v: 24 }, { n: 'Zona Oeste', v: 19 }, { n: 'Interior Bs. As.', v: 19 }, { n: 'Quilmes', v: 17 }, { n: 'Zona Norte', v: 13 }, { n: 'Córdoba', v: 11 }],
+    jun: [{ n: 'CABA', v: 80 }, { n: 'Hudson', v: 62 }, { n: 'La Plata', v: 26 }, { n: 'Canning', v: 18 }, { n: 'Quilmes', v: 18 }, { n: 'Interior Bs. As.', v: 18 }, { n: 'Zona Norte', v: 14 }, { n: 'Zona Oeste', v: 13 }]
+  };
+
+  // zona (de LOCS) -> provincia (clave de PROV). El resto de zonas BA caen en 'BUENOS AIRES'.
+  var ZONE_PROV = {
+    'CABA': 'CIUDAD AUTONOMA DE BUENOS AIRES',
+    'Rosario': 'SANTA FE',
+    'Córdoba': 'CORDOBA',
+    'Hudson': 'BUENOS AIRES', 'La Plata': 'BUENOS AIRES', 'Canning': 'BUENOS AIRES',
+    'Quilmes': 'BUENOS AIRES', 'Zona Oeste': 'BUENOS AIRES', 'Zona Norte': 'BUENOS AIRES',
+    'Interior Bs. As.': 'BUENOS AIRES', 'Norcenter': 'BUENOS AIRES'
+  };
+
+  // departamentos a resaltar por provincia: depto normalizado -> zona de LOCS (para leer su valor).
+  // Nombres de depto verificados en el topojson (mayúsculas, sin acentos).
+  var DEPT_HL = {
+    'BUENOS AIRES': { 'QUILMES': 'Quilmes', 'BERAZATEGUI': 'Hudson', 'ESTEBAN ECHEVERRIA': 'Canning', 'LA PLATA': 'La Plata' }
+  };
+
+  var PERIODS = ['abr', 'may', 'jun'];
+
+  /* ---------- Helpers (reusa fmt/fmt1 del deck si existen) ---------- */
+  var fmt = window.fmt || function (n) { try { return new Intl.NumberFormat('es-AR').format(n); } catch (e) { return '' + n; } };
+  var fmt1 = window.fmt1 || function (n) { try { return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(n); } catch (e) { return '' + n; } };
+
+  // stripping de acentos con rango explícito de combining marks (no depende de \p{...})
+  function norm(s) { return (s == null ? '' : '' + s).normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().replace(/\s+/g, ' ').trim(); }
+  function esc(s) { return ('' + s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function prettyProv(p) {
+    if (p === 'CIUDAD AUTONOMA DE BUENOS AIRES') return 'Ciudad de Buenos Aires';
+    return p.toLowerCase().replace(/(^|\s|\.)\S/g, function (c) { return c.toUpperCase(); });
+  }
+  function periodLabel(p) { return { abr: 'Abril', may: 'Mayo', jun: 'Junio', acc: 'Acumulado · abr–jun' }[p] || p; }
+  function validPeriod(p) { return p === 'abr' || p === 'may' || p === 'jun' || p === 'acc'; }
+  function resolvePeriod(p) {
+    if (validPeriod(p)) return p;
+    var r = window.rankState && window.rankState.loc; // fallback: auto-sincroniza con el selector "Ver"
+    return validPeriod(r) ? r : state.period;
+  }
+
+  function provVal(name, period) { var d = PROV[name]; if (!d) return 0; return period === 'acc' ? (d.abr + d.may + d.jun) : (d[period] || 0); }
+  function totalPeriod(period) { var t = 0; Object.keys(PROV).forEach(function (k) { t += provVal(k, period); }); return t; }
+  function maxProv(period) { var m = 0; Object.keys(PROV).forEach(function (k) { var v = provVal(k, period); if (v > m) m = v; }); return m; }
+  function locsFor(period) {
+    if (period !== 'acc') return (LOCS[period] || []).slice();
+    var m = {};
+    PERIODS.forEach(function (p) { (LOCS[p] || []).forEach(function (o) { m[o.n] = (m[o.n] || 0) + o.v; }); });
+    return Object.keys(m).map(function (n) { return { n: n, v: m[n] }; }).sort(function (a, b) { return b.v - a.v; });
+  }
+
+  // rampa tokenizada: lee --ramp-lo / --ramp-hi del CSS (única fuente de verdad)
+  function rampBounds() {
+    var lo = '#D2CCC4', hi = '#141414';
+    try {
+      var cs = getComputedStyle(el.wrap);
+      var a = (cs.getPropertyValue('--ramp-lo') || '').trim();
+      var b = (cs.getPropertyValue('--ramp-hi') || '').trim();
+      if (a) lo = a; if (b) hi = b;
+    } catch (e) {}
+    return [lo, hi];
+  }
+  // escala perceptual pow(.55) para que BA (230) no aplaste al resto; devuelve v -> color
+  function makeScale(max) {
+    if (!(max > 0)) max = 1;
+    var s = d3.scalePow().exponent(0.55).domain([0, max]).clamp(true).range([0, 1]);
+    var b = rampBounds();
+    var lerp = d3.interpolateLab(b[0], b[1]);
+    return function (v) { return lerp(s(v)); };
+  }
+
+  /* ---------- Estado / refs ---------- */
+  var state = { period: 'jun', loaded: false, loading: false, waitTries: 0, selected: null, topo: null, provFeatures: null, provByName: null, allFC: null, deptCache: {} };
+  var el = {};
+  var svg, gRoot, gProv, gDetail, projection, path, W = 520, H = 640;
+
+  function $(id) { return document.getElementById(id); }
+  function ready(fn) { if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+
+  ready(init);
+
+  function init() {
+    el.wrap = $('geoWrap'); if (!el.wrap) return;
+    el.stage = $('geoStage'); el.svg = $('geoSvg'); el.info = $('geoInfo');
+    el.overlay = $('geoOverlay'); el.ovMsg = el.overlay.querySelector('.geo-ov-msg');
+    el.back = $('geoBack'); el.retry = $('geoRetry'); el.tip = $('geoTip');
+
+    // período inicial desde el deck (si ya hay rankState) antes de dibujar
+    state.period = resolvePeriod(null);
+
+    el.back.addEventListener('click', deselect);
+    if (el.retry) el.retry.addEventListener('click', function () { state.loading = false; state.waitTries = 0; ensureLoad(); });
+    el.info.addEventListener('click', function (e) {
+      var t = e.target;
+      if (t && t.closest && t.closest('.gi-back')) deselect();
+    });
+
+    measure();
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (ents) {
+        ents.forEach(function (en) { if (en.isIntersecting) { io.disconnect(); ensureLoad(); } });
+      }, { root: null, threshold: 0.05 });
+      io.observe(el.wrap);
+    } else {
+      ensureLoad();
+    }
+    if (isVisible(el.wrap)) ensureLoad(); // safety si la lámina ya está en pantalla al arrancar
+
+    if ('ResizeObserver' in window) { new ResizeObserver(onResize).observe(el.stage); }
+    window.addEventListener('resize', onResize);
+    // blindaje PDF: nunca capturar un estado a medio-zoom
+    window.addEventListener('beforeprint', function () { if (state.selected) deselect(); });
+
+    renderInfo();
+  }
+
+  function isVisible(node) {
+    if (!node || !node.offsetParent) return false;
+    var r = node.getBoundingClientRect();
+    return r.bottom > 0 && r.top < (window.innerHeight || document.documentElement.clientHeight);
+  }
+  function measure() {
+    var r = el.stage.getBoundingClientRect();
+    W = Math.max(200, Math.round(r.width) || W);
+    H = Math.max(200, Math.round(r.height) || H);
+  }
+  function setOverlay(name, msg) { el.overlay.setAttribute('data-state', name); if (msg && el.ovMsg) el.ovMsg.textContent = msg; }
+
+  /* ---------- Carga lazy (con poll de librerías, no error duro) ---------- */
+  function ensureLoad() {
+    if (state.loaded || state.loading) return;
+    if (typeof d3 === 'undefined' || typeof topojson === 'undefined') {
+      // los <script> del head pueden cargar tarde/async: reintentar en vez de fallar
+      state.waitTries++;
+      if (state.waitTries > 100) { setOverlay('error', 'No se pudieron cargar las librerías del mapa.'); return; }
+      setOverlay('loading', 'Cargando mapa…');
+      setTimeout(ensureLoad, 80);
+      return;
+    }
+    state.loading = true;
+    setOverlay('loading', 'Cargando mapa…');
+    d3.json(TOPO_URL).then(function (topo) {
+      state.topo = topo;
+      buildGeo(topo);
+      state.loaded = true; state.loading = false;
+      setup();
+      setOverlay('ready');
+      drawCountry();
+      recolor();
+      renderInfo();
+    }).catch(function () {
+      state.loading = false;
+      setOverlay('error', 'No se pudo cargar el mapa. Verificá la conexión.');
+    });
+  }
+
+  function buildGeo(topo) {
+    var geoms = topo.objects[OBJ].geometries, by = {};
+    geoms.forEach(function (g) {
+      var p = g.properties && g.properties.provincia; if (!p) return;
+      (by[p] = by[p] || []).push(g);
+    });
+    // fusionar departamentos por provincia -> 24 polígonos de provincia
+    state.provFeatures = Object.keys(by).map(function (p) {
+      return { type: 'Feature', properties: { provincia: p }, geometry: topojson.merge(topo, by[p]) };
+    });
+    state.provByName = {};
+    state.provFeatures.forEach(function (f) { state.provByName[f.properties.provincia] = f; });
+  }
+  function allFeatures() {
+    if (!state.allFC) state.allFC = topojson.feature(state.topo, state.topo.objects[OBJ]);
+    return state.allFC;
+  }
+  // departamentos individuales por provincia (cacheados) = las "zonas"/partidos para el zoom
+  function deptsFor(prov) {
+    if (state.deptCache[prov]) return state.deptCache[prov];
+    var arr = allFeatures().features.filter(function (f) { return f.properties.provincia === prov; });
+    state.deptCache[prov] = arr;
+    return arr;
+  }
+
+  function setup() {
+    measure();
+    svg = d3.select(el.svg).attr('viewBox', '0 0 ' + W + ' ' + H).attr('preserveAspectRatio', 'xMidYMid meet');
+    svg.selectAll('*').remove();
+    gRoot = svg.append('g').attr('class', 'geo-zoom');
+    gProv = gRoot.append('g').attr('class', 'geo-provinces');
+    gDetail = gRoot.append('g').attr('class', 'geo-detail');
+    projection = d3.geoMercator().fitSize([W, H], { type: 'FeatureCollection', features: state.provFeatures });
+    path = d3.geoPath(projection);
+  }
+
+  function drawCountry() {
+    var sel = gProv.selectAll('path').data(state.provFeatures, function (d) { return d.properties.provincia; })
+      .join('path')
+      .attr('d', path)
+      .attr('vector-effect', 'non-scaling-stroke')
+      .attr('class', function (d) { return PROV[d.properties.provincia] ? 'prov active' : 'prov off'; })
+      .style('cursor', function (d) { return PROV[d.properties.provincia] ? 'pointer' : 'default'; })
+      .attr('tabindex', function (d) { return PROV[d.properties.provincia] ? 0 : null; })
+      .attr('role', function (d) { return PROV[d.properties.provincia] ? 'button' : null; })
+      .on('click', function (e, d) { if (PROV[d.properties.provincia]) select(d.properties.provincia); })
+      .on('keydown', function (e, d) {
+        if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') && PROV[d.properties.provincia]) { e.preventDefault(); select(d.properties.provincia); }
+      })
+      .on('mousemove', function (e, d) {
+        var p = d.properties.provincia;
+        if (!PROV[p]) { hideTip(); return; }
+        showTip('<b>' + esc(prettyProv(p)) + '</b><i>' + fmt(provVal(p, state.period)) + ' consultas</i>', e);
+      })
+      .on('mouseleave', hideTip);
+    sel.selectAll('title').remove();
+    // micro-entrada de la vista país (momento de apertura, sutil)
+    gProv.style('opacity', 0).transition().duration(520).ease(d3.easeCubicOut).style('opacity', 1);
+  }
+
+  function recolor() {
+    if (!state.loaded) return;
+    var scale = makeScale(maxProv(state.period));
+    gProv.selectAll('path.active')
+      .style('fill', function (d) { return scale(provVal(d.properties.provincia, state.period)); })
+      .attr('aria-label', function (d) { return prettyProv(d.properties.provincia) + ', ' + provVal(d.properties.provincia, state.period) + ' consultas'; });
+  }
+
+  /* ---------- Tooltip (plano) ---------- */
+  function showTip(html, ev) { if (!el.tip) return; el.tip.hidden = false; el.tip.innerHTML = html; moveTip(ev); }
+  function moveTip(ev) {
+    if (!el.tip || el.tip.hidden) return;
+    var r = el.stage.getBoundingClientRect();
+    el.tip.style.left = (ev.clientX - r.left) + 'px';
+    el.tip.style.top = (ev.clientY - r.top) + 'px';
+  }
+  function hideTip() { if (el.tip) el.tip.hidden = true; }
+
+  /* ---------- Zoom (transform SVG sobre <g>, misma proyección) ---------- */
+  function zoomTo(feature, animate) {
+    var b = path.bounds(feature);
+    var dx = b[1][0] - b[0][0], dy = b[1][1] - b[0][1];
+    var cx = (b[0][0] + b[1][0]) / 2, cy = (b[0][1] + b[1][1]) / 2;
+    var k = Math.max(1, Math.min(10, 0.88 * Math.min(W / dx, H / dy)));
+    var tr = 'translate(' + (W / 2 - k * cx) + ',' + (H / 2 - k * cy) + ') scale(' + k + ')';
+    (animate ? gRoot.transition().duration(760).ease(d3.easeCubicInOut) : gRoot).attr('transform', tr);
+  }
+  function resetZoom(animate) {
+    (animate ? gRoot.transition().duration(700).ease(d3.easeCubicInOut) : gRoot).attr('transform', null);
+  }
+
+  function updateAria() {
+    if (!el.svg) return;
+    el.svg.setAttribute('aria-label', state.selected
+      ? 'Detalle de ' + prettyProv(state.selected) + ': partidos con consultas'
+      : 'Mapa de Argentina: consultas por provincia');
+  }
+
+  function select(prov) {
+    if (state.selected === prov) { deselect(); return; } // toggle (UX de Dir 2)
+    state.selected = prov;
+    var per = state.period;
+
+    // valores de zona -> depto (para resaltar partidos por intensidad)
+    var zones = locsFor(per).filter(function (o) { return ZONE_PROV[o.n] === prov; });
+    var zoneVal = {}; zones.forEach(function (z) { zoneVal[z.n] = z.v; });
+    var hlMap = DEPT_HL[prov] || {};
+    var deptVal = {}, hmax = 0;
+    Object.keys(hlMap).forEach(function (dn) { var v = zoneVal[hlMap[dn]] || 0; deptVal[dn] = v; if (v > hmax) hmax = v; });
+    var dscale = makeScale(hmax || 1);
+
+    var depts = deptsFor(prov);
+    gDetail.selectAll('path').remove();
+    var dsel = gDetail.selectAll('path').data(depts).enter().append('path')
+      .attr('d', path)
+      .attr('vector-effect', 'non-scaling-stroke')
+      .attr('class', function (d) { var k = norm(d.properties.departamento); return (deptVal[k] > 0) ? 'dept hl' : 'dept'; })
+      .style('fill', function (d) { var k = norm(d.properties.departamento); return (deptVal[k] > 0) ? dscale(deptVal[k]) : null; });
+    // tooltip sobre departamentos
+    dsel.on('mousemove', function (e, d) {
+      var k = norm(d.properties.departamento), v = deptVal[k];
+      showTip('<b>' + esc(prettyProv(d.properties.departamento)) + '</b><i>' + (v > 0 ? fmt(v) + ' consultas' : 'zona') + '</i>', e);
+    }).on('mouseleave', hideTip);
+    // fade-in del detalle
+    gDetail.style('opacity', 0).transition().duration(420).style('opacity', 1);
+
+    gProv.classed('is-zoomed', true);
+    gProv.selectAll('path').classed('sel', function (d) { return d.properties.provincia === prov; });
+    el.wrap.setAttribute('data-zoomed', '1');
+    zoomTo(state.provByName[prov], true);
+    updateAria();
+    renderInfo();
+  }
+  function deselect() {
+    if (!state.selected) { return; }
+    state.selected = null;
+    hideTip();
+    if (gDetail) gDetail.selectAll('path').remove();
+    if (gProv) gProv.classed('is-zoomed', false).selectAll('path').classed('sel', false);
+    el.wrap.removeAttribute('data-zoomed');
+    if (gRoot) resetZoom(true);
+    updateAria();
+    renderInfo();
+  }
+
+  function onResize() {
+    measure();
+    if (!state.loaded) return;
+    svg.attr('viewBox', '0 0 ' + W + ' ' + H);
+    projection.fitSize([W, H], { type: 'FeatureCollection', features: state.provFeatures });
+    gProv.selectAll('path').attr('d', path);
+    gDetail.selectAll('path').attr('d', path);
+    if (state.selected) zoomTo(state.provByName[state.selected], false); else resetZoom(false);
+  }
+
+  /* ---------- Panel info (barras teñidas con la MISMA rampa) ---------- */
+  function barList(items, max, colorFn) {
+    max = max || (items.length ? d3.max(items, function (d) { return d.v; }) : 1) || 1;
+    return '<ul class="gi-bars">' + items.map(function (it) {
+      var w = Math.max(4, Math.round(it.v / max * 100));
+      var c = colorFn ? colorFn(it.v) : 'var(--ink,#111)';
+      return '<li><span class="gi-n">' + esc(it.n) + '</span>' +
+        '<span class="gi-track"><span class="gi-fill" style="width:' + w + '%;background:' + c + '"></span></span>' +
+        '<span class="gi-v">' + fmt(it.v) + '</span></li>';
+    }).join('') + '</ul>';
+  }
+
+  function renderInfo() {
+    if (!el.info) return;
+    if (!state.loaded) {
+      el.info.innerHTML = '<div class="gi-empty"><span class="gi-eye">Mapa de consultas</span>' +
+        '<p class="gi-hint">Preparando el mapa…</p></div>';
+      return;
+    }
+    var per = state.period, lab = periodLabel(per);
+
+    if (state.selected) {
+      var prov = state.selected, tot = provVal(prov, per), gt = totalPeriod(per), pct = gt ? tot / gt * 100 : 0;
+      var zones = locsFor(per).filter(function (o) { return ZONE_PROV[o.n] === prov; });
+      var zscale = makeScale(zones.length ? d3.max(zones, function (d) { return d.v; }) : 1);
+      var body = '<div class="gi-head"><span class="gi-eye">Provincia · ' + esc(lab) + '</span></div>' +
+        '<h4 class="gi-title">' + esc(prettyProv(prov)) + '</h4>' +
+        '<div class="gi-big"><span class="gi-num">' + fmt(tot) + '</span>' +
+        '<span class="gi-lab">consultas · ' + fmt1(pct) + '% del total nacional</span></div>';
+      if (zones.length) body += '<p class="gi-sub">Zonas más consultadas</p>' + barList(zones, null, zscale);
+      else body += '<p class="gi-hint">Sin desglose de zonas para este período.</p>';
+      body += '<button class="gi-back" type="button">&larr; Ver todo el país</button>';
+      el.info.innerHTML = body;
+      return;
+    }
+
+    var provs = Object.keys(PROV).map(function (k) { return { n: prettyProv(k), v: provVal(k, per) }; })
+      .filter(function (o) { return o.v > 0; }).sort(function (a, b) { return b.v - a.v; });
+    var maxv = provs.length ? provs[0].v : 1;
+    var pscale = makeScale(maxv);
+    el.info.innerHTML =
+      '<div class="gi-head"><span class="gi-eye">Consultas por provincia</span></div>' +
+      '<div class="gi-big"><span class="gi-num">' + fmt(totalPeriod(per)) + '</span>' +
+      '<span class="gi-lab">consultas · ' + esc(lab) + '</span></div>' +
+      barList(provs, maxv, pscale) +
+      '<p class="gi-hint">Tocá o hacé clic en una provincia resaltada para ver sus zonas.</p>';
+  }
+
+  /* ---------- API pública (la llama el deck desde renderRank('loc')) ---------- */
+  window.renderGeo = function (period) {
+    state.period = resolvePeriod(period); // acepta 'abr'|'may'|'jun'|'acc' o lee rankState.loc
+    if (!state.loaded) { if (el.wrap && isVisible(el.wrap)) ensureLoad(); return; } // guarda período y lo aplica al cargar
+    if (state.selected) select.__refresh ? null : null; // (no-op; el refresh real es abajo)
+    recolor();
+    if (state.selected) {
+      // re-pintar detalle e info del período nuevo sin perder el zoom
+      var prov = state.selected;
+      state.selected = null;         // evita el toggle interno de select()
+      selectSilently(prov);
+    } else {
+      renderInfo();
+    }
+  };
+
+  // re-selecciona sin toggle ni re-animar cámara innecesariamente (para cambios de período en zoom)
+  function selectSilently(prov) {
+    state.selected = prov;
+    var per = state.period;
+    var zones = locsFor(per).filter(function (o) { return ZONE_PROV[o.n] === prov; });
+    var zoneVal = {}; zones.forEach(function (z) { zoneVal[z.n] = z.v; });
+    var hlMap = DEPT_HL[prov] || {};
+    var deptVal = {}, hmax = 0;
+    Object.keys(hlMap).forEach(function (dn) { var v = zoneVal[hlMap[dn]] || 0; deptVal[dn] = v; if (v > hmax) hmax = v; });
+    var dscale = makeScale(hmax || 1);
+    var depts = deptsFor(prov);
+    gDetail.selectAll('path').remove();
+    gDetail.selectAll('path').data(depts).enter().append('path')
+      .attr('d', path)
+      .attr('vector-effect', 'non-scaling-stroke')
+      .attr('class', function (d) { var k = norm(d.properties.departamento); return (deptVal[k] > 0) ? 'dept hl' : 'dept'; })
+      .style('fill', function (d) { var k = norm(d.properties.departamento); return (deptVal[k] > 0) ? dscale(deptVal[k]) : null; })
+      .on('mousemove', function (e, d) {
+        var k = norm(d.properties.departamento), v = deptVal[k];
+        showTip('<b>' + esc(prettyProv(d.properties.departamento)) + '</b><i>' + (v > 0 ? fmt(v) + ' consultas' : 'zona') + '</i>', e);
+      }).on('mouseleave', hideTip);
+    gProv.classed('is-zoomed', true).selectAll('path').classed('sel', function (d) { return d.properties.provincia === prov; });
+    el.wrap.setAttribute('data-zoomed', '1');
+    renderInfo();
+  }
+})();
 </script>
 </body>
 </html>
