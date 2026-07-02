@@ -423,13 +423,14 @@ tbody tr:last-child td{ border-bottom:none; }
     </div>
   </div>
   <div class="menu-cat">
-    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Consultas y ventas</span><span class="mp-count">8</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Consultas y ventas</span><span class="mp-count">9</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
     <div class="menu-sub">
       <div class="menu-item" data-target="s-div1" onclick="goToId('s-div1')"><span class="mnum">4</span> Apertura</div>
       <div class="menu-item" data-target="s-consultas-mes" onclick="goToId('s-consultas-mes')"><span class="mnum">5</span> Consultas por mes</div>
       <div class="menu-item" data-target="s-embudo" onclick="goToId('s-embudo')"><span class="mnum">6</span> El recorrido (embudo)</div>
       <div class="menu-item" data-target="s-productos" onclick="goToId('s-productos')"><span class="mnum">7</span> Productos más consultados</div>
-      <div class="menu-item" data-target="s-deriv-mes" onclick="goToId('s-deriv-mes')"><span class="mnum">8</span> Derivaciones por mes</div>
+      <div class="menu-item" data-target="s-localidades" onclick="goToId('s-localidades')"><span class="mnum">8</span> De qué zonas nos consultan</div>
+      <div class="menu-item" data-target="s-deriv-mes" onclick="goToId('s-deriv-mes')"><span class="mnum">9</span> Derivaciones por mes</div>
       <div class="menu-item" data-target="s-ventas" onclick="goToId('s-ventas')"><span class="mnum">9</span> Ventas y conversión</div>
       <div class="menu-item" data-target="s-sucursal" onclick="goToId('s-sucursal')"><span class="mnum">10</span> Por sucursal</div>
       <div class="menu-item" data-target="s-equipo" onclick="goToId('s-equipo')"><span class="mnum">11</span> Equipo de ventas</div>
@@ -541,7 +542,7 @@ tbody tr:last-child td{ border-bottom:none; }
     <div class="divider">
       <div class="div-top">
         <div><div class="div-kicker">Sección</div><div class="div-num">01</div></div>
-        <div class="div-meta"><div class="dm-l">En este bloque</div><div class="dm-v">7 láminas</div></div>
+        <div class="div-meta"><div class="dm-l">En este bloque</div><div class="dm-v">8 láminas</div></div>
       </div>
       <div class="div-title">Consultas, derivaciones <em>y ventas</em></div>
       <div class="div-sub">El recorrido completo: cuántas consultas llegaron, cuántas derivamos a cada sucursal y cuántas terminaron en venta, mes a mes.</div>
@@ -609,6 +610,21 @@ tbody tr:last-child td{ border-bottom:none; }
     </div>
     <div class="bars" id="prodBars"></div>
     <p class="note">No incluye "sin información" (consultas sin producto identificado en el sistema).</p>
+  </div>
+</div>
+
+<!-- DE QUE ZONAS NOS CONSULTAN -->
+<div class="slide" id="s-localidades">
+  <div class="slide-inner">
+    <div class="eyebrow">Consultas · geografía</div>
+    <div class="s-title">¿De qué zonas <em>nos consultan?</em></div>
+    <div class="s-sub">Localidades de donde llegan las consultas. El dato se empezó a cargar a mediados de abril, así que se mide desde ahí (mayo y junio ya son meses completos). Elegí el período con "Ver".</div>
+    <div class="cmp-bar">
+      <span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Ver</span>
+      <span class="cmp-dd rank-dd" data-rank="loc"><button class="dd-btn" type="button"><span class="dd-val">—</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span>
+    </div>
+    <div class="bars" id="locBars"></div>
+    <p class="note">No incluye "Sin informar" (buena parte de las consultas aún no tiene localidad cargada: may 323, jun 233). Abril es parcial (dato desde la 2ª quincena). Fuente: base de consultas.</p>
   </div>
 </div>
 
@@ -951,8 +967,13 @@ const SUCDERIV = {
   may:[{n:'Hudson',v:139},{n:'CABA',v:121},{n:'Norcenter',v:35},{n:'Canning',v:24}],
   jun:[{n:'Hudson',v:126},{n:'CABA',v:112},{n:'Canning',v:34},{n:'Norcenter',v:30}]
 };
-const RANKINGS = { prod:{ data:PRODUCTS, barsId:'prodBars', top:6 }, suc:{ data:SUCDERIV, barsId:'sucBars', top:6 } };
-const rankState = { prod:null, suc:null };
+const LOCS = {
+  abr:[{n:'CABA',v:23},{n:'Rosario',v:12},{n:'Hudson',v:11},{n:'Interior Bs. As.',v:10},{n:'Córdoba',v:7},{n:'Canning',v:5},{n:'La Plata',v:4},{n:'Norcenter',v:3}],
+  may:[{n:'CABA',v:76},{n:'Hudson',v:51},{n:'La Plata',v:24},{n:'Zona Oeste',v:19},{n:'Interior Bs. As.',v:19},{n:'Quilmes',v:17},{n:'Zona Norte',v:13},{n:'Córdoba',v:11}],
+  jun:[{n:'CABA',v:80},{n:'Hudson',v:62},{n:'La Plata',v:26},{n:'Canning',v:18},{n:'Quilmes',v:18},{n:'Interior Bs. As.',v:18},{n:'Zona Norte',v:14},{n:'Zona Oeste',v:13}]
+};
+const RANKINGS = { prod:{ data:PRODUCTS, barsId:'prodBars', top:6 }, suc:{ data:SUCDERIV, barsId:'sucBars', top:6 }, loc:{ data:LOCS, barsId:'locBars', top:8 } };
+const rankState = { prod:null, suc:null, loc:null };
 /* Equipo: derivaciones y ventas por vendedor/a y por mes (del Excel; venta = "Realizó la compra"). */
 const VEND = [
   {n:"Agustina",   suc:"Hudson",    der:{ene:62,feb:66,mar:71,abr:54,may:52,jun:37}, ven:{ene:2,feb:0,mar:5,abr:1,may:2,jun:2}},
@@ -1216,6 +1237,7 @@ const TOTAL=slides.length;
 let current=1, animating=false;
 const dotRow=document.getElementById('dot-row');
 for(let i=1;i<=TOTAL;i++){ const d=document.createElement('div'); d.className='dot'+(i===1?' active':''); d.onclick=()=>goTo(i); dotRow.appendChild(d); }
+document.querySelectorAll('.menu-item').forEach(el=>{ const i=slides.findIndex(s=>s.id===el.dataset.target); const n=el.querySelector('.mnum'); if(i>=0&&n) n.textContent=i+1; });
 function updateUI(){
   document.getElementById('progress-bar').style.width=(current/TOTAL*100)+'%';
   document.getElementById('slide-counter').textContent=current+' / '+TOTAL;
