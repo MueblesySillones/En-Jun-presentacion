@@ -59,6 +59,8 @@ html,body{ width:100%; height:100%; overflow:hidden; font-family:'Montserrat',sa
 .month-card .mn{ font-size:clamp(34px,5vw,60px); font-weight:800; letter-spacing:-2px; line-height:.95; color:var(--ink); }
 .month-foot{ margin-top:26px; display:flex; align-items:center; gap:10px; font-size:14px; color:var(--ink3); font-weight:500; }
 .month-foot b{ color:var(--ink); font-weight:700; }
+#s-web-mes .month-card .mn{ font-size:clamp(20px,2.5vw,31px); letter-spacing:-1.5px; }
+#s-web-origen .bar2 .bf{ min-width:76px; }
 .bars{ display:flex; flex-direction:column; gap:16px; }
 .bar2{ display:flex; align-items:center; gap:20px; }
 .bar2 .bl{ width:120px; font-size:17px; font-weight:700; color:var(--ink); text-align:right; flex:0 0 auto; }
@@ -557,8 +559,169 @@ tbody tr:last-child td{ border-bottom:none; }
   .geo-wrap{gap:18px;}
 }
 </style>
+<style>
+/* ===== SECCIÓN MARKETING · "Estudio MyS — Agenda Editorial" (scopeada) ===== */
+[id^="s-mkt"]{ background:#F2EDE4; color:#2B2723; }
+[id^="s-mkt"] .slide-inner{ position:relative; overflow:hidden; font-family:'Montserrat',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+[id^="s-mkt"] h1,[id^="s-mkt"] h2,[id^="s-mkt"] h3,[id^="s-mkt"] p,[id^="s-mkt"] ul{ margin:0; padding:0; }
+[id^="s-mkt"] li{ list-style:none; }
+
+/* --- Sistema de revista: masthead + folio (coordenadas fijas en las 7) --- */
+[id^="s-mkt"] .mkt-masthead{ position:absolute; top:30px; left:72px; right:72px; z-index:3;
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  font-weight:600; font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:#8A8168;
+  padding-bottom:11px; border-bottom:1px solid rgba(138,129,104,.30); }
+[id^="s-mkt"] .mkt-masthead .r{ color:#6F7A5A; }
+[id^="s-mkt"] .mkt-folio{ position:absolute; right:44px; bottom:14px; z-index:0; pointer-events:none;
+  font-weight:800; font-size:clamp(92px,13vw,158px); line-height:.78; letter-spacing:-.03em;
+  color:#C79A4B; opacity:.17; font-variant-numeric:tabular-nums; }
+
+/* --- Tipografía fantasmal de capítulo (marca de agua) --- */
+[id^="s-mkt"] .mkt-ghost{ position:absolute; top:50%; right:-3%; transform:translateY(-50%); z-index:0; pointer-events:none;
+  font-weight:800; font-size:clamp(150px,25vw,320px); line-height:.8; letter-spacing:-.04em;
+  color:#2B2723; opacity:.045; white-space:nowrap; }
+
+/* --- Contenedor de página --- */
+[id^="s-mkt"] .mkt-page{ position:relative; z-index:1; width:100%; max-width:1060px; margin:0 auto; }
+[id^="s-mkt"] .mkt-page > * + *{ margin-top:clamp(14px,2.3vh,24px); }
+
+/* --- Kickers / antetítulos / etiquetas --- */
+[id^="s-mkt"] .mkt-kicker{ font-weight:600; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:#8A8168; }
+[id^="s-mkt"] .mkt-ante{ font-weight:600; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:#6F7A5A; }
+[id^="s-mkt"] .mkt-coltitle{ font-weight:600; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:#8A8168; margin-bottom:10px; }
+
+/* --- Hero portada (contraste 300/800) --- */
+[id^="s-mkt"] .mkt-hero{ line-height:.94; letter-spacing:-.02em; text-wrap:balance; }
+[id^="s-mkt"] .mkt-hero .l1{ display:block; font-weight:300; font-size:clamp(44px,6.6vw,82px); }
+[id^="s-mkt"] .mkt-hero .l2{ display:block; font-weight:800; font-size:clamp(44px,6.6vw,82px); }
+[id^="s-mkt"] .mkt-lead{ font-weight:300; font-size:clamp(15px,1.55vw,19px); line-height:1.55; color:#4d473e; max-width:640px; }
+
+/* --- Sumario / índice de revista --- */
+[id^="s-mkt"] .mkt-index{ display:flex; flex-direction:column; }
+[id^="s-mkt"] .mkt-index .row{ display:flex; align-items:baseline; gap:18px; padding:11px 0; border-top:1px solid rgba(138,129,104,.26); }
+[id^="s-mkt"] .mkt-index .row:last-child{ border-bottom:1px solid rgba(138,129,104,.26); }
+[id^="s-mkt"] .mkt-index .num{ font-weight:800; color:#C79A4B; font-variant-numeric:tabular-nums; width:36px; flex:0 0 36px; }
+[id^="s-mkt"] .mkt-index .t{ font-weight:400; font-size:clamp(15px,1.7vw,20px); }
+[id^="s-mkt"] .mkt-index .t b{ font-weight:700; }
+
+/* --- Notas de tapa: titular gigante + antetítulo --- */
+[id^="s-mkt"] .mkt-cover{ font-weight:800; font-size:clamp(50px,8vw,96px); line-height:.9; letter-spacing:-.03em; text-wrap:balance; }
+[id^="s-mkt"] .mkt-blocktitle{ font-weight:300; font-size:clamp(30px,4.6vw,50px); line-height:1; letter-spacing:-.02em; }
+[id^="s-mkt"] .mkt-blocktitle b{ font-weight:800; }
+
+/* --- Cifras protagonistas (línea base común) --- */
+[id^="s-mkt"] .mkt-figs{ display:grid; grid-template-columns:repeat(4,1fr); gap:26px; align-items:end; padding-top:6px; }
+[id^="s-mkt"] .mkt-fig .n{ font-weight:800; font-size:clamp(32px,4.3vw,54px); line-height:.95; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+[id^="s-mkt"] .mkt-fig .lab{ margin-top:10px; font-weight:600; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:#8A8168; }
+
+/* --- Pull quote --- */
+[id^="s-mkt"] .mkt-quote{ font-weight:300; font-size:clamp(17px,1.95vw,24px); line-height:1.4; max-width:820px; padding-left:22px; border-left:2px solid #C79A4B; color:#3a352e; }
+[id^="s-mkt"] .mkt-quote b{ font-weight:700; color:#2B2723; }
+
+/* --- Columnas con gutter editorial --- */
+[id^="s-mkt"] .mkt-cols{ display:grid; grid-template-columns:1fr 1fr; }
+[id^="s-mkt"] .mkt-cols.wa{ grid-template-columns:1.12fr 1fr; }
+[id^="s-mkt"] .mkt-cols > div{ min-width:0; }
+[id^="s-mkt"] .mkt-cols > div:first-child{ padding-right:40px; }
+[id^="s-mkt"] .mkt-cols > div:last-child{ padding-left:40px; border-left:1px solid rgba(138,129,104,.32); }
+
+/* --- Listas cortas aireadas --- */
+[id^="s-mkt"] .mkt-list li{ font-weight:300; font-size:14px; line-height:1.35; padding:8px 0; border-top:1px solid rgba(138,129,104,.22); }
+[id^="s-mkt"] .mkt-list li:first-child{ border-top:none; padding-top:2px; }
+
+/* --- Frentes / bloques editoriales cortos --- */
+[id^="s-mkt"] .mkt-front{ padding:11px 0; border-top:1px solid rgba(138,129,104,.22); }
+[id^="s-mkt"] .mkt-front:first-child{ border-top:none; padding-top:0; }
+[id^="s-mkt"] .mkt-front .k{ font-weight:700; font-size:14.5px; }
+[id^="s-mkt"] .mkt-front .k .no{ color:#C79A4B; font-variant-numeric:tabular-nums; margin-right:8px; }
+[id^="s-mkt"] .mkt-front .d{ font-weight:300; font-size:12.5px; line-height:1.4; color:#5a5348; margin-top:3px; }
+[id^="s-mkt"] .mkt-foot{ font-weight:300; font-size:12.5px; line-height:1.45; color:#6F7A5A; margin-top:16px; padding-top:12px; border-top:1px solid rgba(138,129,104,.3); }
+[id^="s-mkt"] .mkt-foot b{ font-weight:700; color:#2B2723; }
+
+/* --- Recuadro de referencia (competencia) --- */
+[id^="s-mkt"] .mkt-ref{ background:#E7DFD2; border-radius:2px; padding:16px 18px; margin-top:12px; }
+[id^="s-mkt"] .mkt-ref .r{ font-weight:700; font-size:15px; }
+[id^="s-mkt"] .mkt-ref .r + .r{ margin-top:12px; }
+[id^="s-mkt"] .mkt-ref .rd{ font-weight:300; font-size:11.5px; color:#5a5348; margin-top:2px; }
+
+/* --- Timeline vertical fino (agenda) --- */
+[id^="s-mkt"] .mkt-timeline{ position:relative; padding-left:32px; margin-top:8px; }
+[id^="s-mkt"] .mkt-timeline::before{ content:""; position:absolute; left:7px; top:10px; bottom:10px; width:1px; background:rgba(138,129,104,.4); }
+[id^="s-mkt"] .mkt-tl{ position:relative; padding:12px 0; }
+[id^="s-mkt"] .mkt-tl::before{ content:""; position:absolute; left:-29px; top:16px; width:9px; height:9px; border-radius:50%; background:#C79A4B; box-shadow:0 0 0 3px #F2EDE4; }
+[id^="s-mkt"] .mkt-tl .date{ font-weight:800; font-size:clamp(17px,2vw,22px); letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
+[id^="s-mkt"] .mkt-tl .ev{ font-weight:300; font-size:13.5px; line-height:1.4; color:#4d473e; margin-top:2px; }
+
+/* --- Checklist en dos sub-columnas --- */
+[id^="s-mkt"] .mkt-check{ columns:2; column-gap:30px; margin-top:2px; }
+[id^="s-mkt"] .mkt-check li{ font-weight:400; font-size:13px; padding:7px 0; break-inside:avoid; border-bottom:1px solid rgba(138,129,104,.18); }
+[id^="s-mkt"] .mkt-check li::before{ content:"—"; color:#C79A4B; margin-right:8px; }
+
+/* --- Contratapa: aliadas + acción social --- */
+[id^="s-mkt"] .mkt-ally .name{ font-weight:600; font-size:clamp(17px,1.9vw,22px); }
+[id^="s-mkt"] .mkt-ally .handle{ font-weight:300; font-size:12.5px; color:#8A8168; margin-left:2px; }
+[id^="s-mkt"] .mkt-ally .item{ padding:11px 0; border-top:1px solid rgba(138,129,104,.24); }
+[id^="s-mkt"] .mkt-ally .item:first-child{ border-top:none; }
+[id^="s-mkt"] .mkt-social{ background:#6F7A5A; color:#F2EDE4; border-radius:2px; padding:22px 24px; }
+[id^="s-mkt"] .mkt-social .st{ font-weight:600; font-size:11px; letter-spacing:.2em; text-transform:uppercase; opacity:.85; }
+[id^="s-mkt"] .mkt-social .sb{ font-weight:300; font-size:clamp(15px,1.7vw,19px); line-height:1.45; margin-top:10px; }
+[id^="s-mkt"] .mkt-social .sb b{ font-weight:700; }
+[id^="s-mkt"] .mkt-endquote{ font-weight:300; font-size:clamp(19px,2.3vw,29px); line-height:1.3; letter-spacing:-.01em; text-wrap:balance; max-width:800px; }
+[id^="s-mkt"] .mkt-endquote b{ font-weight:800; }
+[id^="s-mkt"] .mkt-colophon{ font-weight:600; font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:#8A8168; padding-top:14px; border-top:1px solid rgba(138,129,104,.3); }
+
+/* --- Foco visible --- */
+[id^="s-mkt"] .mkt-page :focus-visible{ outline:2px solid #C79A4B; outline-offset:3px; }
+
+/* --- Entrada sutil (contenido visible por defecto si no hay animación) --- */
+@media (prefers-reduced-motion:no-preference){
+  [id^="s-mkt"] .mkt-anim{ opacity:0; transform:translateY(12px); animation:mktIn .6s cubic-bezier(.2,.7,.2,1) both; }
+  [id^="s-mkt"] .mkt-d1{ animation-delay:.09s; }
+  [id^="s-mkt"] .mkt-d2{ animation-delay:.18s; }
+  [id^="s-mkt"] .mkt-d3{ animation-delay:.27s; }
+  [id^="s-mkt"] .mkt-d4{ animation-delay:.36s; }
+  @keyframes mktIn{ to{ opacity:1; transform:none; } }
+}
+</style>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<style>
+/* ===== Acentos por sección + animaciones de entrada ===== */
+:root{ --ig:#B85C8A; --web:#3E6E78; }
+[id^="s-ig"] .eyebrow{ color:var(--ig); }
+[id^="s-ig"] .s-title em{ color:var(--ig); }
+[id^="s-ig"] .cmp-bar{ border-color:var(--ig); color:var(--ig); }
+#s-div2 .div-num, #s-div2 .div-title em{ color:var(--ig); }
+[id^="s-web"] .eyebrow{ color:var(--web); }
+[id^="s-web"] .s-title em{ color:var(--web); }
+[id^="s-web"] .cmp-bar{ border-color:var(--web); color:var(--web); }
+#s-div3 .div-num, #s-div3 .div-title em{ color:var(--web); }
+@media (prefers-reduced-motion:no-preference){
+  .slide.active:not([id^="s-mkt"]) .slide-inner > *{ animation:slideUp .5s cubic-bezier(.2,.7,.2,1) both; }
+  .slide.active:not([id^="s-mkt"]) .slide-inner > *:nth-child(2){ animation-delay:.05s; }
+  .slide.active:not([id^="s-mkt"]) .slide-inner > *:nth-child(3){ animation-delay:.10s; }
+  .slide.active:not([id^="s-mkt"]) .slide-inner > *:nth-child(4){ animation-delay:.15s; }
+  .slide.active:not([id^="s-mkt"]) .slide-inner > *:nth-child(n+5){ animation-delay:.20s; }
+}
+@keyframes slideUp{ from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:none;} }
+.mkt-anim{ opacity:1; transform:none; animation:none; }
+@media (prefers-reduced-motion:no-preference){
+  .slide.active .mkt-anim{ animation:mktIn .6s cubic-bezier(.2,.7,.2,1) both; }
+}
+</style>
+<style>
+.cmp-bar{ position:relative; z-index:30; }
+.web-dd{ position:relative; display:inline-block; }
+.web-dd.open .dd-menu{ display:block; }
+.web-dd.open .dd-car{ transform:rotate(180deg); }
+#s-web-origen .slide-inner, #s-web-zonas .slide-inner, #s-web-pag .slide-inner{ padding-top:40px; padding-bottom:62px; }
+#s-web-origen .cmp-bar, #s-web-zonas .cmp-bar, #s-web-pag .cmp-bar{ margin-bottom:16px; }
+#s-web-origen .bars{ gap:10px; }
+#s-web-origen .bar2 .bt, #s-web-origen .bar2 .bf{ height:40px; }
+#s-web-origen .bar2 .bl{ width:170px; font-size:14px; white-space:nowrap; }
+#s-web-origen .bar2{ padding-top:5px; padding-bottom:5px; }
+#s-web-zonas tbody td, #s-web-pag tbody td{ padding-top:9px; padding-bottom:9px; }
+</style>
 </head>
 <body>
 <div id="progress-bar"></div>
@@ -579,11 +742,10 @@ tbody tr:last-child td{ border-bottom:none; }
     <div class="menu-title">Resumen del semestre · Ene–Jun 2026</div>
   </div>
   <div class="menu-cat">
-    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Introducción</span><span class="mp-count">3</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Introducción</span><span class="mp-count">2</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
     <div class="menu-sub">
       <div class="menu-item" data-target="s-portada" onclick="goToId('s-portada')"><span class="mnum">1</span> Portada</div>
       <div class="menu-item" data-target="s-intro" onclick="goToId('s-intro')"><span class="mnum">2</span> Qué van a ver hoy</div>
-      <div class="menu-item" data-target="s-resumen" onclick="goToId('s-resumen')"><span class="mnum">3</span> Resumen del semestre</div>
     </div>
   </div>
   <div class="menu-cat">
@@ -610,19 +772,25 @@ tbody tr:last-child td{ border-bottom:none; }
     </div>
   </div>
   <div class="menu-cat">
-    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Página web</span><span class="mp-count">4</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Página web</span><span class="mp-count">5</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
     <div class="menu-sub">
       <div class="menu-item" data-target="s-div3" onclick="goToId('s-div3')"><span class="mnum">16</span> Apertura</div>
       <div class="menu-item" data-target="s-web-mes" onclick="goToId('s-web-mes')"><span class="mnum">17</span> Visitas por mes</div>
       <div class="menu-item" data-target="s-web-origen" onclick="goToId('s-web-origen')"><span class="mnum">18</span> De dónde viene la gente</div>
-      <div class="menu-item" data-target="s-web-pag" onclick="goToId('s-web-pag')"><span class="mnum">19</span> Páginas más vistas</div>
+      <div class="menu-item" data-target="s-web-zonas" onclick="goToId('s-web-zonas')"><span class="mnum">19</span> De qué zonas nos visitan</div>
+      <div class="menu-item" data-target="s-web-pag" onclick="goToId('s-web-pag')"><span class="mnum">20</span> Páginas más vistas</div>
     </div>
   </div>
   <div class="menu-cat">
-    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Cierre</span><span class="mp-count">2</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <div class="menu-parent" onclick="toggleCat(this)"><span class="mp-txt">Marketing · lo que viene</span><span class="mp-count">7</span><svg class="menu-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
     <div class="menu-sub">
-      <div class="menu-item" data-target="s-diag" onclick="goToId('s-diag')"><span class="mnum">20</span> Diagnóstico general</div>
-      <div class="menu-item" data-target="s-cierre" onclick="goToId('s-cierre')"><span class="mnum">21</span> Conclusiones y próximos pasos</div>
+      <div class="menu-item" data-target="s-mkt-01" onclick="goToId('s-mkt-01')"><span class="mnum">0</span> Lo que viene</div>
+      <div class="menu-item" data-target="s-mkt-02" onclick="goToId('s-mkt-02')"><span class="mnum">0</span> Expo IDEAR</div>
+      <div class="menu-item" data-target="s-mkt-03" onclick="goToId('s-mkt-03')"><span class="mnum">0</span> Expo IDEAR · 360</div>
+      <div class="menu-item" data-target="s-mkt-04" onclick="goToId('s-mkt-04')"><span class="mnum">0</span> Nueva sucursal Nordelta</div>
+      <div class="menu-item" data-target="s-mkt-05" onclick="goToId('s-mkt-05')"><span class="mnum">0</span> Agenda de invierno</div>
+      <div class="menu-item" data-target="s-mkt-06" onclick="goToId('s-mkt-06')"><span class="mnum">0</span> Tiendas y estación</div>
+      <div class="menu-item" data-target="s-mkt-07" onclick="goToId('s-mkt-07')"><span class="mnum">0</span> Aliadas y propósito</div>
     </div>
   </div>
   <div class="menu-foot">Mueblesysillones · Enero–Junio 2026 · borrador (cargando datos)</div>
@@ -682,24 +850,6 @@ tbody tr:last-child td{ border-bottom:none; }
 </div>
 
 <!-- RESUMEN -->
-<div class="slide" id="s-resumen">
-  <div class="slide-inner">
-    <div class="eyebrow">De un vistazo</div>
-    <div class="s-title">Resumen <em>del semestre</em></div>
-    <div class="s-sub">Lo que mejoró y lo que tenemos para mejorar · enero a junio</div>
-    <div class="ba">
-      <div class="ba-col ahora">
-        <div class="bah"><span class="ico" style="width:22px;height:22px;"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span> Lo que mejoró</div>
-        <div class="ph-box"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> Se completa cuando estén cargados los 3 bloques.</div>
-      </div>
-      <div class="ba-col antes">
-        <div class="bah"><span class="ico" style="width:22px;height:22px;"><svg viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg></span> A trabajar</div>
-        <div class="ph-box"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> Se completa cuando estén cargados los 3 bloques.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- SEPARADOR 01 -->
 <div class="slide" id="s-div1">
   <div class="slide-inner">
@@ -1000,10 +1150,10 @@ tbody tr:last-child td{ border-bottom:none; }
     <div class="divider">
       <div class="div-top">
         <div><div class="div-kicker">Sección</div><div class="div-num">03</div></div>
-        <div class="div-meta"><div class="dm-l">En este bloque</div><div class="dm-v">3 láminas</div></div>
+        <div class="div-meta"><div class="dm-l">En este bloque</div><div class="dm-v">4 láminas</div></div>
       </div>
       <div class="div-title">Página <em>web</em></div>
-      <div class="div-sub">Cuánta gente visitó la web, de dónde llegó y qué fue a mirar.</div>
+      <div class="div-sub">Cuánta gente visitó la web, de dónde llegó, desde qué zonas y qué fue a mirar.</div>
       <div class="div-foot">
         <span class="df-item ph"><b>01</b> Consultas y ventas</span>
         <span class="df-item ph"><b>02</b> Instagram</span>
@@ -1044,14 +1194,25 @@ tbody tr:last-child td{ border-bottom:none; }
   <div class="slide-inner">
     <div class="eyebrow">Página web · origen</div>
     <div class="s-title">¿De dónde <em>viene la gente?</em></div>
-    <div class="s-sub">Por qué canal llegaron las visitas a la web</div>
-    <div class="bars">
-      <div class="bar2"><div class="bl">Búsqueda</div><div class="bt"><div class="bf" style="width:8%;"></div></div><div class="br ph">—</div></div>
-      <div class="bar2"><div class="bl">Directo</div><div class="bt"><div class="bf" style="width:8%;"></div></div><div class="br ph">—</div></div>
-      <div class="bar2"><div class="bl">Redes</div><div class="bt"><div class="bf" style="width:8%;"></div></div><div class="br ph">—</div></div>
-      <div class="bar2"><div class="bl">Pago/Ads</div><div class="bt"><div class="bf" style="width:8%;"></div></div><div class="br ph">—</div></div>
+    <div class="s-sub" id="wo-sub">Por qué canal llegaron las visitas</div>
+    <div class="cmp-bar"><span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.8L7 14"/></svg></span> Ver</span> <span class="web-dd" data-webdd="canales"><button class="dd-btn" type="button" onclick="webToggle(this)"><span class="dd-val">Semestre</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span></div>
+    <div class="bars" id="wo-bars"></div>
+    <p class="note" id="wo-note"></p>
+  </div>
+</div>
+
+<!-- WEB ZONAS -->
+<div class="slide" id="s-web-zonas">
+  <div class="slide-inner">
+    <div class="eyebrow">Página web · geografía</div>
+    <div class="s-title">¿De qué zonas <em>nos visitan?</em></div>
+    <div class="s-sub">Provincias y ciudades desde donde entran a la web</div>
+    <div class="cmp-bar"><span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.8L7 14"/></svg></span> Ver</span> <span class="web-dd" data-webdd="zonas"><button class="dd-btn" type="button" onclick="webToggle(this)"><span class="dd-val">Semestre</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span></div>
+    <div style="display:flex; gap:26px; align-items:flex-start; flex-wrap:wrap;">
+      <div style="flex:1; min-width:280px;"><div class="tbl"><table><thead><tr><th>Provincia</th><th class="num">Usuarios</th><th class="num">%</th></tr></thead><tbody id="wz-prov"></tbody></table></div></div>
+      <div style="flex:1; min-width:280px;"><div class="tbl"><table><thead><tr><th>Ciudad</th><th class="num">Usuarios</th></tr></thead><tbody id="wz-city"></tbody></table></div></div>
     </div>
-    <p class="note">Pendiente de carga de datos del Looker.</p>
+    <p class="note" id="wz-note"></p>
   </div>
 </div>
 
@@ -1060,66 +1221,21 @@ tbody tr:last-child td{ border-bottom:none; }
   <div class="slide-inner">
     <div class="eyebrow">Página web · contenido</div>
     <div class="s-title">Las páginas <em>más vistas</em></div>
-    <div class="s-sub">Qué fue lo que más miró la gente en la web</div>
-    <div class="tbl">
-      <table>
-        <thead><tr><th>Página</th><th class="num">Vistas</th></tr></thead>
-        <tbody>
-          <tr><td class="ph">—</td><td class="num ph">—</td></tr>
-          <tr><td class="ph">—</td><td class="num ph">—</td></tr>
-          <tr><td class="ph">—</td><td class="num ph">—</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="note">Pendiente de carga de datos del Looker.</p>
+    <div class="s-sub">Qué fue lo que más miró la gente (agrupado por sección)</div>
+    <div class="cmp-bar"><span class="cb-lbl"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.8L7 14"/></svg></span> Ver</span> <span class="web-dd" data-webdd="pag"><button class="dd-btn" type="button" onclick="webToggle(this)"><span class="dd-val">Semestre</span><span class="dd-car">▼</span></button><div class="dd-menu"></div></span></div>
+    <div class="tbl"><table><thead><tr><th>Sección</th><th class="num">Vistas</th><th class="num">%</th></tr></thead><tbody id="wp-body"></tbody></table></div>
+    <p class="note" id="wp-note"></p>
   </div>
 </div>
 
-<!-- DIAGNOSTICO -->
-<div class="slide" id="s-diag">
-  <div class="slide-inner">
-    <div class="eyebrow">Diagnóstico</div>
-    <div class="s-title">Qué funcionó <em>y qué no</em></div>
-    <div class="s-sub">Las conclusiones del semestre, en simple</div>
-    <div class="ba">
-      <div class="ba-col ahora">
-        <div class="bah"><span class="ico" style="width:22px;height:22px;"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Funcionó</div>
-        <div class="ph-box"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> Se redacta con los datos cargados.</div>
-      </div>
-      <div class="ba-col antes">
-        <div class="bah"><span class="ico" style="width:22px;height:22px;"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> A mejorar</div>
-        <div class="ph-box"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> Se redacta con los datos cargados.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- CIERRE -->
-<div class="slide dark" id="s-cierre">
-  <div class="slide-inner">
-    <img class="s12-logo" src="logo.png" alt="Mueblesysillones">
-    <div class="eyebrow">Hacia adelante</div>
-    <div class="s-title">Conclusiones <em>y próximos pasos</em></div>
-    <div class="s-sub" style="margin-bottom:30px;">Lo que nos llevamos del semestre y hacia dónde vamos</div>
-    <div class="ask-grid">
-      <div class="ask">
-        <div class="icirc"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span></div>
-        <div class="ah">Sostener lo que crece</div>
-        <div class="ap">Se completa con los datos cargados.</div>
-      </div>
-      <div class="ask">
-        <div class="icirc"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span></div>
-        <div class="ah">Corregir lo que frena</div>
-        <div class="ap">Se completa con los datos cargados.</div>
-      </div>
-      <div class="ask">
-        <div class="icirc"><span class="ico"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span></div>
-        <div class="ah">Próximo objetivo</div>
-        <div class="ap">Se completa con los datos cargados.</div>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- ===== SECCION MARKETING (lo que viene) ===== -->
+<div class="slide" id="s-mkt-01"><div class="slide-inner"><div class="mkt-masthead"><span>Estudio MyS · Agenda Editorial</span><span class="r">Invierno · Primavera 2026</span></div><div class="mkt-folio">Nº 01</div><div class="mkt-page"><div class="mkt-anim mkt-kicker">Sección Marketing · Muebles y Sillones</div><h1 class="mkt-anim mkt-d1 mkt-hero"><span class="l1">Lo que viene</span><span class="l2">Julio → Octubre 2026</span></h1><p class="mkt-anim mkt-d2 mkt-lead">Esto no son resultados: es la hoja de ruta de Marketing para la temporada. Todo lo que viene, ordenado como una agenda editorial que se lee de un vistazo.</p><div class="mkt-anim mkt-d3 mkt-index"><div class="row"><span class="num">01</span><span class="t"><b>Expo IDEAR</b> · City Bell, 1–10 octubre</span></div><div class="row"><span class="num">02</span><span class="t"><b>Nordelta</b> · nueva sucursal, agosto</span></div><div class="row"><span class="num">03</span><span class="t"><b>Agenda de invierno</b> · activaciones y SALE</span></div><div class="row"><span class="num">04</span><span class="t"><b>Tiendas & estación</b> · punto de venta y primavera</span></div><div class="row"><span class="num">05</span><span class="t"><b>Aliadas</b> · decoradoras & propósito</span></div></div></div></div></div>
+<div class="slide" id="s-mkt-02"><div class="slide-inner"><div class="mkt-masthead"><span>Estudio MyS · Agenda Editorial</span><span class="r">Invierno · Primavera 2026</span></div><div class="mkt-ghost">EXPO</div><div class="mkt-folio">Nº 02</div><div class="mkt-page"><div class="mkt-anim mkt-kicker">Nota de tapa · 01</div><div class="mkt-anim mkt-ante">City Bell · 1–10 octubre</div><h2 class="mkt-anim mkt-d1 mkt-cover">Expo IDEAR</h2><div class="mkt-anim mkt-d2 mkt-figs"><div class="mkt-fig"><div class="n">85.000</div><div class="lab">Visitantes</div></div><div class="mkt-fig"><div class="n">150</div><div class="lab">Expositores</div></div><div class="mkt-fig"><div class="n">35.000</div><div class="lab">Meta seguidores IG</div></div><div class="mkt-fig"><div class="n">$2,5M</div><div class="lab">Inversión</div></div></div><p class="mkt-anim mkt-d3 mkt-quote">En el centro del stand, una <b>Unidad Modelo totalmente amoblada</b>: la casa MyS, habitada y lista para recorrer.</p></div></div></div>
+<div class="slide" id="s-mkt-03"><div class="slide-inner"><div class="mkt-masthead"><span>Estudio MyS · Agenda Editorial</span><span class="r">Invierno · Primavera 2026</span></div><div class="mkt-ghost">IDEAR</div><div class="mkt-folio">Nº 03</div><div class="mkt-page"><div class="mkt-anim mkt-kicker">Nota de tapa · 01 — continúa</div><h3 class="mkt-anim mkt-d1 mkt-blocktitle">Plan <b>360</b> de comunicación</h3><div class="mkt-anim mkt-d2 mkt-cols"><div><div class="mkt-front"><div class="k"><span class="no">01</span>Vía pública</div><div class="d">Presencia en los accesos y en la ciudad durante el evento.</div></div><div class="mkt-front"><div class="k"><span class="no">02</span>Pauta digital</div><div class="d">Segmentación por interés y zona para traccionar visitas.</div></div><div class="mkt-front"><div class="k"><span class="no">03</span>Prensa & publinota</div><div class="d">Cobertura editorial que instala la marca en la agenda.</div></div></div><div><div class="mkt-front"><div class="k"><span class="no">04</span>Lunetas de colectivos</div><div class="d">La marca en movimiento por City Bell y alrededores.</div></div><div class="mkt-front"><div class="k"><span class="no">05</span>Volantes</div><div class="d">Contacto directo con el público en el predio.</div></div><p class="mkt-foot">Cinco frentes, un objetivo: llevar la conversación hacia la meta de <b>35.000 seguidores</b> en Instagram.</p></div></div></div></div></div>
+<div class="slide" id="s-mkt-04"><div class="slide-inner"><div class="mkt-masthead"><span>Estudio MyS · Agenda Editorial</span><span class="r">Invierno · Primavera 2026</span></div><div class="mkt-ghost">NORTE</div><div class="mkt-folio">Nº 04</div><div class="mkt-page"><div class="mkt-anim mkt-kicker">Nota de tapa · 02</div><div class="mkt-anim mkt-ante">Nueva sucursal · agosto</div><h2 class="mkt-anim mkt-d1 mkt-cover">Nordelta</h2><div class="mkt-anim mkt-d2 mkt-cols"><div><div class="mkt-coltitle">Plan de medios</div><ul class="mkt-list"><li>Radio local</li><li>Revista Nordelta</li><li>Clubes de rugby y hockey</li><li>Complejos de pádel</li><li>Influencers de zona norte</li><li>Vía pública</li></ul></div><div><div class="mkt-coltitle">Lectura de competencia</div><div class="mkt-ref"><div class="r">Kansas<div class="rd">Referencia de marca en la zona.</div></div><div class="r">Shopping Santa Bárbara<div class="rd">Polo comercial de referencia a monitorear.</div></div></div></div></div><p class="mkt-anim mkt-d3 mkt-quote">Es momento de <b>plantar bandera en Zona Norte</b>.</p></div></div></div>
+<div class="slide" id="s-mkt-05"><div class="slide-inner"><div class="mkt-masthead"><span>Estudio MyS · Agenda Editorial</span><span class="r">Invierno · Primavera 2026</span></div><div class="mkt-ghost">INVIERNO</div><div class="mkt-folio">Nº 05</div><div class="mkt-page"><div class="mkt-anim mkt-kicker">Cuadernillo · Agenda</div><h3 class="mkt-anim mkt-d1 mkt-blocktitle">Agenda de <b>invierno</b></h3><div class="mkt-anim mkt-d2 mkt-timeline"><div class="mkt-tl"><div class="date">Sáb 4/7</div><div class="ev">Envío a la costa — contenido en redes.</div></div><div class="mkt-tl"><div class="date">Mié 22/7</div><div class="ev">Activación Norcenter por vacaciones de invierno: ruleta y premios, decoradoras y contenido.</div></div><div class="mkt-tl"><div class="date">27/7</div><div class="ev">Arranca el SALE de invierno.</div></div><div class="mkt-tl"><div class="date">Canning</div><div class="ev">Reactivar vendedores, vía pública y barrios privados / hípicos.</div></div></div></div></div></div>
+<div class="slide" id="s-mkt-06"><div class="slide-inner"><div class="mkt-masthead"><span>Estudio MyS · Agenda Editorial</span><span class="r">Invierno · Primavera 2026</span></div><div class="mkt-ghost">TIENDAS</div><div class="mkt-folio">Nº 06</div><div class="mkt-page"><div class="mkt-anim mkt-kicker">Spread · Punto de venta & estación</div><div class="mkt-anim mkt-d1 mkt-cols wa"><div><div class="mkt-coltitle">Checklist de comunicaciones en tienda</div><ul class="mkt-check"><li>Flyers</li><li>QR de reseñas</li><li>Señalética</li><li>Plotters de vidriera</li><li>Muestrarios</li><li>Tótems</li><li>Etiquetado</li><li>Cuadros Historia MyS</li><li>MERCH</li></ul></div><div><div class="mkt-coltitle">Estación & locales</div><div class="mkt-front"><div class="k">Belgrano</div><div class="d">Disposición del local + pauta para departamentos.</div></div><div class="mkt-front"><div class="k">Septiembre · deco primavera/verano</div><div class="d">Almohadones, mantas y muebles de exterior.</div></div><div class="mkt-front"><div class="k">Alfombras</div><div class="d">Producción en estudio; evaluar comunicar en web.</div></div></div></div></div></div></div>
+<div class="slide" id="s-mkt-07"><div class="slide-inner"><div class="mkt-masthead"><span>Estudio MyS · Agenda Editorial</span><span class="r">Invierno · Primavera 2026</span></div><div class="mkt-folio">Nº 07</div><div class="mkt-page"><div class="mkt-anim mkt-kicker">Contratapa · Aliadas & propósito</div><div class="mkt-anim mkt-d1 mkt-cols"><div><div class="mkt-coltitle">Decoradoras aliadas</div><div class="mkt-ally"><div class="item"><span class="name">Sofía Saraví</span> <span class="handle">@sofisaravi.and.co</span></div><div class="item"><span class="name">Cecilia Posternak</span> <span class="handle">@cecilia.posternak</span></div><div class="item"><span class="name">Carina Micheli</span> <span class="handle">@carina.michelli</span></div></div></div><div><div class="mkt-social"><div class="st">Acción social</div><div class="sb">Junto a la <b>Fundación Justo Lamas</b>, donamos un sillón esquinero.</div></div></div></div><p class="mkt-anim mkt-d2 mkt-endquote">La temporada que viene se construye con <b>calidez, oficio y comunidad</b>.</p><div class="mkt-anim mkt-d3 mkt-colophon">Muebles y Sillones · Estudio MyS — Agenda Editorial · Invierno–Primavera 2026</div></div></div></div>
 
 </div><!-- /deck -->
 
@@ -1131,7 +1247,7 @@ const DATA = {
   consultas:{ type:'flow',  vals:{ ene:801, feb:1151, mar:595,  abr:628,  may:652,  jun:576  } },
   deriv:    { type:'flow',  vals:{ ene:594, feb:638,  mar:402,  abr:362,  may:326,  jun:304  } },
   ventas:   { type:'flow',  vals:{ ene:20,  feb:11,   mar:16,   abr:7,    may:16,   jun:8    } },
-  web:      { type:'flow',  vals:{ ene:null, feb:null, mar:null, abr:null, may:null, jun:null } },
+  web:      { type:'flow',  vals:{ ene:24416, feb:24999, mar:21249, abr:18488, may:22807, jun:18876 } },
   igNew:    { type:'flow',  vals:{ ene:680,    feb:735,   mar:883,   abr:2043,   may:2998,   jun:1294   } },
   igReach:  { type:'flow',  vals:{ ene:139700, feb:74500, mar:81800, abr:187900, may:214800, jun:350800 } },
   igVisits: { type:'flow',  vals:{ ene:8200,   feb:6900,  mar:7800,  abr:19300,  may:22100,  jun:14500  } },
@@ -1862,6 +1978,48 @@ updateUI();
     el.wrap.setAttribute('data-zoomed', '1');
     renderInfo();
   }
+})();
+</script>
+<script>
+(function(){
+var WD={"canales": {"totals": {"ene": 24416, "feb": 24999, "mar": 21249, "abr": 18488, "may": 22807, "jun": 18876}, "items": {"Búsqueda orgánica": {"ene": 6601, "feb": 6098, "mar": 4489, "abr": 4200, "may": 7504, "jun": 7782}, "Directo": {"ene": 6360, "feb": 6707, "mar": 5362, "abr": 5901, "may": 4753, "jun": 3574}, "Redes pagas": {"ene": 4114, "feb": 4433, "mar": 5827, "abr": 5336, "may": 5490, "jun": 3950}, "Búsqueda pagada": {"ene": 5410, "feb": 5539, "mar": 3900, "abr": 1236, "may": 1390, "jun": 129}, "Referidos": {"ene": 364, "feb": 354, "mar": 302, "abr": 277, "may": 2551, "jun": 2098}, "Redes orgánicas": {"ene": 496, "feb": 461, "mar": 478, "abr": 862, "may": 844, "jun": 1092}}}, "prov": {"totals": {"ene": 16006, "feb": 16127, "mar": 16332, "abr": 15512, "may": 19112, "jun": 15698}, "items": {"Prov. de Buenos Aires": {"ene": 7462, "feb": 7326, "mar": 7418, "abr": 6790, "may": 8014, "jun": 6381}, "CABA": {"ene": 5181, "feb": 5024, "mar": 4881, "abr": 4909, "may": 6043, "jun": 5035}, "Santa Fe": {"ene": 643, "feb": 847, "mar": 961, "abr": 924, "may": 1179, "jun": 1022}, "Córdoba": {"ene": 473, "feb": 517, "mar": 542, "abr": 665, "may": 853, "jun": 638}, "Neuquén": {"ene": 269, "feb": 279, "mar": 308, "abr": 216, "may": 356, "jun": 276}, "Tucumán": {"ene": 217, "feb": 229, "mar": 203, "abr": 158, "may": 204, "jun": 238}, "Corrientes": {"ene": 176, "feb": 216, "mar": 219, "abr": 166, "may": 211, "jun": 213}, "Mendoza": {"ene": 122, "feb": 165, "mar": 142, "abr": 159, "may": 344, "jun": 263}, "Salta": {"ene": 141, "feb": 162, "mar": 146, "abr": 117, "may": 227, "jun": 199}, "Entre Ríos": {"ene": 102, "feb": 101, "mar": 172, "abr": 155, "may": 190, "jun": 160}, "Río Negro": {"ene": 67, "feb": 83, "mar": 76, "abr": 109, "may": 155, "jun": 113}, "San Juan": {"ene": 95, "feb": 85, "mar": 94, "abr": 78, "may": 97, "jun": 101}}}, "city": {"totals": {"ene": 15340, "feb": 15404, "mar": 15988, "abr": 15069, "may": 18981, "jun": 15656}, "items": {"CABA": {"ene": 5181, "feb": 5024, "mar": 4881, "abr": 4909, "may": 6043, "jun": 5035}, "La Plata": {"ene": 603, "feb": 707, "mar": 682, "abr": 488, "may": 590, "jun": 415}, "Mar del Plata": {"ene": 445, "feb": 536, "mar": 487, "abr": 382, "may": 438, "jun": 326}, "Rosario": {"ene": 286, "feb": 344, "mar": 380, "abr": 424, "may": 544, "jun": 466}, "Córdoba": {"ene": 339, "feb": 347, "mar": 334, "abr": 421, "may": 513, "jun": 402}, "Quilmes": {"ene": 349, "feb": 365, "mar": 379, "abr": 265, "may": 423, "jun": 401}, "Lanús": {"ene": 355, "feb": 322, "mar": 339, "abr": 290, "may": 368, "jun": 304}, "Neuquén": {"ene": 238, "feb": 249, "mar": 274, "abr": 184, "may": 316, "jun": 231}, "Santa Fe": {"ene": 177, "feb": 246, "mar": 268, "abr": 181, "may": 281, "jun": 269}, "Berazategui": {"ene": 212, "feb": 183, "mar": 179, "abr": 174, "may": 248, "jun": 210}, "S.M. de Tucumán": {"ene": 201, "feb": 200, "mar": 182, "abr": 134, "may": 157, "jun": 202}, "Corrientes": {"ene": 154, "feb": 194, "mar": 185, "abr": 126, "may": 181, "jun": 186}}}, "pag": {"totals": {"ene": 183081, "feb": 177217, "mar": 81092, "abr": 66832, "may": 91149, "jun": 76911}, "items": {"Home": {"ene": 32602, "feb": 31413, "mar": 23801, "abr": 19827, "may": 23212, "jun": 19633}, "Sofás y Sillones": {"ene": 45327, "feb": 46255, "mar": 16008, "abr": 9868, "may": 16410, "jun": 14120}, "Productos individuales": {"ene": 33841, "feb": 32316, "mar": 12006, "abr": 8305, "may": 11469, "jun": 9292}, "Mesas": {"ene": 18432, "feb": 16631, "mar": 3981, "abr": 2522, "may": 4045, "jun": 2291}, "Living": {"ene": 4282, "feb": 4515, "mar": 2164, "abr": 9865, "may": 12431, "jun": 9837}, "Sillas": {"ene": 11572, "feb": 11419, "mar": 2968, "abr": 1730, "may": 1988, "jun": 1129}, "Comedor": {"ene": 3515, "feb": 3295, "mar": 5076, "abr": 4477, "may": 4118, "jun": 3536}, "Promociones": {"ene": 4830, "feb": 5786, "mar": 1521, "abr": 984, "may": 2764, "jun": 2018}, "Muebles de TV": {"ene": 6433, "feb": 5539, "mar": 2007, "abr": 1059, "may": 1490, "jun": 1045}, "Dormitorio": {"ene": 4921, "feb": 5305, "mar": 2688, "abr": 1075, "may": 1236, "jun": 1131}, "Sucursales": {"ene": 6181, "feb": 5820, "mar": 1475, "abr": 486, "may": 897, "jun": 825}, "Vajilleros": {"ene": 2954, "feb": 2134, "mar": 729, "abr": 427, "may": 428, "jun": 228}}}};
+
+var PERW=[{k:'ene',l:'Enero'},{k:'feb',l:'Febrero'},{k:'mar',l:'Marzo'},{k:'abr',l:'Abril'},{k:'may',l:'Mayo'},{k:'jun',l:'Junio'},{k:'q1',l:'Ene–Mar'},{k:'q2',l:'Abr–Jun'},{k:'sem',l:'Semestre'}];
+function pm(k){ if(k==='q1')return['ene','feb','mar']; if(k==='q2')return['abr','may','jun']; if(k==='sem')return['ene','feb','mar','abr','may','jun']; return [k]; }
+function plabel(k){ for(var i=0;i<PERW.length;i++) if(PERW[i].k===k) return PERW[i].l; return k; }
+function fmtN(n){ return Number(n).toLocaleString('es-AR'); }
+function fmtP(n){ return (Math.round(n*10)/10).toLocaleString('es-AR',{minimumFractionDigits:1,maximumFractionDigits:1})+'%'; }
+function sumItem(o,ms){ var s=0; for(var i=0;i<ms.length;i++) if(o[ms[i]]!=null) s+=o[ms[i]]; return s; }
+function total(cat,ms){ var t=0,T=WD[cat].totals; for(var i=0;i<ms.length;i++) t+=(T[ms[i]]||0); return t; }
+function ranked(cat,ms){ var it=WD[cat].items,a=[]; for(var n in it) a.push([n,sumItem(it[n],ms)]); a.sort(function(x,y){return y[1]-x[1];}); return a; }
+var state={canales:'sem',zonas:'sem',pag:'sem'};
+function renderCanales(p){ var ms=pm(p),tot=total('canales',ms),a=ranked('canales',ms).filter(function(x){return x[1]>0;}),mx=a.length?a[0][1]:1,h='',m={};
+  for(var i=0;i<a.length;i++){ var w=Math.max(4,Math.round(a[i][1]/mx*100)); m[a[i][0]]=a[i][1];
+    h+='<div class="bar2"><div class="bl">'+a[i][0]+'</div><div class="bt"><div class="bf" style="width:'+w+'%;"><span class="bn">'+fmtN(a[i][1])+'</span></div></div><div class="br">'+fmtP(a[i][1]/tot*100)+'</div></div>'; }
+  document.getElementById('wo-bars').innerHTML=h;
+  document.getElementById('wo-sub').textContent='Por qué canal llegaron las '+fmtN(tot)+' visitas de '+plabel(p).toLowerCase();
+  var pago=((m['Búsqueda pagada']||0)+(m['Redes pagas']||0))/tot*100;
+  document.getElementById('wo-note').innerHTML='<b>Tráfico pagado (Búsqueda pagada + Redes pagas): '+fmtP(pago)+'.</b> El resto llega solo, sin costo de pauta.'; }
+function rows(cat,ms,tot,pct){ var a=ranked(cat,ms).slice(0,7),h=''; for(var i=0;i<a.length;i++){ if(a[i][1]<=0)continue; h+='<tr><td>'+a[i][0]+'</td><td class="num">'+fmtN(a[i][1])+'</td>'+(pct?'<td class="num">'+fmtP(a[i][1]/tot*100)+'</td>':'')+'</tr>'; } return h; }
+function renderZonas(p){ var ms=pm(p),pt=total('prov',ms);
+  document.getElementById('wz-prov').innerHTML=rows('prov',ms,pt,true);
+  document.getElementById('wz-city').innerHTML=rows('city',ms,total('city',ms),false);
+  var pv={}; ranked('prov',ms).forEach(function(x){pv[x[0]]=x[1];});
+  var amba=((pv['Prov. de Buenos Aires']||0)+(pv['CABA']||0))/pt*100;
+  document.getElementById('wz-note').innerHTML='<b>AMBA (Prov. Bs. As. + CABA) concentra el '+fmtP(amba)+' del tráfico</b> en '+plabel(p).toLowerCase()+'. Se filtró tráfico bot de China.'; }
+function renderPag(p){ var ms=pm(p),tot=total('pag',ms);
+  document.getElementById('wp-body').innerHTML=rows('pag',ms,tot,true);
+  document.getElementById('wp-note').innerHTML='<b>Total '+plabel(p).toLowerCase()+': '+fmtN(tot)+' vistas.</b> Sofás y Sillones y la Home concentran la atención.'; }
+var R={canales:renderCanales,zonas:renderZonas,pag:renderPag};
+function build(el){ var cat=el.dataset.webdd,menu=el.querySelector('.dd-menu'),h='';
+  for(var i=0;i<PERW.length;i++) h+='<div class="dd-opt'+(PERW[i].k===state[cat]?' sel':'')+'" data-k="'+PERW[i].k+'"><span class="dd-check">✓</span>'+PERW[i].l+'</div>';
+  menu.innerHTML=h; el.querySelector('.dd-val').textContent=plabel(state[cat]);
+  menu.querySelectorAll('.dd-opt').forEach(function(o){ o.addEventListener('click',function(e){ e.stopPropagation(); state[cat]=o.dataset.k; el.classList.remove('open'); R[cat](o.dataset.k); build(el); }); }); }
+window.webToggle=function(btn){ var el=btn.closest('.web-dd'),was=el.classList.contains('open'); document.querySelectorAll('.web-dd.open').forEach(function(x){x.classList.remove('open');}); if(!was) el.classList.add('open'); };
+document.addEventListener('click',function(e){ if(!e.target.closest('.web-dd')) document.querySelectorAll('.web-dd.open').forEach(function(x){x.classList.remove('open');}); });
+document.querySelectorAll('.web-dd').forEach(build);
+renderCanales('sem'); renderZonas('sem'); renderPag('sem');
+
 })();
 </script>
 </body>
