@@ -40,12 +40,12 @@ window.REPORTE = {
     "web": {
       "type": "flow",
       "vals": {
-        "ene": 15672,
-        "feb": 16103,
-        "mar": 16430,
-        "abr": 15438,
-        "may": 18445,
-        "jun": 15255
+        "ene": 15807,
+        "feb": 16091,
+        "mar": 16358,
+        "abr": 15362,
+        "may": 18491,
+        "jun": 15171
       }
     },
     "igNew": {
